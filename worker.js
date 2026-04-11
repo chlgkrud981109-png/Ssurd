@@ -89,7 +89,7 @@ ${coverLetter}
                     'anthropic-version': '2023-06-01',
                 },
                 body: JSON.stringify({
-                    model: 'claude-sonnet-4-5',
+                    model: 'claude-haiku-4-5-20251001',
                     max_tokens: 1024,
                     messages: [{ role: 'user', content: prompt }],
                 }),
@@ -98,7 +98,7 @@ ${coverLetter}
             if (!anthropicRes.ok) {
                 const err = await anthropicRes.text();
                 console.error('Anthropic API error:', err);
-                return new Response(JSON.stringify({ error: '분석 엔진 오류가 발생했습니다.' }), {
+                return new Response(JSON.stringify({ error: '분석 엔진 오류가 발생했습니다.', detail: err, status: anthropicRes.status }), {
                     status: 502,
                     headers: { ...corsHeaders(request), 'Content-Type': 'application/json' },
                 });
@@ -115,7 +115,7 @@ ${coverLetter}
 
         } catch (e) {
             console.error('Worker error:', e);
-            return new Response(JSON.stringify({ error: '서버 오류가 발생했습니다.' }), {
+            return new Response(JSON.stringify({ error: '서버 오류가 발생했습니다.', detail: e.message }), {
                 status: 500,
                 headers: { ...corsHeaders(request), 'Content-Type': 'application/json' },
             });
