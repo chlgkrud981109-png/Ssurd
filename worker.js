@@ -127,7 +127,7 @@ ${coverLetter}
 function corsHeaders(request) {
     const origin = request.headers.get('Origin') || '';
     const allowed = [
-        'https://ssurd.pages.dev',        // Cloudflare Pages 기본 도메인 (배포 후 수정)
+        'https://ssurd.pages.dev',        // Cloudflare Pages
         'http://127.0.0.1:5500',          // VS Code Live Server
         'http://localhost:5500',
         'http://localhost:3000',
