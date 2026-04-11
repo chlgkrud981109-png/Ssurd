@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html class="light" lang="ko">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Ssurd - 자소서 작성</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&family=Inter:wght@400;500;600&display=swap"
+        rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
+        rel="stylesheet" />
+    <script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "tertiary": "#002713", "on-tertiary": "#ffffff", "on-primary": "#ffffff",
+                        "error-container": "#ffdad6", "surface-variant": "#e0e3e5", "primary-fixed": "#d6e3ff",
+                        "outline": "#74777f", "on-secondary-container": "#00477f", "outline-variant": "#c4c6cf",
+                        "secondary-fixed": "#d3e4ff", "on-tertiary-fixed-variant": "#00522f",
+                        "on-error-container": "#93000a", "surface-bright": "#f7fafc",
+                        "surface-container-high": "#e5e9eb", "on-secondary": "#ffffff", "on-error": "#ffffff",
+                        "inverse-surface": "#2d3133", "secondary-fixed-dim": "#a2c9ff",
+                        "on-tertiary-container": "#4bb278", "tertiary-container": "#003f23",
+                        "secondary": "#1960a3", "on-secondary-fixed-variant": "#004881",
+                        "on-primary-fixed-variant": "#2d476f", "surface-dim": "#d7dadc",
+                        "background": "#f7fafc", "surface-tint": "#455f88", "inverse-primary": "#adc7f7",
+                        "on-secondary-fixed": "#001c38", "primary-fixed-dim": "#adc7f7",
+                        "surface-container-low": "#f1f4f6", "secondary-container": "#7db6ff",
+                        "primary": "#002045", "error": "#ba1a1a", "on-primary-fixed": "#001b3c",
+                        "primary-container": "#1a365d", "inverse-on-surface": "#eef1f3",
+                        "surface-container": "#ebeef0", "tertiary-fixed-dim": "#74db9d",
+                        "on-primary-container": "#86a0cd", "surface-container-highest": "#e0e3e5",
+                        "on-background": "#181c1e", "on-surface-variant": "#43474e",
+                        "on-tertiary-fixed": "#002110", "tertiary-fixed": "#91f8b8",
+                        "surface-container-lowest": "#ffffff", "surface": "#f7fafc", "on-surface": "#181c1e"
+                    },
+                    borderRadius: { "DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem" },
+                    fontFamily: { "headline": ["Manrope"], "body": ["Inter"], "label": ["Inter"] }
+                }
+            }
+        }
+    </script>
+    <style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            display: inline-block;
+            vertical-align: middle;
+        }
+
+        .editorial-gradient {
+            background: linear-gradient(135deg, #002045 0%, #1a365d 50%, #1960a3 100%);
+        }
+
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(20px);
+        }
+
+        .analyzing .dots::after {
+            content: '';
+            animation: dots 1.2s infinite;
+        }
+
+        @keyframes dots {
+            0% {
+                content: ''
+            }
+
+            33% {
+                content: '.'
+            }
+
+            66% {
+                content: '..'
+            }
+
+            100% {
+                content: '...'
+            }
+        }
+    </style>
+</head>
+
+<body class="bg-surface font-body text-on-surface antialiased">
+
+    <!-- 로그인 필요 오버레이 -->
+    <div id="authGate" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm">
+        <div class="bg-white rounded-2xl p-10 max-w-sm mx-4 text-center shadow-2xl">
+            <span class="material-symbols-outlined text-primary text-5xl mb-4 block">lock</span>
+            <h2 class="font-headline font-bold text-xl text-primary mb-3">로그인이 필요합니다</h2>
+            <p class="text-on-surface-variant text-sm mb-6">분석을 시작하려면 먼저 로그인해 주세요.</p>
+            <button onclick="location.href='index.html'"
+                class="editorial-gradient text-white w-full py-3 rounded-full font-headline font-bold text-sm">
+                로그인하러 가기
+            </button>
+        </div>
+    </div>
+
+    <!-- 분석 중 오버레이 -->
+    <div id="loadingOverlay"
+        class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm">
+        <div class="bg-white rounded-2xl p-10 max-w-sm mx-4 text-center shadow-2xl analyzing">
+            <div class="w-16 h-16 mx-auto mb-6 relative">
+                <svg class="w-full h-full animate-spin" viewBox="0 0 64 64">
+                    <circle cx="32" cy="32" r="28" fill="none" stroke="#e5e9eb" stroke-width="6" />
+                    <circle cx="32" cy="32" r="28" fill="none" stroke="#1960a3" stroke-width="6"
+                        stroke-dasharray="60 120" stroke-linecap="round" />
+                </svg>
+            </div>
+            <h2 class="font-headline font-bold text-xl text-primary mb-2">분석 중<span class="dots"></span></h2>
+            <p class="text-on-surface-variant text-sm">제3자의 시선으로 읽어드리고 있습니다</p>
+        </div>
+    </div>
+
+    <!-- 네비게이션 -->
+    <nav class="fixed top-0 w-full z-40 glass-panel border-b border-outline-variant/20">
+        <div class="max-w-7xl mx-auto flex justify-between items-center px-8 py-4">
+            <a href="index.html" class="text-2xl font-black tracking-tighter text-blue-950 font-headline">Ssurd</a>
+            <div class="hidden md:flex gap-8 items-center">
+                <a class="text-slate-500 font-medium hover:text-blue-900 font-headline hover:scale-105 transition-transform"
+                    href="index.html">홈</a>
+                <a class="text-slate-500 font-medium hover:text-blue-900 font-headline hover:scale-105 transition-transform"
+                    href="dashboard.html">히스토리</a>
+            </div>
+            <div id="navUser" class="hidden items-center gap-3">
+                <span id="navUserName" class="text-sm text-on-surface-variant max-w-[140px] truncate"></span>
+                <button onclick="handleLogout()"
+                    class="border border-outline-variant text-on-surface px-4 py-2 rounded-full text-sm font-headline font-semibold hover:bg-surface-container-low transition-colors">로그아웃</button>
+            </div>
+            <button id="navLoginBtn" onclick="location.href='index.html'"
+                class="editorial-gradient text-white px-6 py-2 rounded-full font-headline font-semibold text-sm hover:scale-105 transition-transform">시작하기</button>
+        </div>
+    </nav>
+
+    <main class="pt-32 pb-24 px-8 max-w-7xl mx-auto min-h-screen">
+        <!-- 사용량 배너 -->
+        <div id="usageBanner"
+            class="hidden mb-6 p-4 bg-surface-container-low rounded-xl flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <span class="material-symbols-outlined text-secondary">analytics</span>
+                <span class="text-sm font-medium text-on-surface-variant">이번 달 잔여 분석 횟수: <strong id="usageCount"
+                        class="text-primary">-</strong>회</span>
+            </div>
+            <a href="dashboard.html" class="text-xs text-secondary font-bold hover:underline">히스토리 보기 →</a>
+        </div>
+
+        <div class="flex flex-col lg:flex-row gap-12">
+            <!-- 왼쪽: 입력 -->
+            <div class="flex-1 lg:w-[65%] space-y-8">
+                <div class="space-y-2">
+                    <h1 class="text-4xl font-headline font-bold text-on-surface tracking-tight">자기소개서 작성</h1>
+                    <p class="text-on-surface-variant font-body">지원하시는 직무와 관련된 경험을 서술해 주세요. Ssurd가 제3자의 시선으로 분석합니다.</p>
+                </div>
+
+                <!-- 에러 메시지 -->
+                <div id="errorMsg" class="hidden p-4 bg-red-50 text-red-700 text-sm rounded-xl"></div>
+
+                <div class="space-y-6">
+                    <!-- 직무 입력 -->
+                    <div class="space-y-2">
+                        <label class="text-sm font-label font-semibold text-secondary px-1 uppercase tracking-wider">지원
+                            직무</label>
+                        <input id="jobTitle" type="text" placeholder="예: 삼성전자 SW개발, 카카오 PM, 현대자동차 마케팅"
+                            class="w-full bg-surface-container-low border-none rounded-xl px-6 py-4 focus:bg-surface-container-lowest focus:ring-2 focus:ring-blue-200 transition-all text-lg placeholder:text-slate-400 outline-none" />
+                    </div>
+
+                    <!-- 자소서 입력 -->
+                    <div class="space-y-2 relative">
+                        <label
+                            class="text-sm font-label font-semibold text-secondary px-1 uppercase tracking-wider">자기소개서
+                            본문</label>
+                        <div class="bg-surface-container-lowest rounded-xl p-1 shadow-sm">
+                            <textarea id="coverLetter" maxlength="3000" placeholder="자기소개서 내용을 여기에 입력하거나 붙여넣어 주세요..."
+                                class="w-full min-h-[500px] border-none bg-transparent rounded-xl px-6 py-6 focus:ring-0 text-on-surface leading-relaxed text-base resize-none outline-none"></textarea>
+                            <div
+                                class="flex justify-between items-center px-6 py-4 bg-surface-container-low/50 rounded-b-xl border-t border-slate-100/50">
+                                <div class="flex gap-4">
+                                    <span
+                                        class="material-symbols-outlined text-slate-400 cursor-default">spellcheck</span>
+                                </div>
+                                <span class="text-sm font-label text-slate-400">
+                                    <span id="charCount" class="text-secondary font-bold">0</span> / 3,000자
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 분석 버튼 -->
+                    <div class="pt-4">
+                        <button id="analyzeBtn" onclick="startAnalysis()"
+                            class="editorial-gradient text-white w-full py-5 rounded-full font-headline font-bold text-lg shadow-lg hover:scale-[1.02] transition-transform flex items-center justify-center gap-3">
+                            <span class="material-symbols-outlined"
+                                style="font-variation-settings:'FILL' 1">auto_awesome</span>
+                            전문 분석 시작하기
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 오른쪽: 사이드바 -->
+            <aside class="lg:w-[35%] space-y-6">
+                <div class="bg-surface-container-lowest rounded-xl p-8 shadow-sm">
+                    <div class="flex items-center gap-3 text-secondary mb-6">
+                        <span class="material-symbols-outlined text-3xl">insights</span>
+                        <h3 class="font-headline font-bold text-xl">분석 핵심 포인트</h3>
+                    </div>
+                    <div class="space-y-6">
+                        <div class="flex gap-4 items-start">
+                            <div class="bg-surface-container p-2 rounded-lg shrink-0">
+                                <span class="material-symbols-outlined text-primary">psychology</span>
+                            </div>
+                            <div>
+                                <h4 class="font-headline font-bold text-sm text-on-surface">구조적 완성도</h4>
+                                <p class="text-xs text-on-surface-variant mt-1 leading-relaxed">서사 흐름이 논리적이고 설득력 있는 궤적을
+                                    따르는지 분석합니다.</p>
+                            </div>
+                        </div>
+                        <div class="flex gap-4 items-start">
+                            <div class="bg-surface-container p-2 rounded-lg shrink-0">
+                                <span class="material-symbols-outlined text-primary">target</span>
+                            </div>
+                            <div>
+                                <h4 class="font-headline font-bold text-sm text-on-surface">성과 지표 분석</h4>
+                                <p class="text-xs text-on-surface-variant mt-1 leading-relaxed">자소서 속에 숨겨진 정량화 가능한 성과를
+                                    제3자의 시선으로 발굴합니다.</p>
+                            </div>
+                        </div>
+                        <div class="flex gap-4 items-start">
+                            <div class="bg-surface-container p-2 rounded-lg shrink-0">
+                                <span class="material-symbols-outlined text-primary">key</span>
+                            </div>
+                            <div>
+                                <h4 class="font-headline font-bold text-sm text-on-surface">직무 키워드 매칭</h4>
+                                <p class="text-xs text-on-surface-variant mt-1 leading-relaxed">지원 직무와 연관된 핵심 키워드 존재 여부
+                                    및 밀도를 검사합니다.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 작성 가이드 -->
+                <div class="bg-surface-container-low rounded-xl p-8 space-y-4">
+                    <h3
+                        class="font-headline font-bold text-sm text-on-surface-variant uppercase tracking-widest flex items-center gap-2">
+                        <span class="material-symbols-outlined text-base">lightbulb</span>
+                        작성 가이드라인
+                    </h3>
+                    <ul class="space-y-4">
+                        <li class="flex gap-3 items-start">
+                            <span
+                                class="material-symbols-outlined text-on-tertiary-container text-lg shrink-0">check_circle</span>
+                            <span class="text-sm text-on-surface-variant">"어떻게"에 집중하세요 — 성공의 이면에 있는 구체적인 방법론을
+                                설명하세요.</span>
+                        </li>
+                        <li class="flex gap-3 items-start">
+                            <span
+                                class="material-symbols-outlined text-on-tertiary-container text-lg shrink-0">check_circle</span>
+                            <span class="text-sm text-on-surface-variant">'주도했다', '설계했다', '개선했다' 등 능동적인 동사를
+                                사용하세요.</span>
+                        </li>
+                        <li class="flex gap-3 items-start">
+                            <span
+                                class="material-symbols-outlined text-on-tertiary-container text-lg shrink-0">check_circle</span>
+                            <span class="text-sm text-on-surface-variant">수치와 결과를 포함하세요. "20% 향상", "3개월 내 완료" 등 정량적 표현이
+                                효과적입니다.</span>
+                        </li>
+                    </ul>
+                </div>
+            </aside>
+        </div>
+    </main>
+
+    <footer class="bg-slate-100 w-full py-12 px-8">
+        <div class="flex flex-col md:flex-row justify-between items-center max-w-7xl mx-auto gap-4">
+            <div class="flex flex-col gap-2">
+                <a href="index.html" class="text-lg font-bold text-blue-950 font-headline">Ssurd</a>
+                <p class="text-sm text-slate-600">© 2025 Ssurd. All rights reserved.</p>
+            </div>
+            <div class="flex gap-8">
+                <a class="text-slate-500 text-sm hover:text-blue-700 transition-colors" href="#">개인정보 처리방침</a>
+                <a class="text-slate-500 text-sm hover:text-blue-700 transition-colors" href="#">이용약관</a>
+            </div>
+        </div>
+    </footer>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+        import { getAuth, onAuthStateChanged, signOut }
+            from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+        import { getFirestore, collection, addDoc, doc, getDoc, updateDoc, serverTimestamp }
+            from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+        const app = initializeApp({
+            apiKey: "AIzaSyCeqiOD3PDMD3xL0IAM52xGMBHJdMOfsDY",
+            authDomain: "ssurd-6400c.firebaseapp.com",
+            projectId: "ssurd-6400c",
+            storageBucket: "ssurd-6400c.firebasestorage.app",
+            messagingSenderId: "574073259312",
+            appId: "1:574073259312:web:5148cc8a6a9897b93474f5"
+        });
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+        let currentUser = null;
+
+        // ── 인증 상태 감지 ──
+        onAuthStateChanged(auth, async (user) => {
+            if (!user) {
+                document.getElementById('authGate').classList.remove('hidden');
+                return;
+            }
+            currentUser = user;
+            // 네비 업데이트
+            document.getElementById('navLoginBtn').classList.add('hidden');
+            document.getElementById('navUser').classList.remove('hidden');
+            document.getElementById('navUser').classList.add('flex');
+            document.getElementById('navUserName').textContent = user.displayName || user.email;
+
+            // 사용량 조회
+            const userRef = doc(db, 'users', user.uid);
+            const snap = await getDoc(userRef);
+            const data = snap.exists() ? snap.data() : {};
+            const used = data.monthlyUsage || 0;
+            const limit = data.plan === 'starter' ? 10 : 1; // 무료: 1회, 구독: 10회
+            const remaining = Math.max(0, limit - used);
+            document.getElementById('usageBanner').classList.remove('hidden');
+            document.getElementById('usageCount').textContent = remaining;
+        });
+
+        // 글자수 카운터
+        document.getElementById('coverLetter').addEventListener('input', (e) => {
+            document.getElementById('charCount').textContent = e.target.value.length;
+        });
+
+        // ── 분석 시작 ──
+        window.startAnalysis = async () => {
+            const jobTitle = document.getElementById('jobTitle').value.trim();
+            const coverLetter = document.getElementById('coverLetter').value.trim();
+            const errEl = document.getElementById('errorMsg');
+            errEl.classList.add('hidden');
+
+            if (!currentUser) { document.getElementById('authGate').classList.remove('hidden'); return; }
+            if (!jobTitle) { errEl.textContent = '지원 직무를 입력해주세요.'; errEl.classList.remove('hidden'); return; }
+            if (coverLetter.length < 100) { errEl.textContent = '자기소개서를 100자 이상 입력해주세요.'; errEl.classList.remove('hidden'); return; }
+
+            // 사용량 체크
+            const userRef = doc(db, 'users', currentUser.uid);
+            const snap = await getDoc(userRef);
+            const data = snap.exists() ? snap.data() : {};
+            const used = data.monthlyUsage || 0;
+            const limit = data.plan === 'starter' ? 10 : 1;
+            if (used >= limit) {
+                errEl.textContent = '이번 달 분석 횟수를 모두 사용했습니다. 구독 플랜을 업그레이드해 주세요.';
+                errEl.classList.remove('hidden');
+                return;
+            }
+
+            document.getElementById('loadingOverlay').classList.remove('hidden');
+            document.getElementById('analyzeBtn').disabled = true;
+
+            try {
+                // ── Claude API 호출 ──
+                const prompt = `당신은 10년 경력의 대기업 채용 담당자입니다.
+아래 자기소개서를 읽고 반드시 JSON 형식만 반환하세요. 다른 텍스트는 절대 포함하지 마세요.
+
+[지원 직무]: ${jobTitle}
+[자기소개서]:
+${coverLetter}
+
+반환 형식:
+{
+  "score": 0~100 사이 숫자,
+  "grade": "A" 또는 "B" 또는 "C" 또는 "D",
+  "summary": "전체 평가 한 줄 요약 (30자 이내)",
+  "strengths": ["강점1", "강점2", "강점3"],
+  "improvements": [
+    {"issue": "문제점", "suggestion": "구체적 개선 예시 문장"}
+  ],
+  "keywords": {
+    "matched": ["매칭된 직무 키워드1", "키워드2"],
+    "missing": ["누락된 권장 키워드1", "키워드2"]
+  },
+  "scores": {
+    "relevance": 직무연관성 0~100,
+    "specificity": 구체성 0~100,
+    "clarity": 문장명확성 0~100,
+    "authenticity": 진정성 0~100
+  }
+}`;
+
+                // ── Cloudflare Worker 프록시 호출 (API 키는 Worker 환경변수에만 존재) ──
+                const PROXY_URL = 'https://ssurd-proxy.chlgkrud981109.workers.dev/analyze';
+
+                const response = await fetch(PROXY_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ jobTitle, coverLetter })
+                });
+
+                if (!response.ok) {
+                    const errData = await response.json().catch(() => ({}));
+                    throw new Error(errData.error || `서버 오류: ${response.status}`);
+                }
+                const { report } = await response.json();
+
+                // ── Firestore 저장 ──
+                const docRef = await addDoc(collection(db, 'analyses'), {
+                    uid: currentUser.uid,
+                    jobTitle,
+                    coverLetter,
+                    report,
+                    createdAt: serverTimestamp()
+                });
+
+                // 사용량 +1 업데이트
+                if (snap.exists()) {
+                    await updateDoc(userRef, { monthlyUsage: used + 1 });
+                } else {
+                    const { setDoc } = await import("https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js");
+                    await setDoc(userRef, {
+                        email: currentUser.email,
+                        plan: 'free',
+                        monthlyUsage: 1,
+                        createdAt: serverTimestamp()
+                    });
+                }
+
+                // report.html로 이동 (분석 ID 전달)
+                location.href = `report.html?id=${docRef.id}`;
+
+            } catch (e) {
+                console.error(e);
+                document.getElementById('loadingOverlay').classList.add('hidden');
+                document.getElementById('analyzeBtn').disabled = false;
+                errEl.textContent = '분석 중 오류가 발생했습니다. 잠시 후 다시 시도해주세요.';
+                errEl.classList.remove('hidden');
+            }
+        };
+
+        window.handleLogout = async () => {
+            await signOut(auth);
+            location.href = 'index.html';
+        };
+    </script>
+</body>
+
+</html>

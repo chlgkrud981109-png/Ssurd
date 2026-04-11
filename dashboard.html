@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html class="light" lang="ko">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Ssurd - 분석 히스토리</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&family=Inter:wght@400;500;600&display=swap"
+        rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
+        rel="stylesheet" />
+    <script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "tertiary": "#002713", "on-tertiary": "#ffffff", "on-primary": "#ffffff",
+                        "error-container": "#ffdad6", "surface-variant": "#e0e3e5", "primary-fixed": "#d6e3ff",
+                        "outline": "#74777f", "on-secondary-container": "#00477f", "outline-variant": "#c4c6cf",
+                        "secondary-fixed": "#d3e4ff", "on-tertiary-fixed-variant": "#00522f",
+                        "on-error-container": "#93000a", "surface-bright": "#f7fafc",
+                        "surface-container-high": "#e5e9eb", "on-secondary": "#ffffff", "on-error": "#ffffff",
+                        "inverse-surface": "#2d3133", "secondary-fixed-dim": "#a2c9ff",
+                        "on-tertiary-container": "#4bb278", "tertiary-container": "#003f23",
+                        "secondary": "#1960a3", "on-secondary-fixed-variant": "#004881",
+                        "on-primary-fixed-variant": "#2d476f", "surface-dim": "#d7dadc",
+                        "background": "#f7fafc", "surface-tint": "#455f88", "inverse-primary": "#adc7f7",
+                        "on-secondary-fixed": "#001c38", "primary-fixed-dim": "#adc7f7",
+                        "surface-container-low": "#f1f4f6", "secondary-container": "#7db6ff",
+                        "primary": "#002045", "error": "#ba1a1a", "on-primary-fixed": "#001b3c",
+                        "primary-container": "#1a365d", "inverse-on-surface": "#eef1f3",
+                        "surface-container": "#ebeef0", "tertiary-fixed-dim": "#74db9d",
+                        "on-primary-container": "#86a0cd", "surface-container-highest": "#e0e3e5",
+                        "on-background": "#181c1e", "on-surface-variant": "#43474e",
+                        "on-tertiary-fixed": "#002110", "tertiary-fixed": "#91f8b8",
+                        "surface-container-lowest": "#ffffff", "surface": "#f7fafc", "on-surface": "#181c1e"
+                    },
+                    borderRadius: { "DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem" },
+                    fontFamily: { "headline": ["Manrope"], "body": ["Inter"], "label": ["Inter"] }
+                }
+            }
+        }
+    </script>
+    <style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+
+        .editorial-gradient {
+            background: linear-gradient(135deg, #002045 0%, #1a365d 50%, #1960a3 100%);
+        }
+
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(20px);
+        }
+    </style>
+</head>
+
+<body class="bg-surface font-body text-on-surface">
+
+    <!-- 네비게이션 -->
+    <nav class="fixed top-0 w-full z-50 glass-panel border-b border-outline-variant/20">
+        <div class="max-w-7xl mx-auto flex justify-between items-center px-8 py-4">
+            <a href="index.html" class="text-2xl font-black tracking-tighter text-blue-950 font-headline">Ssurd</a>
+            <div class="hidden md:flex items-center gap-8">
+                <a class="text-slate-500 font-medium hover:text-blue-900 font-headline hover:scale-105 transition-transform"
+                    href="index.html">홈</a>
+                <a class="text-blue-900 font-bold border-b-2 border-blue-900 pb-1 font-headline" href="#">히스토리</a>
+                <a class="text-slate-500 font-medium hover:text-blue-900 font-headline hover:scale-105 transition-transform"
+                    href="write.html">새 분석</a>
+            </div>
+            <div id="navUser" class="hidden items-center gap-3">
+                <span id="navUserName" class="text-sm text-on-surface-variant max-w-[140px] truncate"></span>
+                <button onclick="handleLogout()"
+                    class="border border-outline-variant text-on-surface px-4 py-2 rounded-full text-sm font-headline font-semibold hover:bg-surface-container-low transition-colors">로그아웃</button>
+            </div>
+            <button id="navLoginBtn" onclick="location.href='index.html'"
+                class="editorial-gradient text-on-primary px-6 py-2 rounded-full font-headline font-semibold text-sm hover:scale-105 transition-transform">
+                시작하기
+            </button>
+        </div>
+    </nav>
+
+    <main class="max-w-7xl mx-auto pt-28 pb-20 px-8">
+        <header class="mb-12 flex flex-col md:flex-row md:items-end justify-between gap-4">
+            <div>
+                <h1 class="font-headline text-4xl font-extrabold tracking-tight text-on-surface mb-2">분석 히스토리</h1>
+                <p class="font-body text-on-surface-variant">과거 분석 결과를 확인하고 자소서 성장을 추적하세요.</p>
+            </div>
+            <a href="write.html"
+                class="editorial-gradient text-white px-6 py-3 rounded-full font-headline font-bold text-sm flex items-center gap-2 w-fit">
+                <span class="material-symbols-outlined text-base">add</span>
+                새 분석 시작
+            </a>
+        </header>
+
+        <!-- 비로그인 안내 -->
+        <div id="loginPrompt" class="hidden text-center py-24">
+            <span class="material-symbols-outlined text-outline text-6xl mb-4 block">lock</span>
+            <h2 class="font-headline font-bold text-xl text-primary mb-3">로그인이 필요합니다</h2>
+            <p class="text-on-surface-variant mb-6">히스토리를 보려면 로그인해 주세요.</p>
+            <a href="index.html"
+                class="editorial-gradient text-white px-8 py-3 rounded-full font-headline font-bold inline-block">로그인하러
+                가기</a>
+        </div>
+
+        <!-- 데이터 없음 -->
+        <div id="emptyState" class="hidden text-center py-24">
+            <span class="material-symbols-outlined text-outline text-6xl mb-4 block">description</span>
+            <h2 class="font-headline font-bold text-xl text-primary mb-3">아직 분석 기록이 없습니다</h2>
+            <p class="text-on-surface-variant mb-6">첫 번째 자소서를 분석해보세요!</p>
+            <a href="write.html"
+                class="editorial-gradient text-white px-8 py-3 rounded-full font-headline font-bold inline-block">분석
+                시작하기</a>
+        </div>
+
+        <!-- 메인 콘텐츠 -->
+        <div id="mainContent" class="hidden grid grid-cols-1 lg:grid-cols-12 gap-8">
+            <!-- 왼쪽: 히스토리 목록 -->
+            <div class="lg:col-span-8 space-y-8">
+                <!-- 점수 추이 차트 -->
+                <section class="bg-surface-container-lowest rounded-xl p-8">
+                    <div class="flex justify-between items-end mb-8">
+                        <div>
+                            <h2 class="font-headline text-xl font-bold text-on-surface">점수 추이</h2>
+                            <p class="text-sm text-on-surface-variant">분석 회차별 자소서 점수 변화</p>
+                        </div>
+                        <div id="growthBadge" class="text-right hidden">
+                            <span id="growthValue" class="block text-3xl font-black text-secondary"></span>
+                            <span class="text-xs font-bold uppercase tracking-widest text-on-tertiary-container">점수
+                                변화</span>
+                        </div>
+                    </div>
+                    <div class="w-full h-48 relative mt-4">
+                        <svg id="trendChart" class="w-full h-full overflow-visible" preserveAspectRatio="none">
+                            <defs>
+                                <linearGradient id="chartGradient" x1="0" x2="0" y1="0" y2="1">
+                                    <stop offset="0%" stop-color="#1960a3" stop-opacity="0.2" />
+                                    <stop offset="100%" stop-color="#1960a3" stop-opacity="0" />
+                                </linearGradient>
+                            </defs>
+                            <!-- JS로 동적 렌더링 -->
+                        </svg>
+                        <div id="chartLabels"
+                            class="absolute bottom-[-24px] left-0 w-full flex justify-between text-[10px] font-bold text-outline uppercase tracking-widest">
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 히스토리 리스트 -->
+                <div class="space-y-4">
+                    <h3 class="font-headline text-lg font-bold text-on-surface flex items-center gap-2 px-1">
+                        <span class="material-symbols-outlined text-secondary"
+                            style="font-variation-settings:'FILL' 1">history</span>
+                        최근 분석 내역
+                    </h3>
+                    <div id="historyList" class="space-y-4"></div>
+                </div>
+            </div>
+
+            <!-- 오른쪽: 사이드바 -->
+            <aside class="lg:col-span-4 space-y-8">
+                <!-- 구독 정보 -->
+                <section class="editorial-gradient rounded-xl p-8 text-on-primary overflow-hidden relative">
+                    <div class="absolute -right-10 -bottom-10 w-40 h-40 bg-white/5 rounded-full blur-3xl"></div>
+                    <div class="relative z-10">
+                        <div class="flex items-center justify-between mb-8">
+                            <h3 class="font-headline text-lg font-bold">구독 정보</h3>
+                            <span class="material-symbols-outlined opacity-50">verified_user</span>
+                        </div>
+                        <div class="mb-6">
+                            <p class="text-xs font-bold uppercase tracking-widest opacity-60 mb-2" id="planLabel">무료 플랜
+                            </p>
+                            <div class="flex items-baseline gap-2">
+                                <span id="remainingCount" class="text-5xl font-black">-</span>
+                                <span class="text-lg font-medium opacity-80">회 잔여</span>
+                            </div>
+                        </div>
+                        <div class="space-y-2 mb-8">
+                            <div class="w-full h-1.5 bg-white/10 rounded-full overflow-hidden">
+                                <div id="usageBar" class="h-full bg-secondary-container rounded-full transition-all"
+                                    style="width:0%"></div>
+                            </div>
+                            <div
+                                class="flex justify-between text-[10px] font-bold uppercase tracking-tighter opacity-60">
+                                <span id="usageLabel">-</span>
+                                <span id="renewLabel"></span>
+                            </div>
+                        </div>
+                        <a href="write.html"
+                            class="block w-full bg-surface-container-lowest text-primary py-3 rounded-full font-headline font-bold text-sm text-center hover:scale-105 transition-transform">
+                            새 분석 시작
+                        </a>
+                    </div>
+                </section>
+
+                <!-- 평균 점수 카드 -->
+                <section class="bg-surface-container rounded-xl p-8">
+                    <h3 class="font-headline text-lg font-bold text-on-surface mb-6">전체 통계</h3>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="bg-surface-container-lowest rounded-xl p-4 text-center">
+                            <span id="statTotal" class="block text-2xl font-black text-primary">-</span>
+                            <span class="text-xs text-on-surface-variant uppercase tracking-wider">총 분석</span>
+                        </div>
+                        <div class="bg-surface-container-lowest rounded-xl p-4 text-center">
+                            <span id="statAvg" class="block text-2xl font-black text-on-tertiary-container">-</span>
+                            <span class="text-xs text-on-surface-variant uppercase tracking-wider">평균 점수</span>
+                        </div>
+                        <div class="bg-surface-container-lowest rounded-xl p-4 text-center">
+                            <span id="statBest" class="block text-2xl font-black text-secondary">-</span>
+                            <span class="text-xs text-on-surface-variant uppercase tracking-wider">최고 점수</span>
+                        </div>
+                        <div class="bg-surface-container-lowest rounded-xl p-4 text-center">
+                            <span id="statBestGrade" class="block text-2xl font-black text-primary">-</span>
+                            <span class="text-xs text-on-surface-variant uppercase tracking-wider">최고 등급</span>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 작성 팁 -->
+                <section class="bg-surface-container-lowest rounded-xl p-8">
+                    <h3 class="font-headline text-lg font-bold text-on-surface mb-4">작성 팁</h3>
+                    <ul class="space-y-4">
+                        <li class="flex gap-4 items-start">
+                            <span class="material-symbols-outlined text-secondary text-lg shrink-0">lightbulb</span>
+                            <p class="text-sm text-on-surface-variant">능동태를 사용하여 프로젝트에서의 개인적 성과를 강조하세요.</p>
+                        </li>
+                        <li class="flex gap-4 items-start">
+                            <span class="material-symbols-outlined text-secondary text-lg shrink-0">psychology</span>
+                            <p class="text-sm text-on-surface-variant">전문 용어와 인간 중심의 스토리텔링 사이에서 균형을 맞추세요.</p>
+                        </li>
+                    </ul>
+                </section>
+            </aside>
+        </div>
+    </main>
+
+    <footer class="bg-slate-100 w-full py-12 px-8">
+        <div class="flex flex-col md:flex-row justify-between items-center max-w-7xl mx-auto gap-4">
+            <div class="flex flex-col items-center md:items-start gap-2">
+                <a href="index.html" class="text-lg font-bold text-blue-950 font-headline">Ssurd</a>
+                <p class="text-sm text-slate-600">© 2025 Ssurd. All rights reserved.</p>
+            </div>
+            <div class="flex gap-8">
+                <a class="text-sm text-slate-600 hover:text-blue-700 transition-colors" href="#">개인정보 처리방침</a>
+                <a class="text-sm text-slate-600 hover:text-blue-700 transition-colors" href="#">이용약관</a>
+            </div>
+        </div>
+    </footer>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+        import { getAuth, onAuthStateChanged, signOut }
+            from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+        import { getFirestore, collection, query, where, orderBy, getDocs, doc, getDoc }
+            from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+        const app = initializeApp({
+            apiKey: "AIzaSyCeqiOD3PDMD3xL0IAM52xGMBHJdMOfsDY",
+            authDomain: "ssurd-6400c.firebaseapp.com",
+            projectId: "ssurd-6400c",
+            storageBucket: "ssurd-6400c.firebasestorage.app",
+            messagingSenderId: "574073259312",
+            appId: "1:574073259312:web:5148cc8a6a9897b93474f5"
+        });
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        onAuthStateChanged(auth, async (user) => {
+            if (!user) {
+                document.getElementById('loginPrompt').classList.remove('hidden');
+                document.getElementById('navLoginBtn').classList.remove('hidden');
+                return;
+            }
+            // 네비 업데이트
+            document.getElementById('navLoginBtn').classList.add('hidden');
+            document.getElementById('navUser').classList.remove('hidden');
+            document.getElementById('navUser').classList.add('flex');
+            document.getElementById('navUserName').textContent = user.displayName || user.email;
+
+            // 구독 정보 로드
+            const userSnap = await getDoc(doc(db, 'users', user.uid));
+            const userData = userSnap.exists() ? userSnap.data() : {};
+            const plan = userData.plan || 'free';
+            const limit = plan === 'starter' ? 10 : 1;
+            const used = userData.monthlyUsage || 0;
+            const remaining = Math.max(0, limit - used);
+
+            document.getElementById('planLabel').textContent = plan === 'starter' ? '스타터 플랜' : '무료 플랜';
+            document.getElementById('remainingCount').textContent = remaining;
+            document.getElementById('usageLabel').textContent = `${limit}회 중 ${used}회 사용`;
+            document.getElementById('usageBar').style.width = `${Math.min(100, (used / limit) * 100)}%`;
+
+            // 히스토리 로드
+            const q = query(collection(db, 'analyses'), where('uid', '==', user.uid), orderBy('createdAt', 'desc'));
+            const snap = await getDocs(q);
+            const docs = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+
+            if (docs.length === 0) {
+                document.getElementById('emptyState').classList.remove('hidden');
+                return;
+            }
+
+            document.getElementById('mainContent').classList.remove('hidden');
+            document.getElementById('mainContent').style.display = 'grid';
+
+            // 통계
+            const scores = docs.map(d => d.report?.score || 0);
+            const avg = Math.round(scores.reduce((a, b) => a + b, 0) / scores.length);
+            const best = Math.max(...scores);
+            const bestDoc = docs.find(d => d.report?.score === best);
+            document.getElementById('statTotal').textContent = docs.length;
+            document.getElementById('statAvg').textContent = avg;
+            document.getElementById('statBest').textContent = best;
+            document.getElementById('statBestGrade').textContent = bestDoc?.report?.grade || '-';
+
+            // 점수 추이 (최근 최대 8개, 오래된 순으로)
+            const trendDocs = [...docs].reverse().slice(-8);
+            renderTrendChart(trendDocs);
+
+            // 성장률
+            if (docs.length >= 2) {
+                const latest = docs[0].report?.score || 0;
+                const oldest = docs[docs.length - 1].report?.score || 0;
+                const diff = latest - oldest;
+                document.getElementById('growthBadge').classList.remove('hidden');
+                document.getElementById('growthValue').textContent = (diff >= 0 ? '+' : '') + diff + '점';
+            }
+
+            // 히스토리 리스트
+            renderHistoryList(docs);
+        });
+
+        function renderTrendChart(docs) {
+            if (docs.length < 2) return;
+            const W = 800, H = 150, PAD = 10;
+            const scores = docs.map(d => d.report?.score || 0);
+            const minS = Math.min(...scores) - 10;
+            const maxS = Math.max(...scores) + 10;
+            const xStep = (W - PAD * 2) / (docs.length - 1);
+            const yScale = (H - PAD * 2) / (maxS - minS);
+
+            const points = scores.map((s, i) => ({
+                x: PAD + i * xStep,
+                y: H - PAD - (s - minS) * yScale
+            }));
+
+            const pathD = points.map((p, i) => `${i === 0 ? 'M' : 'L'}${p.x},${p.y}`).join(' ');
+            const areaD = pathD + ` L${points[points.length - 1].x},${H} L${points[0].x},${H} Z`;
+
+            const svg = document.getElementById('trendChart');
+            svg.innerHTML = `
+        <defs>
+            <linearGradient id="chartGradient" x1="0" x2="0" y1="0" y2="1">
+                <stop offset="0%" stop-color="#1960a3" stop-opacity="0.2"/>
+                <stop offset="100%" stop-color="#1960a3" stop-opacity="0"/>
+            </linearGradient>
+        </defs>
+        <path d="${pathD}" fill="transparent" stroke="#1960a3" stroke-width="2.5" stroke-linecap="round"/>
+        <path d="${areaD}" fill="url(#chartGradient)"/>
+        ${points.map((p, i) => `
+            <circle cx="${p.x}" cy="${p.y}" r="4" fill="#1960a3"/>
+            <text x="${p.x}" y="${p.y - 10}" text-anchor="middle" font-size="10" font-family="Inter" fill="#43474e" font-weight="600">${scores[i]}</text>
+        `).join('')}
+    `;
+
+            // X축 레이블
+            const labelsEl = document.getElementById('chartLabels');
+            labelsEl.innerHTML = docs.map(d => {
+                const date = d.createdAt?.toDate ? d.createdAt.toDate() : new Date();
+                return `<span>${date.getMonth() + 1}/${date.getDate()}</span>`;
+            }).join('');
+        }
+
+        function renderHistoryList(docs) {
+            const el = document.getElementById('historyList');
+            el.innerHTML = docs.map(d => {
+                const date = d.createdAt?.toDate ? d.createdAt.toDate() : new Date();
+                const dateStr = `${date.getFullYear()}년 ${date.getMonth() + 1}월 ${date.getDate()}일`;
+                const score = d.report?.score || '-';
+                const grade = d.report?.grade || '-';
+                const summary = d.report?.summary || '';
+                return `
+        <div class="group bg-surface-container-lowest rounded-xl p-6 flex flex-col md:flex-row items-start md:items-center justify-between gap-6 hover:scale-[1.01] transition-all duration-200 cursor-pointer"
+             onclick="location.href='report.html?id=${d.id}'">
+            <div class="flex-1">
+                <div class="flex items-center gap-3 mb-1">
+                    <span class="text-xs text-on-surface-variant">${dateStr}</span>
+                </div>
+                <h4 class="font-headline text-lg font-bold text-primary">${d.jobTitle}</h4>
+                <p class="text-sm text-on-surface-variant line-clamp-1">${summary}</p>
+            </div>
+            <div class="flex items-center gap-8 w-full md:w-auto border-t md:border-t-0 md:border-l border-outline-variant/20 pt-4 md:pt-0 md:pl-8">
+                <div class="text-center">
+                    <span class="block text-2xl font-black text-on-tertiary-container">${score}</span>
+                    <span class="text-[10px] font-bold uppercase tracking-widest text-outline">점수</span>
+                </div>
+                <div class="text-center">
+                    <span class="block text-2xl font-black text-primary">${grade}</span>
+                    <span class="text-[10px] font-bold uppercase tracking-widest text-outline">등급</span>
+                </div>
+                <button class="bg-surface-container-high p-3 rounded-full hover:bg-secondary hover:text-white transition-colors">
+                    <span class="material-symbols-outlined block">arrow_forward_ios</span>
+                </button>
+            </div>
+        </div>`;
+            }).join('');
+        }
+
+        window.handleLogout = async () => {
+            await signOut(auth);
+            location.href = 'index.html';
+        };
+    </script>
+</body>
+
+</html>
