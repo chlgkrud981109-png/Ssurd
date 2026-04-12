@@ -4,6 +4,7 @@
 <head>
     <meta charset="utf-8" />
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <script src="config.js"></script>
     <title>Ssurd - 자소서 작성</title>
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
     <link
@@ -391,27 +392,33 @@ ${coverLetter}
   }
 }`;
 
-                // ── Cloudflare Worker 프록시 호출 (API 키는 Worker 환경변수에만 존재) ──
-                // 방금 배포한 워커 주소 뒤에 /analyze를 꼭 붙여야 합니다.
-                // 반드시 끝에 /analyze를 붙여야 합니다!
-                const PROXY_URL = "https://ssurd-proxy.chlgkrud981109.workers.dev/analyze";
-
-                const response = await fetch(PROXY_URL, {
+                // ── Claude API 직접 호출 ──
+                const anthropicRes = await fetch('https://api.anthropic.com/v1/messages', {
                     method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ jobTitle, essayContent: coverLetter })  // ← essayContent로
+                    headers: {
+                        'Content-Type': 'application/json',
+'x-api-key': window.ANTHROPIC_KEY,                        'anthropic-version': '2023-06-01',
+                        'anthropic-dangerous-allow-browser': 'true'
+                    },
+                    body: JSON.stringify({
+                        model: 'claude-haiku-4-5-20251001',
+                        max_tokens: 1500,
+                        messages: [{ role: 'user', content: 'Analyze this Korean job application. Job: ' + jobTitle + '. Content: ' + coverLetter + '. Reply ONLY in JSON format (no other text): {"score":50,"grade":"B","summary":"Korean summary under 30 chars","strengths":["strength1","strength2","strength3"],"improvements":[{"issue":"issue description","suggestion":"improvement suggestion"}],"keywords":{"matched":["keyword1"],"missing":["keyword2"]},"scores":{"relevance":70,"specificity":60,"clarity":80,"authenticity":70}}' }]
+                    })
                 });
 
-                const data = await response.json();
-                console.log('Worker 응답:', data);  // 디버그용
-
-                // report가 있는지 확인
-                const report = data.report;
-                if (!report) {
-                    throw new Error(data.error || '분석 결과를 받아오지 못했습니다.');
+                if (!anthropicRes.ok) {
+                    const errText = await anthropicRes.text();
+                    throw new Error('API 오류: ' + errText);
                 }
 
-                // Firestore 저장
+                const apiData = await anthropicRes.json();
+                const rawText = apiData.content[0].text;
+                const jsonMatch = rawText.match(/\{[\s\S]*\}/);
+                if (!jsonMatch) throw new Error('JSON 파싱 실패: ' + rawText);
+                const report = JSON.parse(jsonMatch[0]);
+
+                                // Firestore 저장
                 const docRef = await addDoc(collection(db, 'analyses'), {
                     uid: currentUser.uid,
                     jobTitle,
