@@ -392,12 +392,15 @@ ${coverLetter}
 }`;
 
                 // ── Cloudflare Worker 프록시 호출 (API 키는 Worker 환경변수에만 존재) ──
-                const PROXY_URL = 'https://ssurd-proxy.chlgkrud981109.workers.dev/analyze';
+                // 방금 배포한 워커 주소 뒤에 /analyze를 꼭 붙여야 합니다.
+                // 반드시 끝에 /analyze를 붙여야 합니다!
+                const PROXY_URL = "https://ssurd-proxy.chlgkrud981109.workers.dev/analyze";
 
                 const response = await fetch(PROXY_URL, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ jobTitle, coverLetter })
+                    body: JSON.stringify({ jobTitle, essayContent: coverLetter })
+
                 });
 
                 if (!response.ok) {

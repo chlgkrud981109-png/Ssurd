@@ -1,6 +1,0 @@
-name = "ssurd-proxy"
-main = "worker.js"
-compatibility_date = "2024-01-01"
-
-# Claude API 키는 아래 명령어로 환경변수에 주입합니다 (절대 이 파일에 직접 쓰지 마세요):
-# npx wrangler secret put ANTHROPIC_API_KEY
