@@ -399,17 +399,19 @@ ${coverLetter}
                 const response = await fetch(PROXY_URL, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ jobTitle, essayContent: coverLetter })
-
+                    body: JSON.stringify({ jobTitle, essayContent: coverLetter })  // ← essayContent로
                 });
 
-                if (!response.ok) {
-                    const errData = await response.json().catch(() => ({}));
-                    throw new Error(errData.error || `서버 오류: ${response.status}`);
-                }
-                const { report } = await response.json();
+                const data = await response.json();
+                console.log('Worker 응답:', data);  // 디버그용
 
-                // ── Firestore 저장 ──
+                // report가 있는지 확인
+                const report = data.report;
+                if (!report) {
+                    throw new Error(data.error || '분석 결과를 받아오지 못했습니다.');
+                }
+
+                // Firestore 저장
                 const docRef = await addDoc(collection(db, 'analyses'), {
                     uid: currentUser.uid,
                     jobTitle,
