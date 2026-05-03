@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ssurd — 이용약관 및 개인정보 처리방침</title>
+<link rel="stylesheet" href="style.css">
+<style>
+  main { max-width: 768px; margin: 0 auto; padding: 100px 32px 80px; }
+  .legal-header { margin-bottom: 40px; }
+  .legal-h1 { font-size: clamp(24px, 4vw, 36px); font-weight: 800; letter-spacing: -0.03em; margin-bottom: 8px; }
+  .legal-tabs { display: flex; gap: 24px; border-bottom: var(--bw) solid var(--border); margin-bottom: 40px; }
+  .legal-tab { font-size: 15px; font-weight: 600; color: var(--t3); padding-bottom: 12px; cursor: pointer; border-bottom: 2px solid transparent; transition: all 0.15s; }
+  .legal-tab:hover { color: var(--t1); }
+  .legal-tab.act { color: var(--t1); border-bottom-color: var(--primary); }
+  .legal-content { font-size: 14px; color: var(--t2); line-height: 1.7; }
+  .legal-content h3 { font-size: 16px; font-weight: 700; color: var(--t1); margin: 32px 0 12px; }
+  .legal-content p, .legal-content ul { margin-bottom: 16px; }
+  .legal-content ul { padding-left: 20px; }
+  .legal-content li { margin-bottom: 6px; }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="nav-logo">Ss<span class="dot">.</span>urd</a>
+  <div class="nav-mid">
+    <a href="index.html" class="nav-lnk">홈</a>
+    <a href="write.html" class="nav-lnk">분석하기</a>
+    <a href="dashboard.html" class="nav-lnk">히스토리</a>
+  </div>
+</nav>
+
+<main>
+  <div class="legal-header">
+    <h1 class="legal-h1">법적 고지</h1>
+  </div>
+  
+  <div class="legal-tabs">
+    <div id="tabPrivacy" class="legal-tab act" onclick="switchTab('privacy')">개인정보 처리방침</div>
+    <div id="tabTerms" class="legal-tab" onclick="switchTab('terms')">서비스 이용약관</div>
+  </div>
+
+  <!-- 개인정보 처리방침 -->
+  <div id="contentPrivacy" class="legal-content">
+    <p><strong>시행일자: 2026년 5월 3일</strong></p>
+    <p>Ssurd(이하 "서비스")는 이용자의 개인정보를 중요시하며, 안전하게 보호하기 위해 최선을 다하고 있습니다.</p>
+    
+    <h3>1. 수집하는 개인정보 항목</h3>
+    <ul>
+      <li>필수항목: 이메일 주소, 이름(혹은 닉네임)</li>
+      <li>서비스 이용 기록: 접속 로그, 자기소개서 입력 데이터, 분석 결과 히스토리</li>
+    </ul>
+
+    <h3>2. 개인정보의 수집 및 이용 목적</h3>
+    <ul>
+      <li>서비스 제공: 회원 식별, 자소서 분석 기능 제공 및 결과 저장</li>
+      <li>고객 지원: 서비스 문의 대응 및 중요 공지사항 전달</li>
+    </ul>
+
+    <h3>3. 개인정보의 보유 및 이용 기간</h3>
+    <p>이용자가 회원 탈퇴를 요청하거나 개인정보 수집 및 이용 목적이 달성된 경우, 해당 정보를 지체 없이 파기합니다. 단, 법령에 의해 보존할 필요가 있는 경우 해당 법령에서 정한 기간 동안 보존합니다.</p>
+
+    <h3>4. 개인정보의 파기 절차 및 방법</h3>
+    <p>수집된 자기소개서 데이터는 AI 분석 목적으로만 활용되며, 분석 즉시 삭제하거나 사용자의 '히스토리' 보관 목적으로만 서버에 암호화되어 저장됩니다. 사용자는 언제든지 대시보드에서 본인의 데이터를 삭제할 수 있습니다.</p>
+  </div>
+
+  <!-- 이용약관 -->
+  <div id="contentTerms" class="legal-content hidden">
+    <p><strong>시행일자: 2026년 5월 3일</strong></p>
+    
+    <h3>1. 목적</h3>
+    <p>본 약관은 Ssurd가 제공하는 자기소개서 분석 서비스의 이용과 관련하여, 회사와 이용자의 권리, 의무 및 책임사항을 규정함을 목적으로 합니다.</p>
+
+    <h3>2. 서비스의 제공 및 변경</h3>
+    <p>서비스는 AI(인공지능) 기반 모델을 활용하여 자기소개서 분석 결과를 제공합니다. AI의 분석 결과는 참고용이며, 채용 합격 여부를 보장하지 않습니다.</p>
+
+    <h3>3. 회원의 의무</h3>
+    <ul>
+      <li>회원은 타인의 개인정보를 도용하거나 타인의 자기소개서를 무단으로 입력하여서는 안 됩니다.</li>
+      <li>회원은 서비스 내에 민감한 개인정보(주민등록번호, 금융정보 등)를 입력하지 않아야 합니다.</li>
+    </ul>
+
+    <h3>4. 책임의 한계</h3>
+    <p>서비스가 제공하는 분석 점수 및 피드백은 인공지능 모델에 의해 산출된 것으로 완벽한 객관성을 담보하지 않으며, 이로 인해 발생한 채용 결과 등의 직간접적 손해에 대해 서비스 제공자는 법적 책임을 지지 않습니다.</p>
+  </div>
+</main>
+
+<footer>
+  <div class="footer-inner">
+    <div>
+      <div class="footer-logo">Ss<span class="dot">.</span>urd</div>
+      <div class="footer-copy">© 2026 Ssurd. All rights reserved.</div>
+    </div>
+    <div class="footer-links">
+      <a href="legal.html?tab=privacy" class="footer-lnk">개인정보 처리방침</a>
+      <a href="legal.html?tab=terms" class="footer-lnk">이용약관</a>
+      <a href="mailto:chlgkrud981109@naver.com" class="footer-lnk">고객지원</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+  function switchTab(tab) {
+    if (tab === 'privacy') {
+      document.getElementById('tabPrivacy').classList.add('act');
+      document.getElementById('tabTerms').classList.remove('act');
+      document.getElementById('contentPrivacy').classList.remove('hidden');
+      document.getElementById('contentTerms').classList.add('hidden');
+    } else {
+      document.getElementById('tabTerms').classList.add('act');
+      document.getElementById('tabPrivacy').classList.remove('act');
+      document.getElementById('contentTerms').classList.remove('hidden');
+      document.getElementById('contentPrivacy').classList.add('hidden');
+    }
+  }
+
+  // URL 쿼리스트링에 따라 탭 자동 선택
+  const params = new URLSearchParams(window.location.search);
+  if (params.get('tab') === 'terms') {
+    switchTab('terms');
+  }
+</script>
+</body>
+</html>

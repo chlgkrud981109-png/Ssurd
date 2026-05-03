@@ -52,7 +52,9 @@ export async function onRequestPost({ request, env }) {
   }
 
   if (!claudeRes.ok) {
-    return new Response(JSON.stringify({ ok: false, error: '분석 서버 오류가 발생했습니다.' }), { status: 502, headers });
+    const errBody = await claudeRes.text();
+    console.error(`Claude API ${claudeRes.status}: ${errBody}`);
+    return new Response(JSON.stringify({ ok: false, error: `분석 서버 오류 (${claudeRes.status}). 잠시 후 다시 시도해주세요.` }), { status: 502, headers });
   }
 
   const claudeData = await claudeRes.json();

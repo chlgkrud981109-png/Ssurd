@@ -3,3 +3,4 @@ ssurd-worker
 .wrangler
 node_modules
 config.js
+.dev.vars
