@@ -1,462 +1,563 @@
 <!DOCTYPE html>
-<html class="light" lang="ko">
-
+<html lang="ko">
 <head>
-    <meta charset="utf-8" />
-    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
-    <script src="config.js"></script>
-    <title>Ssurd - 자소서 작성</title>
-    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-    <link
-        href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&family=Inter:wght@400;500;600&display=swap"
-        rel="stylesheet" />
-    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
-        rel="stylesheet" />
-    <script>
-        tailwind.config = {
-            darkMode: "class",
-            theme: {
-                extend: {
-                    colors: {
-                        "tertiary": "#002713", "on-tertiary": "#ffffff", "on-primary": "#ffffff",
-                        "error-container": "#ffdad6", "surface-variant": "#e0e3e5", "primary-fixed": "#d6e3ff",
-                        "outline": "#74777f", "on-secondary-container": "#00477f", "outline-variant": "#c4c6cf",
-                        "secondary-fixed": "#d3e4ff", "on-tertiary-fixed-variant": "#00522f",
-                        "on-error-container": "#93000a", "surface-bright": "#f7fafc",
-                        "surface-container-high": "#e5e9eb", "on-secondary": "#ffffff", "on-error": "#ffffff",
-                        "inverse-surface": "#2d3133", "secondary-fixed-dim": "#a2c9ff",
-                        "on-tertiary-container": "#4bb278", "tertiary-container": "#003f23",
-                        "secondary": "#1960a3", "on-secondary-fixed-variant": "#004881",
-                        "on-primary-fixed-variant": "#2d476f", "surface-dim": "#d7dadc",
-                        "background": "#f7fafc", "surface-tint": "#455f88", "inverse-primary": "#adc7f7",
-                        "on-secondary-fixed": "#001c38", "primary-fixed-dim": "#adc7f7",
-                        "surface-container-low": "#f1f4f6", "secondary-container": "#7db6ff",
-                        "primary": "#002045", "error": "#ba1a1a", "on-primary-fixed": "#001b3c",
-                        "primary-container": "#1a365d", "inverse-on-surface": "#eef1f3",
-                        "surface-container": "#ebeef0", "tertiary-fixed-dim": "#74db9d",
-                        "on-primary-container": "#86a0cd", "surface-container-highest": "#e0e3e5",
-                        "on-background": "#181c1e", "on-surface-variant": "#43474e",
-                        "on-tertiary-fixed": "#002110", "tertiary-fixed": "#91f8b8",
-                        "surface-container-lowest": "#ffffff", "surface": "#f7fafc", "on-surface": "#181c1e"
-                    },
-                    borderRadius: { "DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem" },
-                    fontFamily: { "headline": ["Manrope"], "body": ["Inter"], "label": ["Inter"] }
-                }
-            }
-        }
-    </script>
-    <style>
-        .material-symbols-outlined {
-            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
-            display: inline-block;
-            vertical-align: middle;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ssurd — 자기소개서 분석</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --white:#ffffff; --off:#f8f8fa; --ink:#0a0a0f;
+  --g1:#f0f0f5; --g2:#e0e0eb; --g3:#8888aa; --g4:#555570;
+  --blue:#2563eb; --blue2:#3b82f6; --purple:#7c3aed;
+  --teal:#0891b2; --ease:cubic-bezier(0.16,1,0.3,1);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{background:var(--white);color:var(--ink);font-family:'Noto Sans KR',sans-serif;overflow-x:hidden;}
+.hidden{display:none!important;}
 
-        .editorial-gradient {
-            background: linear-gradient(135deg, #002045 0%, #1a365d 50%, #1960a3 100%);
-        }
+/* REVEAL */
+.rv{opacity:0;transform:translateY(36px);transition:opacity .7s var(--ease),transform .7s var(--ease);}
+.rv.on{opacity:1;transform:translateY(0);}
+.rvl{opacity:0;transform:translateX(-36px);transition:opacity .7s var(--ease),transform .7s var(--ease);}
+.rvl.on{opacity:1;transform:translateX(0);}
+.rvr{opacity:0;transform:translateX(36px);transition:opacity .7s var(--ease),transform .7s var(--ease);}
+.rvr.on{opacity:1;transform:translateX(0);}
+.d1{transition-delay:.06s}.d2{transition-delay:.13s}.d3{transition-delay:.20s}.d4{transition-delay:.28s}.d5{transition-delay:.36s}
 
-        .glass-panel {
-            background: rgba(255, 255, 255, 0.85);
-            backdrop-filter: blur(20px);
-        }
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;height:60px;display:flex;align-items:center;justify-content:space-between;padding:0 48px;background:rgba(255,255,255,0.85);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:1px solid var(--g2);}
+.nav-logo{font-family:'DM Mono',monospace;font-size:18px;font-weight:500;color:var(--ink);text-decoration:none;}
+.nav-logo .dot{color:var(--blue);}
+.nav-mid{display:flex;gap:32px;}
+.nav-lnk{font-size:14px;color:var(--g4);text-decoration:none;transition:color .2s;}
+.nav-lnk:hover{color:var(--ink);}
+.nav-r{display:flex;align-items:center;gap:12px;}
+.nav-uname{font-size:13px;color:var(--g3);max-width:140px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.btn-ghost{font-size:13px;font-weight:500;padding:8px 18px;border-radius:100px;background:transparent;color:var(--g4);border:1px solid var(--g2);cursor:pointer;transition:all .2s;}
+.btn-ghost:hover{border-color:var(--g3);color:var(--ink);}
+.btn-solid{font-size:13px;font-weight:700;padding:8px 20px;border-radius:100px;background:var(--ink);color:white;border:none;cursor:pointer;transition:background .2s;}
+.btn-solid:hover{background:var(--blue);}
 
-        .analyzing .dots::after {
-            content: '';
-            animation: dots 1.2s infinite;
-        }
+/* AUTH GATE */
+#authGate{position:fixed;inset:0;z-index:200;background:rgba(10,10,15,.6);backdrop-filter:blur(8px);display:flex;align-items:center;justify-content:center;}
+.auth-box{background:white;border-radius:24px;padding:48px 40px;max-width:360px;width:90%;text-align:center;box-shadow:0 24px 80px rgba(0,0,0,.2);}
+.auth-box h2{font-size:26px;font-weight:700;margin-bottom:12px;}
+.auth-box p{font-size:14px;color:var(--g3);margin-bottom:28px;line-height:1.6;}
+.btn-full{width:100%;padding:16px;border-radius:14px;border:none;background:var(--ink);color:white;font-family:'Noto Sans KR',sans-serif;font-size:15px;font-weight:700;cursor:pointer;transition:background .2s;}
+.btn-full:hover{background:var(--blue);}
 
-        @keyframes dots {
-            0% {
-                content: ''
-            }
+/* LOADING */
+#loadingOverlay{position:fixed;inset:0;z-index:150;background:white;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:40px;}
+.lp-wrap{width:100px;height:100px;perspective:400px;}
+.lp-cube{width:100%;height:100%;position:relative;transform-style:preserve-3d;animation:cubeS 3s linear infinite;}
+@keyframes cubeS{from{transform:rotateY(0deg) rotateX(15deg)}to{transform:rotateY(360deg) rotateX(15deg)}}
+.lf{position:absolute;width:80px;height:80px;top:10px;left:10px;border-radius:16px;opacity:.9;}
+.lf1{background:linear-gradient(135deg,#e0f2fe,#bfdbfe);transform:translateZ(40px);}
+.lf2{background:linear-gradient(135deg,#ede9fe,#ddd6fe);transform:translateZ(-40px) rotateY(180deg);}
+.lf3{background:linear-gradient(135deg,#fce7f3,#fbcfe8);transform:rotateY(90deg) translateZ(40px);}
+.lf4{background:linear-gradient(135deg,#ecfdf5,#a7f3d0);transform:rotateY(-90deg) translateZ(40px);}
+.lf5{background:linear-gradient(135deg,#fef9c3,#fde68a);transform:rotateX(90deg) translateZ(40px);}
+.lf6{background:linear-gradient(135deg,#fee2e2,#fecaca);transform:rotateX(-90deg) translateZ(40px);}
+.l-content{text-align:center;}
+.l-title{font-size:24px;font-weight:700;color:var(--ink);margin-bottom:8px;}
+.l-sub{font-size:14px;color:var(--g3);margin-bottom:28px;}
+.l-steps{display:flex;flex-direction:column;gap:12px;text-align:left;max-width:260px;margin:0 auto;}
+.l-step{display:flex;align-items:center;gap:10px;font-size:13px;color:var(--g3);transition:color .3s;}
+.l-step.act{color:var(--blue);font-weight:500;}
+.l-step.done{color:var(--teal);}
+.l-dot{width:7px;height:7px;border-radius:50%;background:var(--g2);flex-shrink:0;transition:background .3s;}
+.l-step.act .l-dot{background:var(--blue);}
+.l-step.done .l-dot{background:var(--teal);}
+.l-bar{width:260px;height:3px;background:var(--g1);border-radius:2px;overflow:hidden;margin:20px auto 0;}
+.l-bar-fill{height:100%;background:linear-gradient(90deg,var(--blue),var(--purple));border-radius:2px;width:0%;transition:width 1.5s var(--ease);}
 
-            33% {
-                content: '.'
-            }
+/* ═══ 뷰A 입력 ═══ */
 
-            66% {
-                content: '..'
-            }
+/* HERO */
+.hero{min-height:100vh;padding:60px 0 0;display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative;overflow:hidden;}
+.hero-bg{position:absolute;inset:0;pointer-events:none;z-index:0;}
+.orb{position:absolute;border-radius:50%;filter:blur(80px);opacity:.22;}
+.orb1{width:600px;height:600px;background:#bfdbfe;top:-100px;right:-100px;animation:orbF 8s ease-in-out infinite;}
+.orb2{width:400px;height:400px;background:#ddd6fe;bottom:-50px;left:-80px;animation:orbF 10s ease-in-out infinite reverse;}
+.orb3{width:300px;height:300px;background:#a7f3d0;top:40%;right:20%;animation:orbF 12s ease-in-out infinite 2s;}
+@keyframes orbF{0%,100%{transform:translateY(0) scale(1)}50%{transform:translateY(-28px) scale(1.05)}}
+.hero-inner{position:relative;z-index:1;max-width:860px;margin:0 auto;padding:0 48px;text-align:center;}
 
-            100% {
-                content: '...'
-            }
-        }
-    </style>
+/* 3D 프리즘 */
+.prism-scene{width:120px;height:120px;perspective:500px;margin:0 auto 36px;}
+.prism-cube{width:100%;height:100%;position:relative;transform-style:preserve-3d;animation:cubeHero 10s linear infinite;}
+@keyframes cubeHero{from{transform:rotateY(0deg) rotateX(20deg) rotateZ(0deg)}to{transform:rotateY(360deg) rotateX(20deg) rotateZ(5deg)}}
+.cf{position:absolute;width:90px;height:90px;top:15px;left:15px;border-radius:20px;border:1px solid rgba(255,255,255,.6);}
+.cf1{background:linear-gradient(135deg,rgba(219,234,254,.9),rgba(191,219,254,.9));transform:translateZ(45px);}
+.cf2{background:linear-gradient(135deg,rgba(237,233,254,.9),rgba(221,214,254,.9));transform:translateZ(-45px) rotateY(180deg);}
+.cf3{background:linear-gradient(135deg,rgba(252,231,243,.9),rgba(251,207,232,.9));transform:rotateY(90deg) translateZ(45px);}
+.cf4{background:linear-gradient(135deg,rgba(236,253,245,.9),rgba(167,243,208,.9));transform:rotateY(-90deg) translateZ(45px);}
+.cf5{background:linear-gradient(135deg,rgba(254,249,195,.9),rgba(253,230,138,.9));transform:rotateX(90deg) translateZ(45px);}
+.cf6{background:linear-gradient(135deg,rgba(254,226,226,.9),rgba(254,202,202,.9));transform:rotateX(-90deg) translateZ(45px);}
+
+.hero-badge{display:inline-flex;align-items:center;gap:8px;background:var(--g1);border:1px solid var(--g2);border-radius:100px;padding:6px 16px;font-family:'DM Mono',monospace;font-size:12px;color:var(--g4);margin-bottom:24px;letter-spacing:.04em;}
+.badge-dot{width:6px;height:6px;border-radius:50%;background:var(--blue);animation:blink 2s ease-in-out infinite;}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
+.hero-h1{font-size:clamp(44px,7vw,80px);font-weight:700;line-height:1.1;letter-spacing:-.03em;color:var(--ink);margin-bottom:22px;}
+.hero-h1 .hl{background:linear-gradient(135deg,var(--blue),var(--purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.hero-sub{font-size:17px;color:var(--g3);line-height:1.75;max-width:520px;margin:0 auto 44px;}
+.hero-cta{display:inline-flex;align-items:center;gap:10px;background:var(--ink);color:white;font-size:16px;font-weight:700;padding:18px 40px;border-radius:100px;border:none;cursor:pointer;transition:all .3s var(--ease);box-shadow:0 4px 20px rgba(37,99,235,.18);text-decoration:none;}
+.hero-cta:hover{background:var(--blue);transform:translateY(-2px);box-shadow:0 8px 32px rgba(37,99,235,.32);}
+.cta-arr{width:20px;height:20px;background:rgba(255,255,255,.2);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;transition:transform .2s;}
+.hero-cta:hover .cta-arr{transform:translateX(3px);}
+
+/* FEATURES */
+.features{padding:120px 48px;max-width:1080px;margin:0 auto;}
+.sec-label{font-family:'DM Mono',monospace;font-size:12px;color:var(--blue);letter-spacing:.1em;text-transform:uppercase;margin-bottom:18px;text-align:center;}
+.sec-h2{font-size:clamp(30px,5vw,50px);font-weight:700;letter-spacing:-.025em;text-align:center;margin-bottom:72px;line-height:1.2;}
+.feat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;}
+.feat-card{background:var(--off);border-radius:22px;padding:32px 28px;border:1px solid var(--g2);transition:transform .3s var(--ease),box-shadow .3s;}
+.feat-card:hover{transform:translateY(-5px);box-shadow:0 16px 48px rgba(0,0,0,.07);}
+.feat-card.big{grid-column:span 2;background:var(--ink);color:white;border-color:var(--ink);}
+.feat-icon{width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:20px;margin-bottom:18px;}
+.feat-card:not(.big) .feat-icon{background:white;}
+.feat-card.big .feat-icon{background:rgba(255,255,255,.1);}
+.feat-h3{font-size:18px;font-weight:700;margin-bottom:8px;}
+.feat-card.big .feat-h3{color:white;}
+.feat-p{font-size:14px;color:var(--g4);line-height:1.7;}
+.feat-card.big .feat-p{color:rgba(255,255,255,.55);}
+
+/* FORM SECTION */
+.form-sec{padding:40px 48px 120px;max-width:780px;margin:0 auto;}
+.form-top{text-align:center;margin-bottom:48px;}
+.form-h2{font-size:clamp(30px,4vw,44px);font-weight:700;letter-spacing:-.03em;margin-bottom:10px;line-height:1.2;}
+.form-sub{font-size:15px;color:var(--g3);}
+.form-card{background:white;border-radius:26px;border:1px solid var(--g2);padding:44px;box-shadow:0 4px 36px rgba(0,0,0,.055);}
+.f-label{font-family:'DM Mono',monospace;font-size:11px;color:var(--g3);letter-spacing:.1em;text-transform:uppercase;margin-bottom:8px;display:block;}
+.f-job{width:100%;background:var(--g1);border:1.5px solid transparent;border-radius:12px;padding:15px 18px;font-family:'Noto Sans KR',sans-serif;font-size:16px;color:var(--ink);outline:none;transition:border-color .2s,background .2s;margin-bottom:28px;}
+.f-job::placeholder{color:var(--g3);}
+.f-job:focus{border-color:var(--blue);background:white;box-shadow:0 0 0 4px rgba(37,99,235,.08);}
+.f-letter{width:100%;min-height:260px;background:var(--g1);border:1.5px solid transparent;border-radius:12px;padding:18px;font-family:'Noto Sans KR',sans-serif;font-size:14px;line-height:1.8;color:var(--ink);outline:none;resize:vertical;transition:border-color .2s,background .2s;margin-bottom:6px;}
+.f-letter::placeholder{color:var(--g3);}
+.f-letter:focus{border-color:var(--blue);background:white;box-shadow:0 0 0 4px rgba(37,99,235,.08);}
+.f-meta{display:flex;justify-content:space-between;align-items:center;margin-bottom:28px;}
+.char-c{font-family:'DM Mono',monospace;font-size:12px;color:var(--g3);}
+.char-c strong{color:var(--blue);}
+.err-msg{background:#fff1f2;border:1px solid #fecdd3;border-radius:10px;padding:12px 16px;font-size:13px;color:#e11d48;margin-bottom:18px;}
+.btn-analyze{width:100%;background:var(--ink);color:white;font-family:'Noto Sans KR',sans-serif;font-size:16px;font-weight:700;padding:19px;border-radius:14px;border:none;cursor:pointer;transition:all .3s var(--ease);display:flex;align-items:center;justify-content:center;gap:8px;}
+.btn-analyze:hover{background:var(--blue);transform:translateY(-1px);box-shadow:0 8px 28px rgba(37,99,235,.28);}
+.btn-analyze:active{transform:scale(.99);}
+.btn-analyze:disabled{background:var(--g2);color:var(--g3);cursor:not-allowed;transform:none;box-shadow:none;}
+.usage-row{display:flex;align-items:center;justify-content:space-between;margin-top:14px;padding-top:14px;border-top:1px solid var(--g2);}
+.usage-t{font-size:13px;color:var(--g3);}
+.usage-t strong{color:var(--ink);}
+.usage-lnk{font-size:13px;color:var(--blue);text-decoration:none;}
+.usage-lnk:hover{text-decoration:underline;}
+
+/* ═══ 뷰B 결과 ═══ */
+#viewResult{padding-top:60px;min-height:100vh;}
+
+/* 결과 히어로 */
+.r-hero{background:var(--ink);color:white;padding:64px 64px;position:relative;overflow:hidden;}
+.r-hero-orb{position:absolute;border-radius:50%;filter:blur(60px);opacity:.14;pointer-events:none;}
+.r-orb1{width:400px;height:400px;background:#3b82f6;top:-100px;right:-80px;}
+.r-orb2{width:300px;height:300px;background:#7c3aed;bottom:-80px;left:20%;}
+.r-hero-inner{position:relative;z-index:1;max-width:1080px;margin:0 auto;display:flex;align-items:flex-end;justify-content:space-between;gap:32px;}
+.r-eyebrow{font-family:'DM Mono',monospace;font-size:11px;color:rgba(255,255,255,.45);letter-spacing:.1em;text-transform:uppercase;margin-bottom:10px;}
+.r-title{font-size:clamp(26px,4vw,46px);font-weight:700;letter-spacing:-.02em;line-height:1.1;margin-bottom:8px;}
+.r-time{font-size:12px;color:rgba(255,255,255,.38);font-family:'DM Mono',monospace;}
+.r-acts{display:flex;gap:10px;flex-shrink:0;}
+.btn-rw{font-size:13px;font-weight:500;padding:10px 22px;border-radius:100px;border:none;cursor:pointer;transition:all .2s;display:inline-flex;align-items:center;gap:6px;}
+.btn-rw-out{background:rgba(255,255,255,.1);color:white;border:1px solid rgba(255,255,255,.2);}
+.btn-rw-out:hover{background:rgba(255,255,255,.2);}
+.btn-rw-white{background:white;color:var(--ink);}
+.btn-rw-white:hover{background:var(--g1);}
+
+/* 점수 블록 */
+.score-blk{max-width:1080px;margin:0 auto;display:grid;grid-template-columns:240px 1fr;border-bottom:1px solid var(--g2);}
+.score-l{border-right:1px solid var(--g2);padding:52px 44px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;}
+.score-num{font-size:clamp(72px,12vw,140px);font-weight:700;line-height:1;letter-spacing:-.04em;transition:color .5s;margin-bottom:4px;}
+.score-badge{font-family:'DM Mono',monospace;font-size:12px;font-weight:500;letter-spacing:.1em;padding:4px 14px;border-radius:100px;margin-bottom:12px;}
+.gs{background:#eff6ff;color:#1d4ed8}.ga{background:#f0fdf4;color:#15803d}
+.gb{background:#fefce8;color:#a16207}.gc{background:#fff7ed;color:#c2410c}.gd{background:#fef2f2;color:#b91c1c}
+.score-sum{font-size:13px;color:var(--g3);line-height:1.6;max-width:170px;}
+.score-r{padding:44px 44px 44px 52px;}
+.sbars-t{font-family:'DM Mono',monospace;font-size:11px;color:var(--g3);letter-spacing:.1em;text-transform:uppercase;margin-bottom:24px;}
+.sbar-rows{display:flex;flex-direction:column;gap:18px;}
+.sbar-row{display:flex;align-items:center;gap:14px;}
+.sbar-lbl{font-size:13px;color:var(--g4);width:76px;flex-shrink:0;}
+.sbar-track{flex:1;height:6px;background:var(--g1);border-radius:3px;overflow:hidden;}
+.sbar-fill{height:100%;border-radius:3px;width:0%;transition:width 1.2s var(--ease);}
+.sbar-fill.h{background:linear-gradient(90deg,#10b981,#059669);}
+.sbar-fill.m{background:linear-gradient(90deg,#3b82f6,#2563eb);}
+.sbar-fill.l{background:linear-gradient(90deg,#f59e0b,#d97706);}
+.sbar-fill.vl{background:linear-gradient(90deg,#f87171,#ef4444);}
+.sbar-v{font-family:'DM Mono',monospace;font-size:13px;font-weight:500;width:26px;text-align:right;}
+
+/* 바디 3열 */
+.r-body{max-width:1080px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr 280px;border-bottom:1px solid var(--g2);}
+.r-col{padding:44px 36px;border-right:1px solid var(--g2);}
+.r-col:last-child{border-right:none;}
+.r-col-hd{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;margin-bottom:24px;padding-bottom:14px;border-bottom:1px solid var(--g2);display:flex;align-items:center;gap:7px;}
+.hd-dot{width:6px;height:6px;border-radius:50%;}
+.r-col-hd.g{color:#059669;} .r-col-hd.g .hd-dot{background:#10b981;}
+.r-col-hd.r{color:#e11d48;} .r-col-hd.r .hd-dot{background:#f43f5e;}
+.r-col-hd.b{color:var(--blue);} .r-col-hd.b .hd-dot{background:var(--blue2);}
+
+/* 강점 */
+.str-item{padding:14px;background:#f0fdf4;border-radius:10px;border:1px solid #bbf7d0;margin-bottom:10px;}
+.str-item:last-child{margin-bottom:0;}
+.str-t{font-size:14px;font-weight:700;color:#065f46;margin-bottom:3px;}
+.str-d{font-size:13px;color:#047857;line-height:1.6;}
+
+/* 개선 Before/After */
+.imp-item{margin-bottom:24px;padding-bottom:24px;border-bottom:1px solid var(--g2);}
+.imp-item:last-child{border-bottom:none;margin-bottom:0;padding-bottom:0;}
+.imp-issue{font-size:14px;font-weight:700;color:var(--ink);margin-bottom:3px;}
+.imp-why{font-size:12px;color:var(--g3);font-family:'DM Mono',monospace;margin-bottom:12px;line-height:1.5;}
+.ba{border-radius:9px;padding:11px 13px;margin-bottom:5px;}
+.ba-b{background:#fff1f2;border:1px solid #fecdd3;}
+.ba-a{background:#f0fdf4;border:1px solid #bbf7d0;}
+.ba-lbl{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;margin-bottom:3px;}
+.ba-b .ba-lbl{color:#e11d48;} .ba-a .ba-lbl{color:#059669;}
+.ba-txt{font-size:13px;line-height:1.65;}
+.ba-b .ba-txt{color:#881337;} .ba-a .ba-txt{color:#065f46;font-weight:500;}
+
+/* 키워드 */
+.kw-sec{margin-bottom:22px;}
+.kw-lbl{font-size:11px;font-family:'DM Mono',monospace;color:var(--g3);letter-spacing:.1em;text-transform:uppercase;margin-bottom:8px;}
+.kw-list{display:flex;flex-wrap:wrap;gap:6px;}
+.kw{font-family:'DM Mono',monospace;font-size:12px;padding:4px 11px;border-radius:100px;}
+.kw.p{background:#eff6ff;color:#1d4ed8;border:1px solid #bfdbfe;}
+.kw.ms{background:var(--g1);color:var(--g3);border:1px solid var(--g2);}
+.up-card{background:var(--ink);border-radius:14px;padding:22px;margin-top:10px;color:white;text-align:center;}
+.up-card h4{font-size:15px;font-weight:700;margin-bottom:7px;}
+.up-card p{font-size:12px;color:rgba(255,255,255,.5);line-height:1.6;margin-bottom:14px;}
+.btn-up{display:block;background:white;color:var(--ink);font-size:13px;font-weight:700;padding:11px;border-radius:9px;text-decoration:none;transition:background .2s;}
+.btn-up:hover{background:var(--g1);}
+
+/* 핵심 한마디 */
+.one-tip{max-width:1080px;margin:0 auto;padding:64px;border-bottom:1px solid var(--g2);display:flex;align-items:center;gap:44px;}
+.ot-prism{width:72px;height:72px;flex-shrink:0;perspective:300px;}
+.ot-cube{width:100%;height:100%;position:relative;transform-style:preserve-3d;animation:cubeHero 8s linear infinite;}
+.ot-f{position:absolute;width:56px;height:56px;top:8px;left:8px;border-radius:12px;border:1px solid rgba(255,255,255,.5);}
+.ot1{background:linear-gradient(135deg,#dbeafe,#bfdbfe);transform:translateZ(28px);}
+.ot2{background:linear-gradient(135deg,#ede9fe,#ddd6fe);transform:translateZ(-28px) rotateY(180deg);}
+.ot3{background:linear-gradient(135deg,#fce7f3,#fbcfe8);transform:rotateY(90deg) translateZ(28px);}
+.ot4{background:linear-gradient(135deg,#ecfdf5,#a7f3d0);transform:rotateY(-90deg) translateZ(28px);}
+.ot5{background:linear-gradient(135deg,#fef9c3,#fde68a);transform:rotateX(90deg) translateZ(28px);}
+.ot6{background:linear-gradient(135deg,#fee2e2,#fecaca);transform:rotateX(-90deg) translateZ(28px);}
+.ot-lbl{font-family:'DM Mono',monospace;font-size:11px;color:var(--g3);letter-spacing:.12em;text-transform:uppercase;margin-bottom:12px;}
+.ot-text{font-size:clamp(18px,3vw,30px);font-weight:700;color:var(--ink);line-height:1.35;letter-spacing:-.02em;}
+.ot-text::before{content:'"';color:var(--blue);}
+.ot-text::after{content:'"';color:var(--blue);}
+
+/* 결과 푸터 */
+.r-footer{max-width:1080px;margin:0 auto;padding:36px 64px;display:flex;align-items:center;justify-content:space-between;gap:14px;}
+.btn-re{font-size:14px;font-weight:500;color:var(--g4);background:none;border:1px solid var(--g2);border-radius:100px;padding:10px 22px;cursor:pointer;transition:all .2s;display:inline-flex;align-items:center;gap:6px;}
+.btn-re:hover{border-color:var(--g3);color:var(--ink);}
+.btn-save{font-size:14px;font-weight:700;color:white;background:var(--ink);border:none;border-radius:100px;padding:12px 26px;cursor:pointer;transition:background .2s;display:inline-flex;align-items:center;gap:6px;}
+.btn-save:hover{background:var(--blue);}
+.btn-save:disabled{opacity:.5;cursor:not-allowed;}
+
+@media(max-width:860px){
+  nav{padding:0 20px;} .nav-mid{display:none;}
+  .hero-inner{padding:0 20px;}
+  .features{padding:72px 20px;} .feat-grid{grid-template-columns:1fr;} .feat-card.big{grid-column:span 1;}
+  .form-sec{padding:56px 20px 80px;} .form-card{padding:28px 20px;}
+  .r-hero{padding:44px 24px;} .r-hero-inner{flex-direction:column;align-items:flex-start;}
+  .score-blk{grid-template-columns:1fr;} .score-l{border-right:none;border-bottom:1px solid var(--g2);}
+  .r-body{grid-template-columns:1fr;} .r-col{border-right:none;border-bottom:1px solid var(--g2);}
+  .one-tip{padding:44px 24px;flex-direction:column;gap:20px;}
+  .r-footer{padding:28px 24px;flex-wrap:wrap;}
+}
+</style>
 </head>
+<body>
 
-<body class="bg-surface font-body text-on-surface antialiased">
+<div id="authGate" class="hidden">
+  <div class="auth-box">
+    <h2>로그인이 필요해요</h2>
+    <p>분석을 시작하려면<br>먼저 로그인해 주세요.</p>
+    <button class="btn-full" onclick="location.href='index.html'">로그인하러 가기 →</button>
+  </div>
+</div>
 
-    <!-- 로그인 필요 오버레이 -->
-    <div id="authGate" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm">
-        <div class="bg-white rounded-2xl p-10 max-w-sm mx-4 text-center shadow-2xl">
-            <span class="material-symbols-outlined text-primary text-5xl mb-4 block">lock</span>
-            <h2 class="font-headline font-bold text-xl text-primary mb-3">로그인이 필요합니다</h2>
-            <p class="text-on-surface-variant text-sm mb-6">분석을 시작하려면 먼저 로그인해 주세요.</p>
-            <button onclick="location.href='index.html'"
-                class="editorial-gradient text-white w-full py-3 rounded-full font-headline font-bold text-sm">
-                로그인하러 가기
-            </button>
-        </div>
+<div id="loadingOverlay" class="hidden">
+  <div class="lp-wrap">
+    <div class="lp-cube">
+      <div class="lf lf1"></div><div class="lf lf2"></div><div class="lf lf3"></div>
+      <div class="lf lf4"></div><div class="lf lf5"></div><div class="lf lf6"></div>
     </div>
-
-    <!-- 분석 중 오버레이 -->
-    <div id="loadingOverlay"
-        class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm">
-        <div class="bg-white rounded-2xl p-10 max-w-sm mx-4 text-center shadow-2xl analyzing">
-            <div class="w-16 h-16 mx-auto mb-6 relative">
-                <svg class="w-full h-full animate-spin" viewBox="0 0 64 64">
-                    <circle cx="32" cy="32" r="28" fill="none" stroke="#e5e9eb" stroke-width="6" />
-                    <circle cx="32" cy="32" r="28" fill="none" stroke="#1960a3" stroke-width="6"
-                        stroke-dasharray="60 120" stroke-linecap="round" />
-                </svg>
-            </div>
-            <h2 class="font-headline font-bold text-xl text-primary mb-2">분석 중<span class="dots"></span></h2>
-            <p class="text-on-surface-variant text-sm">제3자의 시선으로 읽어드리고 있습니다</p>
-        </div>
+  </div>
+  <div class="l-content">
+    <div class="l-title">분석하고 있어요</div>
+    <div class="l-sub">채용 담당자의 시선으로 꼼꼼히 읽고 있습니다</div>
+    <div class="l-steps">
+      <div class="l-step" id="ls1"><div class="l-dot"></div>서사 구조 파악</div>
+      <div class="l-step" id="ls2"><div class="l-dot"></div>직무 키워드 매칭</div>
+      <div class="l-step" id="ls3"><div class="l-dot"></div>성과 지표 추출</div>
+      <div class="l-step" id="ls4"><div class="l-dot"></div>맞춤 리포트 생성</div>
     </div>
+    <div class="l-bar"><div class="l-bar-fill" id="lbar"></div></div>
+  </div>
+</div>
 
-    <!-- 네비게이션 -->
-    <nav class="fixed top-0 w-full z-40 glass-panel border-b border-outline-variant/20">
-        <div class="max-w-7xl mx-auto flex justify-between items-center px-8 py-4">
-            <a href="index.html" class="text-2xl font-black tracking-tighter text-blue-950 font-headline">Ssurd</a>
-            <div class="hidden md:flex gap-8 items-center">
-                <a class="text-slate-500 font-medium hover:text-blue-900 font-headline hover:scale-105 transition-transform"
-                    href="index.html">홈</a>
-                <a class="text-slate-500 font-medium hover:text-blue-900 font-headline hover:scale-105 transition-transform"
-                    href="dashboard.html">히스토리</a>
-            </div>
-            <div id="navUser" class="hidden items-center gap-3">
-                <span id="navUserName" class="text-sm text-on-surface-variant max-w-[140px] truncate"></span>
-                <button onclick="handleLogout()"
-                    class="border border-outline-variant text-on-surface px-4 py-2 rounded-full text-sm font-headline font-semibold hover:bg-surface-container-low transition-colors">로그아웃</button>
-            </div>
-            <button id="navLoginBtn" onclick="location.href='index.html'"
-                class="editorial-gradient text-white px-6 py-2 rounded-full font-headline font-semibold text-sm hover:scale-105 transition-transform">시작하기</button>
-        </div>
-    </nav>
+<nav>
+  <a href="index.html" class="nav-logo">Ss<span class="dot">.</span>urd</a>
+  <div class="nav-mid">
+    <a href="index.html" class="nav-lnk">홈</a>
+    <a href="dashboard.html" class="nav-lnk">히스토리</a>
+  </div>
+  <div class="nav-r">
+    <div id="navUser" class="hidden" style="display:flex;align-items:center;gap:10px">
+      <span id="navUserName" class="nav-uname"></span>
+      <button class="btn-ghost" onclick="handleLogout()">로그아웃</button>
+    </div>
+    <button id="navLoginBtn" class="btn-solid" onclick="location.href='index.html'">시작하기</button>
+  </div>
+</nav>
 
-    <main class="pt-32 pb-24 px-8 max-w-7xl mx-auto min-h-screen">
-        <!-- 사용량 배너 -->
-        <div id="usageBanner"
-            class="hidden mb-6 p-4 bg-surface-container-low rounded-xl flex items-center justify-between">
-            <div class="flex items-center gap-3">
-                <span class="material-symbols-outlined text-secondary">analytics</span>
-                <span class="text-sm font-medium text-on-surface-variant">이번 달 잔여 분석 횟수: <strong id="usageCount"
-                        class="text-primary">-</strong>회</span>
-            </div>
-            <a href="dashboard.html" class="text-xs text-secondary font-bold hover:underline">히스토리 보기 →</a>
-        </div>
+<!-- ══ 뷰 A ══ -->
+<div id="viewInput">
+  <section class="form-sec" id="form-sec">
+    <div class="form-top">
+      <div class="sec-label">자기소개서 분석</div>
+      <h2 class="form-h2">자소서를 붙여넣어 보세요</h2>
+      <p class="form-sub">100자 이상이면 분석이 가능해요</p>
+    </div>
+    <div class="form-card">
+      <div id="errMsg" class="err-msg hidden"></div>
+      <label class="f-label">지원 직무</label>
+      <input id="jobTitle" class="f-job" type="text" placeholder="예: 카카오 프로덕트 매니저, 삼성전자 SW개발" autocomplete="off"/>
+      <label class="f-label">자기소개서 본문</label>
+      <textarea id="coverLetter" class="f-letter" maxlength="3000" placeholder="자기소개서 내용을 여기에 붙여넣어 주세요.&#10;200자 이상이면 더 정확한 분석이 가능합니다."></textarea>
+      <div class="f-meta">
+        <span style="font-size:12px;color:var(--g3)">최소 100자 이상</span>
+        <span class="char-c"><strong id="charCount">0</strong> / 3,000</span>
+      </div>
+      <button id="analyzeBtn" class="btn-analyze" onclick="startAnalysis()">✦ 지금 분석 시작하기</button>
+      <div id="usageRow" class="usage-row hidden">
+        <span class="usage-t">이번 달 잔여: <strong id="usageCount">-</strong>회</span>
+        <a href="dashboard.html" class="usage-lnk">히스토리 →</a>
+      </div>
+    </div>
+  </section>
+</div>
 
-        <div class="flex flex-col lg:flex-row gap-12">
-            <!-- 왼쪽: 입력 -->
-            <div class="flex-1 lg:w-[65%] space-y-8">
-                <div class="space-y-2">
-                    <h1 class="text-4xl font-headline font-bold text-on-surface tracking-tight">자기소개서 작성</h1>
-                    <p class="text-on-surface-variant font-body">지원하시는 직무와 관련된 경험을 서술해 주세요. Ssurd가 제3자의 시선으로 분석합니다.</p>
-                </div>
+<!-- ══ 뷰 B ══ -->
+<div id="viewResult" class="hidden">
+  <div class="r-hero">
+    <div class="r-hero-orb r-orb1"></div><div class="r-hero-orb r-orb2"></div>
+    <div class="r-hero-inner">
+      <div>
+        <div class="r-eyebrow">ANALYSIS REPORT</div>
+        <div id="rTitle" class="r-title">—</div>
+        <div id="rTime" class="r-time"></div>
+      </div>
+      <div class="r-acts">
+        <button class="btn-rw btn-rw-out" onclick="resetToInput()">← 다시 분석</button>
+        <button id="saveBtn" class="btn-rw btn-rw-white" onclick="saveReport()">저장하기</button>
+      </div>
+    </div>
+  </div>
 
-                <!-- 에러 메시지 -->
-                <div id="errorMsg" class="hidden p-4 bg-red-50 text-red-700 text-sm rounded-xl"></div>
+  <div class="score-blk">
+    <div class="score-l">
+      <div id="scoreNum" class="score-num">—</div>
+      <div id="scoreBadge" class="score-badge">GRADE —</div>
+      <p id="scoreSum" class="score-sum"></p>
+    </div>
+    <div class="score-r">
+      <div class="sbars-t">세부 점수</div>
+      <div class="sbar-rows" id="scoreBars"></div>
+    </div>
+  </div>
 
-                <div class="space-y-6">
-                    <!-- 직무 입력 -->
-                    <div class="space-y-2">
-                        <label class="text-sm font-label font-semibold text-secondary px-1 uppercase tracking-wider">지원
-                            직무</label>
-                        <input id="jobTitle" type="text" placeholder="예: 삼성전자 SW개발, 카카오 PM, 현대자동차 마케팅"
-                            class="w-full bg-surface-container-low border-none rounded-xl px-6 py-4 focus:bg-surface-container-lowest focus:ring-2 focus:ring-blue-200 transition-all text-lg placeholder:text-slate-400 outline-none" />
-                    </div>
+  <div class="r-body">
+    <div class="r-col">
+      <div class="r-col-hd g"><span class="hd-dot"></span>잘 쓰신 부분</div>
+      <div id="strList"></div>
+    </div>
+    <div class="r-col">
+      <div class="r-col-hd r"><span class="hd-dot"></span>이렇게 고쳐보세요</div>
+      <div id="impList"></div>
+    </div>
+    <div class="r-col">
+      <div class="r-col-hd b"><span class="hd-dot"></span>키워드 분석</div>
+      <div class="kw-sec"><div class="kw-lbl">발견된 키워드</div><div class="kw-list" id="kwM"></div></div>
+      <div class="kw-sec"><div class="kw-lbl">추가하면 좋은 키워드</div><div class="kw-list" id="kwMs"></div></div>
+      <div class="up-card">
+        <h4>더 많이 분석하고 싶다면</h4>
+        <p>히스토리 저장, 버전 비교, 무제한 분석은 회원가입 후 이용 가능합니다.</p>
+        <a href="index.html" class="btn-up">무료 회원가입 →</a>
+      </div>
+    </div>
+  </div>
 
-                    <!-- 자소서 입력 -->
-                    <div class="space-y-2 relative">
-                        <label
-                            class="text-sm font-label font-semibold text-secondary px-1 uppercase tracking-wider">자기소개서
-                            본문</label>
-                        <div class="bg-surface-container-lowest rounded-xl p-1 shadow-sm">
-                            <textarea id="coverLetter" maxlength="3000" placeholder="자기소개서 내용을 여기에 입력하거나 붙여넣어 주세요..."
-                                class="w-full min-h-[500px] border-none bg-transparent rounded-xl px-6 py-6 focus:ring-0 text-on-surface leading-relaxed text-base resize-none outline-none"></textarea>
-                            <div
-                                class="flex justify-between items-center px-6 py-4 bg-surface-container-low/50 rounded-b-xl border-t border-slate-100/50">
-                                <div class="flex gap-4">
-                                    <span
-                                        class="material-symbols-outlined text-slate-400 cursor-default">spellcheck</span>
-                                </div>
-                                <span class="text-sm font-label text-slate-400">
-                                    <span id="charCount" class="text-secondary font-bold">0</span> / 3,000자
-                                </span>
-                            </div>
-                        </div>
-                    </div>
+  <div class="one-tip">
+    <div class="ot-prism">
+      <div class="ot-cube">
+        <div class="ot-f ot1"></div><div class="ot-f ot2"></div><div class="ot-f ot3"></div>
+        <div class="ot-f ot4"></div><div class="ot-f ot5"></div><div class="ot-f ot6"></div>
+      </div>
+    </div>
+    <div>
+      <div class="ot-lbl">채용 담당자 코멘트</div>
+      <div id="otText" class="ot-text"></div>
+    </div>
+  </div>
 
-                    <!-- 분석 버튼 -->
-                    <div class="pt-4">
-                        <button id="analyzeBtn" onclick="startAnalysis()"
-                            class="editorial-gradient text-white w-full py-5 rounded-full font-headline font-bold text-lg shadow-lg hover:scale-[1.02] transition-transform flex items-center justify-center gap-3">
-                            <span class="material-symbols-outlined"
-                                style="font-variation-settings:'FILL' 1">auto_awesome</span>
-                            전문 분석 시작하기
-                        </button>
-                    </div>
-                </div>
-            </div>
+  <div class="r-footer">
+    <button class="btn-re" onclick="resetToInput()">← 다시 분석하기</button>
+    <button id="saveBtnB" class="btn-save" onclick="saveReport()">히스토리에 저장</button>
+  </div>
+</div>
 
-            <!-- 오른쪽: 사이드바 -->
-            <aside class="lg:w-[35%] space-y-6">
-                <div class="bg-surface-container-lowest rounded-xl p-8 shadow-sm">
-                    <div class="flex items-center gap-3 text-secondary mb-6">
-                        <span class="material-symbols-outlined text-3xl">insights</span>
-                        <h3 class="font-headline font-bold text-xl">분석 핵심 포인트</h3>
-                    </div>
-                    <div class="space-y-6">
-                        <div class="flex gap-4 items-start">
-                            <div class="bg-surface-container p-2 rounded-lg shrink-0">
-                                <span class="material-symbols-outlined text-primary">psychology</span>
-                            </div>
-                            <div>
-                                <h4 class="font-headline font-bold text-sm text-on-surface">구조적 완성도</h4>
-                                <p class="text-xs text-on-surface-variant mt-1 leading-relaxed">서사 흐름이 논리적이고 설득력 있는 궤적을
-                                    따르는지 분석합니다.</p>
-                            </div>
-                        </div>
-                        <div class="flex gap-4 items-start">
-                            <div class="bg-surface-container p-2 rounded-lg shrink-0">
-                                <span class="material-symbols-outlined text-primary">target</span>
-                            </div>
-                            <div>
-                                <h4 class="font-headline font-bold text-sm text-on-surface">성과 지표 분석</h4>
-                                <p class="text-xs text-on-surface-variant mt-1 leading-relaxed">자소서 속에 숨겨진 정량화 가능한 성과를
-                                    제3자의 시선으로 발굴합니다.</p>
-                            </div>
-                        </div>
-                        <div class="flex gap-4 items-start">
-                            <div class="bg-surface-container p-2 rounded-lg shrink-0">
-                                <span class="material-symbols-outlined text-primary">key</span>
-                            </div>
-                            <div>
-                                <h4 class="font-headline font-bold text-sm text-on-surface">직무 키워드 매칭</h4>
-                                <p class="text-xs text-on-surface-variant mt-1 leading-relaxed">지원 직무와 연관된 핵심 키워드 존재 여부
-                                    및 밀도를 검사합니다.</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+import { getFirestore, collection, addDoc, doc, getDoc, setDoc, updateDoc, serverTimestamp }
+  from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
-                <!-- 작성 가이드 -->
-                <div class="bg-surface-container-low rounded-xl p-8 space-y-4">
-                    <h3
-                        class="font-headline font-bold text-sm text-on-surface-variant uppercase tracking-widest flex items-center gap-2">
-                        <span class="material-symbols-outlined text-base">lightbulb</span>
-                        작성 가이드라인
-                    </h3>
-                    <ul class="space-y-4">
-                        <li class="flex gap-3 items-start">
-                            <span
-                                class="material-symbols-outlined text-on-tertiary-container text-lg shrink-0">check_circle</span>
-                            <span class="text-sm text-on-surface-variant">"어떻게"에 집중하세요 — 성공의 이면에 있는 구체적인 방법론을
-                                설명하세요.</span>
-                        </li>
-                        <li class="flex gap-3 items-start">
-                            <span
-                                class="material-symbols-outlined text-on-tertiary-container text-lg shrink-0">check_circle</span>
-                            <span class="text-sm text-on-surface-variant">'주도했다', '설계했다', '개선했다' 등 능동적인 동사를
-                                사용하세요.</span>
-                        </li>
-                        <li class="flex gap-3 items-start">
-                            <span
-                                class="material-symbols-outlined text-on-tertiary-container text-lg shrink-0">check_circle</span>
-                            <span class="text-sm text-on-surface-variant">수치와 결과를 포함하세요. "20% 향상", "3개월 내 완료" 등 정량적 표현이
-                                효과적입니다.</span>
-                        </li>
-                    </ul>
-                </div>
-            </aside>
-        </div>
-    </main>
+const app = initializeApp({
+  apiKey:"AIzaSyCeqiOD3PDMD3xL0IAM52xGMBHJdMOfsDY",
+  authDomain:"ssurd-6400c.firebaseapp.com",
+  projectId:"ssurd-6400c",
+  storageBucket:"ssurd-6400c.firebasestorage.app",
+  messagingSenderId:"574073259312",
+  appId:"1:574073259312:web:5148cc8a6a9897b93474f5"
+});
+const auth=getAuth(app), db=getFirestore(app);
+let cUser=null, cReport=null, cJob=null, cLetter=null;
 
-    <footer class="bg-slate-100 w-full py-12 px-8">
-        <div class="flex flex-col md:flex-row justify-between items-center max-w-7xl mx-auto gap-4">
-            <div class="flex flex-col gap-2">
-                <a href="index.html" class="text-lg font-bold text-blue-950 font-headline">Ssurd</a>
-                <p class="text-sm text-slate-600">© 2025 Ssurd. All rights reserved.</p>
-            </div>
-            <div class="flex gap-8">
-                <a class="text-slate-500 text-sm hover:text-blue-700 transition-colors" href="#">개인정보 처리방침</a>
-                <a class="text-slate-500 text-sm hover:text-blue-700 transition-colors" href="#">이용약관</a>
-            </div>
-        </div>
-    </footer>
+onAuthStateChanged(auth, async u => {
+  if(!u){show('authGate');return;}
+  cUser=u;
+  hide('navLoginBtn');
+  const nu=document.getElementById('navUser');
+  nu.classList.remove('hidden');nu.style.display='flex';
+  document.getElementById('navUserName').textContent=u.displayName||u.email;
+  const snap=await getDoc(doc(db,'users',u.uid));
+  const d=snap.exists()?snap.data():{};
+  show('usageRow');
+  document.getElementById('usageCount').textContent=Math.max(0,(d.plan==='starter'?10:3)-(d.monthlyUsage||0));
+});
 
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-        import { getAuth, onAuthStateChanged, signOut }
-            from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
-        import { getFirestore, collection, addDoc, doc, getDoc, updateDoc, serverTimestamp }
-            from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+document.getElementById('coverLetter').addEventListener('input',e=>{
+  document.getElementById('charCount').textContent=e.target.value.length;
+});
 
-        const app = initializeApp({
-            apiKey: "AIzaSyCeqiOD3PDMD3xL0IAM52xGMBHJdMOfsDY",
-            authDomain: "ssurd-6400c.firebaseapp.com",
-            projectId: "ssurd-6400c",
-            storageBucket: "ssurd-6400c.firebasestorage.app",
-            messagingSenderId: "574073259312",
-            appId: "1:574073259312:web:5148cc8a6a9897b93474f5"
-        });
-        const auth = getAuth(app);
-        const db = getFirestore(app);
-        let currentUser = null;
+// 스크롤 reveal
+const obs=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('on');});},{threshold:.12});
+document.querySelectorAll('.rv,.rvl,.rvr').forEach(el=>obs.observe(el));
 
-        // ── 인증 상태 감지 ──
-        onAuthStateChanged(auth, async (user) => {
-            if (!user) {
-                document.getElementById('authGate').classList.remove('hidden');
-                return;
-            }
-            currentUser = user;
-            // 네비 업데이트
-            document.getElementById('navLoginBtn').classList.add('hidden');
-            document.getElementById('navUser').classList.remove('hidden');
-            document.getElementById('navUser').classList.add('flex');
-            document.getElementById('navUserName').textContent = user.displayName || user.email;
+const show=id=>document.getElementById(id).classList.remove('hidden');
+const hide=id=>document.getElementById(id).classList.add('hidden');
+const showErr=m=>{const el=document.getElementById('errMsg');el.textContent=m;el.classList.remove('hidden');};
+const hideErr=()=>document.getElementById('errMsg').classList.add('hidden');
 
-            // 사용량 조회
-            const userRef = doc(db, 'users', user.uid);
-            const snap = await getDoc(userRef);
-            const data = snap.exists() ? snap.data() : {};
-            const used = data.monthlyUsage || 0;
-            const limit = data.plan === 'starter' ? 10 : 1; // 무료: 1회, 구독: 10회
-            const remaining = Math.max(0, limit - used);
-            document.getElementById('usageBanner').classList.remove('hidden');
-            document.getElementById('usageCount').textContent = remaining;
-        });
-
-        // 글자수 카운터
-        document.getElementById('coverLetter').addEventListener('input', (e) => {
-            document.getElementById('charCount').textContent = e.target.value.length;
-        });
-
-        // ── 분석 시작 ──
-        window.startAnalysis = async () => {
-            const jobTitle = document.getElementById('jobTitle').value.trim();
-            const coverLetter = document.getElementById('coverLetter').value.trim();
-            const errEl = document.getElementById('errorMsg');
-            errEl.classList.add('hidden');
-
-            if (!currentUser) { document.getElementById('authGate').classList.remove('hidden'); return; }
-            if (!jobTitle) { errEl.textContent = '지원 직무를 입력해주세요.'; errEl.classList.remove('hidden'); return; }
-            if (coverLetter.length < 100) { errEl.textContent = '자기소개서를 100자 이상 입력해주세요.'; errEl.classList.remove('hidden'); return; }
-
-            // 사용량 체크
-            const userRef = doc(db, 'users', currentUser.uid);
-            const snap = await getDoc(userRef);
-            const data = snap.exists() ? snap.data() : {};
-            const used = data.monthlyUsage || 0;
-            const limit = data.plan === 'starter' ? 10 : 1;
-            if (used >= limit) {
-                errEl.textContent = '이번 달 분석 횟수를 모두 사용했습니다. 구독 플랜을 업그레이드해 주세요.';
-                errEl.classList.remove('hidden');
-                return;
-            }
-
-            document.getElementById('loadingOverlay').classList.remove('hidden');
-            document.getElementById('analyzeBtn').disabled = true;
-
-            try {
-                // ── Claude API 호출 ──
-                const prompt = `당신은 10년 경력의 대기업 채용 담당자입니다.
-아래 자기소개서를 읽고 반드시 JSON 형식만 반환하세요. 다른 텍스트는 절대 포함하지 마세요.
-
-[지원 직무]: ${jobTitle}
-[자기소개서]:
-${coverLetter}
-
-반환 형식:
-{
-  "score": 0~100 사이 숫자,
-  "grade": "A" 또는 "B" 또는 "C" 또는 "D",
-  "summary": "전체 평가 한 줄 요약 (30자 이내)",
-  "strengths": ["강점1", "강점2", "강점3"],
-  "improvements": [
-    {"issue": "문제점", "suggestion": "구체적 개선 예시 문장"}
-  ],
-  "keywords": {
-    "matched": ["매칭된 직무 키워드1", "키워드2"],
-    "missing": ["누락된 권장 키워드1", "키워드2"]
-  },
-  "scores": {
-    "relevance": 직무연관성 0~100,
-    "specificity": 구체성 0~100,
-    "clarity": 문장명확성 0~100,
-    "authenticity": 진정성 0~100
+function setLS(n){
+  for(let i=1;i<=4;i++){
+    const el=document.getElementById(`ls${i}`);
+    el.className='l-step'+(i<n?' done':i===n?' act':'');
   }
-}`;
+  document.getElementById('lbar').style.width=(n*25)+'%';
+}
 
-                // ── Claude API 직접 호출 ──
-                const anthropicRes = await fetch('https://api.anthropic.com/v1/messages', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-'x-api-key': window.ANTHROPIC_KEY,                        'anthropic-version': '2023-06-01',
-                        'anthropic-dangerous-allow-browser': 'true'
-                    },
-                    body: JSON.stringify({
-                        model: 'claude-haiku-4-5-20251001',
-                        max_tokens: 1500,
-                        messages: [{ role: 'user', content: 'Analyze this Korean job application. Job: ' + jobTitle + '. Content: ' + coverLetter + '. Reply ONLY in JSON format (no other text): {"score":50,"grade":"B","summary":"Korean summary under 30 chars","strengths":["strength1","strength2","strength3"],"improvements":[{"issue":"issue description","suggestion":"improvement suggestion"}],"keywords":{"matched":["keyword1"],"missing":["keyword2"]},"scores":{"relevance":70,"specificity":60,"clarity":80,"authenticity":70}}' }]
-                    })
-                });
+window.startAnalysis=async()=>{
+  const job=document.getElementById('jobTitle').value.trim();
+  const letter=document.getElementById('coverLetter').value.trim();
+  hideErr();
+  if(!cUser){show('authGate');return;}
+  if(!job){showErr('지원 직무를 입력해주세요.');return;}
+  if(letter.length<100){showErr('자기소개서를 100자 이상 입력해주세요.');return;}
+  const uRef=doc(db,'users',cUser.uid);
+  const snap=await getDoc(uRef);
+  const d=snap.exists()?snap.data():{};
+  const used=d.monthlyUsage||0, limit=d.plan==='starter'?10:3;
+  if(used>=limit){showErr('이번 달 분석 횟수를 모두 사용했습니다.');return;}
+  show('loadingOverlay');
+  document.getElementById('analyzeBtn').disabled=true;
+  setLS(1);
+  const ts=[setTimeout(()=>setLS(2),2000),setTimeout(()=>setLS(3),4000),setTimeout(()=>setLS(4),6000)];
+  try{
+    const res=await fetch('/api/analyze',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({jobTitle:job,coverLetter:letter})});
+    ts.forEach(clearTimeout);
+    const json=await res.json();
+    if(!json.ok)throw new Error(json.error||'분석에 실패했습니다.');
+    cReport=json.report;cJob=job;cLetter=letter;
+    if(snap.exists()){await updateDoc(uRef,{monthlyUsage:used+1});}
+    else{await setDoc(uRef,{email:cUser.email,plan:'free',monthlyUsage:1,createdAt:serverTimestamp()});}
+    hide('loadingOverlay');
+    document.getElementById('analyzeBtn').disabled=false;
+    renderResult(json.report,job);
+  }catch(e){
+    ts.forEach(clearTimeout);
+    hide('loadingOverlay');
+    document.getElementById('analyzeBtn').disabled=false;
+    showErr(e.message||'분석 중 오류가 발생했습니다.');
+  }
+};
 
-                if (!anthropicRes.ok) {
-                    const errText = await anthropicRes.text();
-                    throw new Error('API 오류: ' + errText);
-                }
+function renderResult(r,job){
+  hide('viewInput');show('viewResult');
+  window.scrollTo({top:0,behavior:'smooth'});
+  document.getElementById('rTitle').textContent=job;
+  document.getElementById('rTime').textContent=new Date().toLocaleDateString('ko-KR',{year:'numeric',month:'long',day:'numeric',hour:'2-digit',minute:'2-digit'})+' 분석';
+  const sc=Math.min(100,Math.max(0,r.score||0));
+  const sEl=document.getElementById('scoreNum');
+  sEl.textContent=sc;
+  sEl.style.color=sc>=80?'#059669':sc>=60?'#2563eb':sc>=40?'#d97706':'#e11d48';
+  const bEl=document.getElementById('scoreBadge');
+  bEl.textContent=`GRADE  ${r.grade||'—'}`;
+  bEl.className='score-badge g'+(r.grade||'B').toLowerCase();
+  document.getElementById('scoreSum').textContent=r.summary||'';
+  const lbl={relevance:'연관성',specificity:'구체성',clarity:'명확성',authenticity:'진정성',impact:'임팩트'};
+  const barsEl=document.getElementById('scoreBars');
+  barsEl.innerHTML='';
+  Object.entries(r.scores||{}).forEach(([k,v])=>{
+    const p=Math.min(100,Math.max(0,v));
+    const c=p>=75?'h':p>=55?'m':p>=35?'l':'vl';
+    barsEl.innerHTML+=`<div class="sbar-row"><span class="sbar-lbl">${lbl[k]||k}</span><div class="sbar-track"><div class="sbar-fill ${c}" data-w="${p}"></div></div><span class="sbar-v">${p}</span></div>`;
+  });
+  setTimeout(()=>{document.querySelectorAll('.sbar-fill').forEach(el=>{el.style.width=el.dataset.w+'%';});},120);
+  const sEl2=document.getElementById('strList');
+  sEl2.innerHTML='';
+  (r.strengths||[]).forEach(s=>{
+    const t=typeof s==='string'?s:s.title, d2=typeof s==='object'?(s.detail||''):'';
+    sEl2.innerHTML+=`<div class="str-item"><div class="str-t">${t}</div>${d2?`<div class="str-d">${d2}</div>`:''}</div>`;
+  });
+  const iEl=document.getElementById('impList');
+  iEl.innerHTML='';
+  (r.improvements||[]).forEach(imp=>{
+    const issue=typeof imp==='string'?imp:(imp.issue||'');
+    const why=imp.why||'',before=imp.before||'',after=imp.suggestion||imp.after||'';
+    iEl.innerHTML+=`<div class="imp-item"><div class="imp-issue">${issue}</div>${why?`<div class="imp-why">${why}</div>`:''}`
+      +`${before?`<div class="ba ba-b"><div class="ba-lbl">Before</div><div class="ba-txt">"${before}"</div></div>`:''}`
+      +`${after?`<div class="ba ba-a"><div class="ba-lbl">After</div><div class="ba-txt">"${after}"</div></div>`:''}</div>`;
+  });
+  document.getElementById('kwM').innerHTML=(r.keywords?.matched||[]).map(k=>`<span class="kw p">${k}</span>`).join('');
+  document.getElementById('kwMs').innerHTML=(r.keywords?.missing||[]).map(k=>`<span class="kw ms">+ ${k}</span>`).join('');
+  document.getElementById('otText').textContent=r.oneLineTip||'';
+}
 
-                const apiData = await anthropicRes.json();
-                const rawText = apiData.content[0].text;
-                const jsonMatch = rawText.match(/\{[\s\S]*\}/);
-                if (!jsonMatch) throw new Error('JSON 파싱 실패: ' + rawText);
-                const report = JSON.parse(jsonMatch[0]);
+async function doSave(){
+  if(!cUser||!cReport)return;
+  const bs=['saveBtn','saveBtnB'].map(id=>document.getElementById(id));
+  bs.forEach(b=>{b.disabled=true;b.textContent='저장 중...';});
+  try{
+    await addDoc(collection(db,'analyses'),{uid:cUser.uid,jobTitle:cJob,coverLetter:cLetter,report:cReport,createdAt:serverTimestamp()});
+    bs.forEach(b=>{b.textContent='✓ 저장 완료';});
+  }catch{bs.forEach(b=>{b.disabled=false;b.textContent='저장하기';});showErr('저장에 실패했습니다.');}
+}
+window.saveReport=doSave;
 
-                                // Firestore 저장
-                const docRef = await addDoc(collection(db, 'analyses'), {
-                    uid: currentUser.uid,
-                    jobTitle,
-                    coverLetter,
-                    report,
-                    createdAt: serverTimestamp()
-                });
+window.resetToInput=()=>{
+  hide('viewResult');show('viewInput');
+  document.getElementById('analyzeBtn').disabled=false;
+  hideErr();window.scrollTo({top:0,behavior:'smooth'});
+};
 
-                // 사용량 +1 업데이트
-                if (snap.exists()) {
-                    await updateDoc(userRef, { monthlyUsage: used + 1 });
-                } else {
-                    const { setDoc } = await import("https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js");
-                    await setDoc(userRef, {
-                        email: currentUser.email,
-                        plan: 'free',
-                        monthlyUsage: 1,
-                        createdAt: serverTimestamp()
-                    });
-                }
-
-                // report.html로 이동 (분석 ID 전달)
-                location.href = `report.html?id=${docRef.id}`;
-
-            } catch (e) {
-                console.error(e);
-                document.getElementById('loadingOverlay').classList.add('hidden');
-                document.getElementById('analyzeBtn').disabled = false;
-                errEl.textContent = '분석 중 오류가 발생했습니다. 잠시 후 다시 시도해주세요.';
-                errEl.classList.remove('hidden');
-            }
-        };
-
-        window.handleLogout = async () => {
-            await signOut(auth);
-            location.href = 'index.html';
-        };
-    </script>
+window.handleLogout=async()=>{await signOut(auth);location.href='index.html';};
+</script>
 </body>
-
 </html>

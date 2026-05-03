@@ -1,413 +1,393 @@
 <!DOCTYPE html>
-<html class="light" lang="ko">
-
+<html lang="ko">
 <head>
-    <meta charset="utf-8" />
-    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
-    <title>Ssurd - 세 번째 눈으로 읽어드립니다</title>
-    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-    <link
-        href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&family=Inter:wght@400;500;600&display=swap"
-        rel="stylesheet" />
-    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
-        rel="stylesheet" />
-    <script id="tailwind-config">
-        tailwind.config = {
-            darkMode: "class",
-            theme: {
-                extend: {
-                    colors: {
-                        "tertiary": "#002713", "on-tertiary": "#ffffff", "on-primary": "#ffffff",
-                        "error-container": "#ffdad6", "surface-variant": "#e0e3e5", "primary-fixed": "#d6e3ff",
-                        "outline": "#74777f", "on-secondary-container": "#00477f", "outline-variant": "#c4c6cf",
-                        "secondary-fixed": "#d3e4ff", "on-tertiary-fixed-variant": "#00522f",
-                        "on-error-container": "#93000a", "surface-bright": "#f7fafc",
-                        "surface-container-high": "#e5e9eb", "on-secondary": "#ffffff", "on-error": "#ffffff",
-                        "inverse-surface": "#2d3133", "secondary-fixed-dim": "#a2c9ff",
-                        "on-tertiary-container": "#4bb278", "tertiary-container": "#003f23",
-                        "secondary": "#1960a3", "on-secondary-fixed-variant": "#004881",
-                        "on-primary-fixed-variant": "#2d476f", "surface-dim": "#d7dadc",
-                        "background": "#f7fafc", "surface-tint": "#455f88", "inverse-primary": "#adc7f7",
-                        "on-secondary-fixed": "#001c38", "primary-fixed-dim": "#adc7f7",
-                        "surface-container-low": "#f1f4f6", "secondary-container": "#7db6ff",
-                        "primary": "#002045", "error": "#ba1a1a", "on-primary-fixed": "#001b3c",
-                        "primary-container": "#1a365d", "inverse-on-surface": "#eef1f3",
-                        "surface-container": "#ebeef0", "tertiary-fixed-dim": "#74db9d",
-                        "on-primary-container": "#86a0cd", "surface-container-highest": "#e0e3e5",
-                        "on-background": "#181c1e", "on-surface-variant": "#43474e",
-                        "on-tertiary-fixed": "#002110", "tertiary-fixed": "#91f8b8",
-                        "surface-container-lowest": "#ffffff", "surface": "#f7fafc", "on-surface": "#181c1e"
-                    },
-                    borderRadius: { "DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem" },
-                    fontFamily: { "headline": ["Manrope"], "body": ["Inter"], "label": ["Inter"] }
-                }
-            }
-        }
-    </script>
-    <style>
-        .material-symbols-outlined {
-            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ssurd — ㅇㅇ님의 취업을 응원합니다</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{--white:#fff;--off:#f8f8fa;--ink:#0a0a0f;--g1:#f0f0f5;--g2:#e0e0eb;--g3:#8888aa;--g4:#555570;--blue:#2563eb;--blue2:#3b82f6;--purple:#7c3aed;--teal:#0891b2;--ease:cubic-bezier(0.16,1,0.3,1);}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{background:var(--white);color:var(--ink);font-family:'Noto Sans KR',sans-serif;overflow-x:hidden;}
+.hidden{display:none!important;}
+.rv{opacity:0;transform:translateY(36px);transition:opacity .7s var(--ease),transform .7s var(--ease);}
+.rv.on{opacity:1;transform:translateY(0);}
+.rvl{opacity:0;transform:translateX(-36px);transition:opacity .7s var(--ease),transform .7s var(--ease);}
+.rvl.on{opacity:1;transform:translateX(0);}
+.rvr{opacity:0;transform:translateX(36px);transition:opacity .7s var(--ease),transform .7s var(--ease);}
+.rvr.on{opacity:1;transform:translateX(0);}
+.d1{transition-delay:.06s}.d2{transition-delay:.13s}.d3{transition-delay:.20s}.d4{transition-delay:.28s}
 
-        .signature-texture {
-            background: linear-gradient(135deg, #002045 0%, #1a365d 100%);
-        }
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;height:60px;display:flex;align-items:center;justify-content:space-between;padding:0 48px;background:rgba(255,255,255,0.85);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:1px solid var(--g2);}
+.nav-logo{font-family:'DM Mono',monospace;font-size:18px;font-weight:500;color:var(--ink);text-decoration:none;}
+.nav-logo .dot{color:var(--blue);}
+.nav-mid{display:flex;gap:32px;}
+.nav-lnk{font-size:14px;color:var(--g4);text-decoration:none;transition:color .2s;}
+.nav-lnk:hover{color:var(--ink);}
+.nav-r{display:flex;align-items:center;gap:12px;}
+.nav-uname{font-size:13px;color:var(--g3);max-width:140px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.btn-ghost{font-size:13px;font-weight:500;padding:8px 18px;border-radius:100px;background:transparent;color:var(--g4);border:1px solid var(--g2);cursor:pointer;transition:all .2s;}
+.btn-ghost:hover{border-color:var(--g3);color:var(--ink);}
+.btn-solid{font-size:13px;font-weight:700;padding:8px 20px;border-radius:100px;background:var(--ink);color:white;border:none;cursor:pointer;transition:background .2s;}
+.btn-solid:hover{background:var(--blue);}
 
-        .editorial-gradient {
-            background: linear-gradient(135deg, #002045 0%, #1a365d 50%, #1960a3 100%);
-        }
+/* 로그인 모달 */
+#authModal{position:fixed;inset:0;z-index:200;background:rgba(10,10,15,.6);backdrop-filter:blur(8px);display:flex;align-items:center;justify-content:center;}
+.modal-box{background:white;border-radius:24px;padding:44px 40px;max-width:400px;width:90%;box-shadow:0 24px 80px rgba(0,0,0,.2);position:relative;}
+.modal-close{position:absolute;top:16px;right:16px;width:32px;height:32px;border-radius:50%;border:none;background:var(--g1);color:var(--g4);font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .2s;}
+.modal-close:hover{background:var(--g2);}
+.modal-logo{font-family:'DM Mono',monospace;font-size:22px;font-weight:500;color:var(--ink);text-align:center;margin-bottom:4px;}
+.modal-logo .dot{color:var(--blue);}
+.modal-sub{font-size:13px;color:var(--g3);text-align:center;margin-bottom:28px;}
+.tab-row{display:flex;background:var(--g1);border-radius:100px;padding:4px;margin-bottom:24px;}
+.tab-btn{flex:1;padding:8px;border-radius:100px;border:none;font-family:'Noto Sans KR',sans-serif;font-size:14px;font-weight:500;cursor:pointer;transition:all .2s;background:transparent;color:var(--g3);}
+.tab-btn.act{background:white;color:var(--ink);font-weight:700;box-shadow:0 1px 4px rgba(0,0,0,.08);}
+.auth-err{background:#fff1f2;border:1px solid #fecdd3;border-radius:10px;padding:10px 14px;font-size:13px;color:#e11d48;margin-bottom:16px;}
+.f-input{width:100%;background:var(--g1);border:1.5px solid transparent;border-radius:12px;padding:14px 16px;font-family:'Noto Sans KR',sans-serif;font-size:14px;color:var(--ink);outline:none;transition:border-color .2s;margin-bottom:10px;}
+.f-input::placeholder{color:var(--g3);}
+.f-input:focus{border-color:var(--blue);background:white;box-shadow:0 0 0 3px rgba(37,99,235,.08);}
+.btn-auth{width:100%;padding:15px;border-radius:12px;border:none;background:var(--ink);color:white;font-family:'Noto Sans KR',sans-serif;font-size:15px;font-weight:700;cursor:pointer;transition:background .2s;margin-top:4px;margin-bottom:16px;}
+.btn-auth:hover{background:var(--blue);}
+.divider{display:flex;align-items:center;gap:12px;margin-bottom:16px;}
+.divider-line{flex:1;height:1px;background:var(--g2);}
+.divider-txt{font-size:12px;color:var(--g3);}
+.btn-google{width:100%;padding:13px;border-radius:12px;border:1px solid var(--g2);background:white;font-family:'Noto Sans KR',sans-serif;font-size:14px;font-weight:500;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px;color:var(--ink);transition:background .2s;}
+.btn-google:hover{background:var(--g1);}
 
-        .glass-nav {
-            background-color: rgba(255, 255, 255, 0.85);
-            backdrop-filter: blur(20px);
-        }
-    </style>
+/* HERO */
+.hero{min-height:100vh;padding:60px 0 0;display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative;overflow:hidden;}
+.hero-bg{position:absolute;inset:0;pointer-events:none;z-index:0;}
+.orb{position:absolute;border-radius:50%;filter:blur(80px);opacity:.22;}
+.orb1{width:600px;height:600px;background:#bfdbfe;top:-100px;right:-100px;animation:orbF 8s ease-in-out infinite;}
+.orb2{width:400px;height:400px;background:#ddd6fe;bottom:-50px;left:-80px;animation:orbF 10s ease-in-out infinite reverse;}
+.orb3{width:300px;height:300px;background:#a7f3d0;top:40%;right:20%;animation:orbF 12s ease-in-out infinite 2s;}
+@keyframes orbF{0%,100%{transform:translateY(0) scale(1)}50%{transform:translateY(-28px) scale(1.05)}}
+.hero-inner{position:relative;z-index:1;max-width:860px;margin:0 auto;padding:0 48px;text-align:center;}
+
+/* 3D 프리즘 */
+.prism-scene{width:120px;height:120px;perspective:500px;margin:0 auto 36px;}
+.prism-cube{width:100%;height:100%;position:relative;transform-style:preserve-3d;animation:cubeH 10s linear infinite;}
+@keyframes cubeH{from{transform:rotateY(0deg) rotateX(20deg) rotateZ(0deg)}to{transform:rotateY(360deg) rotateX(20deg) rotateZ(5deg)}}
+.cf{position:absolute;width:90px;height:90px;top:15px;left:15px;border-radius:20px;border:1px solid rgba(255,255,255,.6);}
+.cf1{background:linear-gradient(135deg,rgba(219,234,254,.9),rgba(191,219,254,.9));transform:translateZ(45px);}
+.cf2{background:linear-gradient(135deg,rgba(237,233,254,.9),rgba(221,214,254,.9));transform:translateZ(-45px) rotateY(180deg);}
+.cf3{background:linear-gradient(135deg,rgba(252,231,243,.9),rgba(251,207,232,.9));transform:rotateY(90deg) translateZ(45px);}
+.cf4{background:linear-gradient(135deg,rgba(236,253,245,.9),rgba(167,243,208,.9));transform:rotateY(-90deg) translateZ(45px);}
+.cf5{background:linear-gradient(135deg,rgba(254,249,195,.9),rgba(253,230,138,.9));transform:rotateX(90deg) translateZ(45px);}
+.cf6{background:linear-gradient(135deg,rgba(254,226,226,.9),rgba(254,202,202,.9));transform:rotateX(-90deg) translateZ(45px);}
+
+.hero-badge{display:inline-flex;align-items:center;gap:8px;background:var(--g1);border:1px solid var(--g2);border-radius:100px;padding:6px 16px;font-family:'DM Mono',monospace;font-size:12px;color:var(--g4);margin-bottom:24px;letter-spacing:.04em;}
+.badge-dot{width:6px;height:6px;border-radius:50%;background:var(--blue);animation:blink 2s ease-in-out infinite;}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
+.hero-h1{font-size:clamp(44px,7vw,80px);font-weight:700;line-height:1.1;letter-spacing:-.03em;color:var(--ink);margin-bottom:22px;}
+.hero-h1 .hl{background:linear-gradient(135deg,var(--blue),var(--purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.hero-sub{font-size:17px;color:var(--g3);line-height:1.75;max-width:520px;margin:0 auto 44px;}
+.hero-cta{display:inline-flex;align-items:center;gap:10px;background:var(--ink);color:white;font-size:16px;font-weight:700;padding:18px 40px;border-radius:100px;border:none;cursor:pointer;transition:all .3s var(--ease);box-shadow:0 4px 20px rgba(37,99,235,.18);}
+.hero-cta:hover{background:var(--blue);transform:translateY(-2px);box-shadow:0 8px 32px rgba(37,99,235,.32);}
+.cta-arr{width:20px;height:20px;background:rgba(255,255,255,.2);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;transition:transform .2s;}
+.hero-cta:hover .cta-arr{transform:translateX(3px);}
+
+/* FEATURES */
+.features{padding:120px 48px;max-width:1080px;margin:0 auto;}
+.sec-label{font-family:'DM Mono',monospace;font-size:12px;color:var(--blue);letter-spacing:.1em;text-transform:uppercase;margin-bottom:18px;text-align:center;}
+.sec-h2{font-size:clamp(30px,5vw,50px);font-weight:700;letter-spacing:-.025em;text-align:center;margin-bottom:72px;line-height:1.2;}
+.feat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;}
+.feat-card{background:var(--off);border-radius:22px;padding:32px 28px;border:1px solid var(--g2);transition:transform .3s var(--ease),box-shadow .3s;}
+.feat-card:hover{transform:translateY(-5px);box-shadow:0 16px 48px rgba(0,0,0,.07);}
+.feat-card.big{grid-column:span 2;background:var(--ink);color:white;border-color:var(--ink);}
+.feat-icon{width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:20px;margin-bottom:18px;}
+.feat-card:not(.big) .feat-icon{background:white;}
+.feat-card.big .feat-icon{background:rgba(255,255,255,.1);}
+.feat-h3{font-size:18px;font-weight:700;margin-bottom:8px;}
+.feat-card.big .feat-h3{color:white;}
+.feat-p{font-size:14px;color:var(--g4);line-height:1.7;}
+.feat-card.big .feat-p{color:rgba(255,255,255,.55);}
+
+/* SAMPLE REPORT */
+.sample-sec{padding:80px 48px 120px;max-width:1080px;margin:0 auto;}
+.sample-inner{display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:center;}
+.sample-left h2{font-size:clamp(28px,4vw,44px);font-weight:700;letter-spacing:-.03em;line-height:1.2;margin-bottom:16px;}
+.sample-left p{font-size:15px;color:var(--g3);line-height:1.75;margin-bottom:32px;}
+.sample-card{background:white;border-radius:22px;border:1px solid var(--g2);padding:32px;box-shadow:0 8px 40px rgba(0,0,0,.07);}
+.sample-card-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;}
+.sample-job{font-size:13px;font-weight:700;color:var(--blue);}
+.sample-grade{width:44px;height:44px;border-radius:12px;background:linear-gradient(135deg,#dbeafe,#bfdbfe);display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:700;color:#1d4ed8;}
+.sample-score-row{display:flex;align-items:center;gap:20px;margin-bottom:20px;}
+.sample-score-big{font-size:64px;font-weight:700;letter-spacing:-.04em;color:#059669;line-height:1;}
+.sample-bars{flex:1;display:flex;flex-direction:column;gap:10px;}
+.s-bar-row{display:flex;align-items:center;gap:10px;}
+.s-bar-lbl{font-size:12px;color:var(--g3);width:60px;}
+.s-bar-t{flex:1;height:4px;background:var(--g1);border-radius:2px;overflow:hidden;}
+.s-bar-f{height:100%;border-radius:2px;background:linear-gradient(90deg,#3b82f6,#2563eb);}
+.s-bar-v{font-size:12px;font-weight:600;color:var(--ink);width:24px;text-align:right;font-family:'DM Mono',monospace;}
+.sample-tip{background:var(--g1);border-radius:12px;padding:14px 16px;font-size:13px;color:var(--g4);line-height:1.6;}
+.sample-tip strong{color:var(--blue);}
+
+/* CTA BOTTOM */
+.cta-bottom{background:var(--ink);padding:100px 48px;text-align:center;position:relative;overflow:hidden;}
+.cta-bottom-orb{position:absolute;border-radius:50%;filter:blur(60px);opacity:.12;pointer-events:none;}
+.cb-orb1{width:400px;height:400px;background:#3b82f6;top:-100px;right:-80px;}
+.cb-orb2{width:300px;height:300px;background:#7c3aed;bottom:-80px;left:20%;}
+.cta-bottom-inner{position:relative;z-index:1;max-width:640px;margin:0 auto;}
+.cta-bottom h2{font-size:clamp(30px,5vw,52px);font-weight:700;color:white;letter-spacing:-.025em;margin-bottom:16px;line-height:1.2;}
+.cta-bottom p{font-size:16px;color:rgba(255,255,255,.5);margin-bottom:40px;line-height:1.7;}
+.btn-cta-white{display:inline-flex;align-items:center;gap:10px;background:white;color:var(--ink);font-size:16px;font-weight:700;padding:18px 40px;border-radius:100px;border:none;cursor:pointer;transition:all .3s var(--ease);box-shadow:0 4px 20px rgba(0,0,0,.2);}
+.btn-cta-white:hover{background:var(--g1);transform:translateY(-2px);}
+
+/* FOOTER */
+footer{background:var(--off);padding:40px 48px;border-top:1px solid var(--g2);}
+.footer-inner{max-width:1080px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;gap:20px;flex-wrap:wrap;}
+.footer-logo{font-family:'DM Mono',monospace;font-size:16px;font-weight:500;color:var(--ink);}
+.footer-logo .dot{color:var(--blue);}
+.footer-copy{font-size:13px;color:var(--g3);margin-top:4px;}
+.footer-links{display:flex;gap:24px;}
+.footer-lnk{font-size:13px;color:var(--g3);text-decoration:none;transition:color .2s;}
+.footer-lnk:hover{color:var(--ink);}
+
+@media(max-width:860px){
+  nav{padding:0 20px;} .nav-mid{display:none;}
+  .hero-inner{padding:0 20px;}
+  .features{padding:72px 20px;} .feat-grid{grid-template-columns:1fr;} .feat-card.big{grid-column:span 1;}
+  .sample-sec{padding:56px 20px 80px;} .sample-inner{grid-template-columns:1fr;}
+  .cta-bottom{padding:64px 24px;}
+  footer{padding:32px 20px;}
+}
+</style>
 </head>
+<body>
 
-<body class="bg-surface font-body text-on-surface antialiased">
-
-    <!-- ── 로그인 모달 ── -->
-    <div id="authModal"
-        class="hidden fixed inset-0 z-[100] flex items-center justify-center bg-black/40 backdrop-blur-sm">
-        <div class="bg-white rounded-2xl shadow-2xl p-10 w-full max-w-md mx-4 relative">
-            <button onclick="closeModal()" class="absolute top-4 right-4 text-slate-400 hover:text-slate-700">
-                <span class="material-symbols-outlined">close</span>
-            </button>
-            <div class="text-center mb-8">
-                <div class="text-2xl font-black tracking-tighter text-blue-950 font-headline mb-2">Ssurd</div>
-                <p class="text-on-surface-variant text-sm">세 번째 눈으로 읽어드립니다</p>
-            </div>
-            <div id="authError" class="hidden mb-4 p-3 bg-red-50 text-red-700 text-sm rounded-xl"></div>
-            <!-- 탭 -->
-            <div class="flex mb-6 bg-surface-container-low rounded-full p-1">
-                <button id="tabLogin" onclick="switchTab('login')"
-                    class="flex-1 py-2 rounded-full text-sm font-bold font-headline bg-white shadow text-primary transition-all">로그인</button>
-                <button id="tabSignup" onclick="switchTab('signup')"
-                    class="flex-1 py-2 rounded-full text-sm font-bold font-headline text-slate-500 transition-all">회원가입</button>
-            </div>
-            <!-- 폼 -->
-            <div class="space-y-3 mb-4">
-                <input id="authEmail" type="email" placeholder="이메일"
-                    class="w-full px-4 py-3 rounded-xl bg-surface-container-low border-none focus:ring-2 focus:ring-blue-200 text-sm outline-none" />
-                <input id="authPassword" type="password" placeholder="비밀번호 (6자 이상)"
-                    class="w-full px-4 py-3 rounded-xl bg-surface-container-low border-none focus:ring-2 focus:ring-blue-200 text-sm outline-none" />
-                <input id="authPasswordConfirm" type="password" placeholder="비밀번호 확인"
-                    class="hidden w-full px-4 py-3 rounded-xl bg-surface-container-low border-none focus:ring-2 focus:ring-blue-200 text-sm outline-none" />
-            </div>
-            <button id="authSubmitBtn" onclick="handleEmailAuth()"
-                class="w-full signature-texture text-white py-3 rounded-full font-headline font-bold text-sm mb-4 hover:opacity-90 transition-opacity">
-                로그인
-            </button>
-            <div class="flex items-center gap-3 mb-4">
-                <div class="flex-1 h-px bg-outline-variant"></div>
-                <span class="text-xs text-outline">또는</span>
-                <div class="flex-1 h-px bg-outline-variant"></div>
-            </div>
-            <button onclick="handleGoogleLogin()"
-                class="w-full flex items-center justify-center gap-3 border border-outline-variant py-3 rounded-full font-headline font-semibold text-sm hover:bg-surface-container-low transition-colors">
-                <svg width="18" height="18" viewBox="0 0 48 48">
-                    <path fill="#EA4335"
-                        d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z" />
-                    <path fill="#4285F4"
-                        d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z" />
-                    <path fill="#FBBC05"
-                        d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z" />
-                    <path fill="#34A853"
-                        d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z" />
-                </svg>
-                Google로 계속하기
-            </button>
-        </div>
+<!-- 로그인 모달 -->
+<div id="authModal" class="hidden">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeModal()">✕</button>
+    <div class="modal-logo">Ss<span class="dot">.</span>urd</div>
+    <div class="modal-sub">취업을 응원합니다</div>
+    <div id="authErr" class="auth-err hidden"></div>
+    <div class="tab-row">
+      <button id="tabLogin" class="tab-btn act" onclick="switchTab('login')">로그인</button>
+      <button id="tabSignup" class="tab-btn" onclick="switchTab('signup')">회원가입</button>
     </div>
+    <input id="authEmail" class="f-input" type="email" placeholder="이메일"/>
+    <input id="authPw" class="f-input" type="password" placeholder="비밀번호 (6자 이상)"/>
+    <input id="authPwc" class="f-input hidden" type="password" placeholder="비밀번호 확인"/>
+    <button id="authSubmit" class="btn-auth" onclick="handleEmailAuth()">로그인</button>
+    <div class="divider"><div class="divider-line"></div><span class="divider-txt">또는</span><div class="divider-line"></div></div>
+    <button class="btn-google" onclick="handleGoogleLogin()">
+      <svg width="18" height="18" viewBox="0 0 48 48">
+        <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>
+        <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/>
+        <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/>
+        <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/>
+      </svg>
+      Google로 계속하기
+    </button>
+  </div>
+</div>
 
-    <!-- ── 네비게이션 ── -->
-    <header class="fixed top-0 w-full z-50 glass-nav">
-        <nav class="max-w-7xl mx-auto flex justify-between items-center px-8 py-4">
-            <div class="text-2xl font-black tracking-tighter text-blue-950 font-headline">Ssurd</div>
-            <div class="hidden md:flex items-center gap-8">
-                <a class="text-blue-900 font-bold border-b-2 border-blue-900 pb-1 font-headline hover:scale-105 transition-transform"
-                    href="#">Home</a>
-                <a class="text-slate-500 font-medium hover:text-blue-900 font-headline hover:scale-105 transition-transform"
-                    href="dashboard.html">History</a>
-            </div>
-            <!-- 비로그인 -->
-            <button id="navLoginBtn" onclick="openModal()"
-                class="signature-texture text-on-primary px-6 py-2.5 rounded-full font-headline font-semibold text-sm hover:scale-105 transition-transform">
-                Get Started
-            </button>
-            <!-- 로그인 후 -->
-            <div id="navUserMenu" class="hidden items-center gap-3">
-                <span id="navUserName"
-                    class="text-sm text-on-surface-variant font-medium max-w-[140px] truncate"></span>
-                <button onclick="handleLogout()"
-                    class="border border-outline-variant text-on-surface px-4 py-2 rounded-full font-headline font-semibold text-sm hover:bg-surface-container-low transition-colors">
-                    로그아웃
-                </button>
-            </div>
-        </nav>
-    </header>
+<nav>
+  <a href="index.html" class="nav-logo">Ss<span class="dot">.</span>urd</a>
+  <div class="nav-mid">
+    <a href="index.html" class="nav-lnk" style="color:var(--ink);font-weight:600">홈</a>
+    <a href="dashboard.html" class="nav-lnk">히스토리</a>
+  </div>
+  <div class="nav-r">
+    <div id="navUser" class="hidden" style="display:flex;align-items:center;gap:10px">
+      <span id="navUserName" class="nav-uname"></span>
+      <button class="btn-ghost" onclick="handleLogout()">로그아웃</button>
+    </div>
+    <button id="navLoginBtn" class="btn-solid" onclick="openModal()">시작하기</button>
+  </div>
+</nav>
 
-    <main class="pt-24">
-        <!-- Hero -->
-        <section class="max-w-7xl mx-auto px-8 py-16 lg:py-24 grid lg:grid-cols-12 gap-12 items-center">
-            <div class="lg:col-span-7">
-                <h1
-                    class="text-5xl lg:text-7xl font-headline font-extrabold text-on-surface tracking-tight mb-6 leading-tight">
-                    객관적 시선이 만드는<br />압도적 커리어</h1>
-                <p class="text-xl lg:text-2xl text-on-surface-variant font-medium mb-10 max-w-xl">
-                    30초 만에 점수로 보여드립니다 — <span class="text-primary font-bold">첫 번째 분석은 무료</span>
-                </p>
-                <div class="flex flex-wrap gap-4">
-                    <button id="heroCtaBtn" onclick="handleCta()"
-                        class="signature-texture text-on-primary px-8 py-4 rounded-full font-headline font-bold text-lg hover:scale-105 transition-transform shadow-xl">
-                        Free Trial 시작하기
-                    </button>
-                </div>
-            </div>
-            <!-- 샘플 리포트 카드 -->
-            <div class="lg:col-span-5 relative">
-                <div class="bg-surface-container-lowest rounded-2xl p-8 shadow-2xl relative z-10">
-                    <div class="flex items-center justify-between mb-6">
-                        <div>
-                            <p class="text-xs font-bold uppercase tracking-widest text-outline mb-1">분석 리포트 샘플</p>
-                            <h3 class="font-headline font-bold text-primary">프로덕트 매니저 지원</h3>
-                        </div>
-                        <span
-                            class="bg-tertiary-fixed text-on-tertiary-fixed-variant px-3 py-1.5 rounded-full font-headline font-black text-xl">A</span>
-                    </div>
-                    <div class="flex items-center gap-4 mb-6">
-                        <div class="relative w-20 h-20 shrink-0">
-                            <svg class="w-full h-full transform -rotate-90">
-                                <circle class="text-surface-container" cx="40" cy="40" fill="transparent" r="34"
-                                    stroke="currentColor" stroke-width="8" />
-                                <circle class="text-on-tertiary-container" cx="40" cy="40" fill="transparent" r="34"
-                                    stroke="currentColor" stroke-dasharray="213" stroke-dashoffset="32"
-                                    stroke-width="8" />
-                            </svg>
-                            <div class="absolute inset-0 flex items-center justify-center">
-                                <span class="font-headline font-black text-xl text-on-surface">85</span>
-                            </div>
-                        </div>
-                        <div class="flex-1 space-y-2">
-                            <div>
-                                <div class="flex justify-between text-xs mb-1">
-                                    <span class="text-on-surface-variant">직무 연관성</span><span
-                                        class="font-bold text-primary">92%</span>
-                                </div>
-                                <div class="h-1.5 bg-surface-container rounded-full overflow-hidden">
-                                    <div class="h-full bg-on-tertiary-container rounded-full" style="width:92%"></div>
-                                </div>
-                            </div>
-                            <div>
-                                <div class="flex justify-between text-xs mb-1">
-                                    <span class="text-on-surface-variant">구체성</span><span
-                                        class="font-bold text-primary">78%</span>
-                                </div>
-                                <div class="h-1.5 bg-surface-container rounded-full overflow-hidden">
-                                    <div class="h-full bg-secondary rounded-full" style="width:78%"></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="space-y-3">
-                        <div class="bg-surface-container p-4 rounded-xl">
-                            <p class="font-headline font-bold text-sm text-primary mb-1">✓ 강점: 서사적 연결성</p>
-                            <p class="text-sm text-on-surface-variant">경험과 직무 역량의 연결이 매우 매끄럽게 서술되었습니다.</p>
-                        </div>
-                        <div class="bg-surface-container p-4 rounded-xl">
-                            <p class="font-headline font-bold text-sm text-secondary mb-1">· 보완점: 구체적 수치 추가</p>
-                            <p class="text-sm text-on-surface-variant">성과를 나타내는 정량적 지표를 추가하면 더욱 강력해집니다.</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="absolute -top-6 -right-6 w-full h-full bg-primary/5 rounded-xl -z-0"></div>
-            </div>
-        </section>
-
-        <!-- 브랜딩 -->
-        <section class="bg-surface-container-low py-24">
-            <div class="max-w-7xl mx-auto px-8 text-center mb-16">
-                <h2 class="text-3xl lg:text-4xl font-headline font-extrabold text-primary mb-4">Ssurd: 객관적 시선으로 완성하는 커리어
-                </h2>
-                <p class="text-on-surface-variant max-w-2xl mx-auto">주관적 편향을 배제하고, 데이터와 정밀한 분석 지표를 통해 당신의 가능성을 숫자로
-                    증명합니다.</p>
-            </div>
-            <div class="max-w-7xl mx-auto px-8 grid md:grid-cols-3 gap-8">
-                <div
-                    class="bg-surface-container-lowest p-10 rounded-xl hover:scale-105 transition-transform duration-300">
-                    <div class="w-14 h-14 bg-surface-container-high rounded-full flex items-center justify-center mb-6">
-                        <span class="material-symbols-outlined text-primary text-3xl">verified_user</span>
-                    </div>
-                    <h3 class="text-xl font-headline font-bold text-primary mb-4">제3자의 객관성</h3>
-                    <p class="text-on-surface-variant leading-relaxed">자신이 쓴 글은 스스로 평가하기 어렵습니다. Ssurd는 철저히 타자의 시선에서 당신의
-                        글을 해부합니다.</p>
-                </div>
-                <div
-                    class="bg-surface-container-lowest p-10 rounded-xl hover:scale-105 transition-transform duration-300">
-                    <div class="w-14 h-14 bg-surface-container-high rounded-full flex items-center justify-center mb-6">
-                        <span class="material-symbols-outlined text-primary text-3xl">query_stats</span>
-                    </div>
-                    <h3 class="text-xl font-headline font-bold text-primary mb-4">정교한 스코어링</h3>
-                    <p class="text-on-surface-variant leading-relaxed">단순한 첨삭이 아닙니다. 핵심 지표를 기반으로 100점 만점의 분석 리포트를 제공합니다.
-                    </p>
-                </div>
-                <div
-                    class="bg-surface-container-lowest p-10 rounded-xl hover:scale-105 transition-transform duration-300">
-                    <div class="w-14 h-14 bg-surface-container-high rounded-full flex items-center justify-center mb-6">
-                        <span class="material-symbols-outlined text-primary text-3xl">speed</span>
-                    </div>
-                    <h3 class="text-xl font-headline font-bold text-primary mb-4">30초의 인사이트</h3>
-                    <p class="text-on-surface-variant leading-relaxed">문서를 입력하는 순간, 고도화된 분석 엔진이 즉각적인 피드백을 산출합니다.</p>
-                </div>
-            </div>
-        </section>
-
-        <!-- Final CTA -->
-        <section class="max-w-5xl mx-auto px-8 py-24 mb-24">
-            <div class="signature-texture rounded-[2rem] p-12 lg:p-20 text-center relative overflow-hidden">
-                <div class="relative z-10">
-                    <h2 class="text-3xl lg:text-5xl font-headline font-extrabold text-white mb-6">첫 분석 리포트를 무료로 받아보세요
-                    </h2>
-                    <p class="text-blue-200 text-lg lg:text-xl mb-10 max-w-xl mx-auto">당신의 첫 번째 시도가 가장 강력한 무기가 될 수 있도록,
-                        Ssurd가 돕겠습니다.</p>
-                    <button onclick="handleCta()"
-                        class="bg-white text-primary px-10 py-5 rounded-full font-headline font-extrabold text-xl hover:scale-105 transition-transform shadow-2xl">
-                        지금 무료로 시작하기
-                    </button>
-                </div>
-                <div class="absolute inset-0 opacity-10 pointer-events-none"
-                    style="background-image:radial-gradient(circle at 2px 2px,white 1px,transparent 0);background-size:40px 40px;">
-                </div>
-            </div>
-        </section>
-    </main>
-
-    <footer class="bg-slate-100 w-full py-12 px-8">
-        <div class="flex flex-col md:flex-row justify-between items-center max-w-7xl mx-auto gap-4">
-            <div class="flex flex-col items-center md:items-start gap-2">
-                <div class="text-lg font-bold text-blue-950 font-headline">Ssurd</div>
-                <p class="text-sm text-slate-600">© 2025 Ssurd. All rights reserved.</p>
-            </div>
-            <div class="flex gap-8">
-                <a class="text-sm text-slate-600 hover:text-blue-700 transition-colors" href="#">개인정보 처리방침</a>
-                <a class="text-sm text-slate-600 hover:text-blue-700 transition-colors" href="#">이용약관</a>
-                <a class="text-sm text-slate-600 hover:text-blue-700 transition-colors" href="#">고객지원</a>
-            </div>
+<main style="padding-top:60px">
+  <!-- 히어로 -->
+  <section class="hero">
+    <div class="hero-bg">
+      <div class="orb orb1"></div><div class="orb orb2"></div><div class="orb orb3"></div>
+    </div>
+    <div class="hero-inner">
+      <div class="rv">
+        <div class="prism-scene">
+          <div class="prism-cube">
+            <div class="cf cf1"></div><div class="cf cf2"></div><div class="cf cf3"></div>
+            <div class="cf cf4"></div><div class="cf cf5"></div><div class="cf cf6"></div>
+          </div>
         </div>
-    </footer>
+      </div>
+      <div class="rv d1"><div class="hero-badge"><span class="badge-dot"></span>AI 자기소개서 분석 서비스</div></div>
+      <div class="rv d2"><h1 class="hero-h1">ㅇㅇ님의 취업을<br><span class="hl">응원합니다!</span></h1></div>
+      <div class="rv d3"><p class="hero-sub">채용 담당자가 보는 시선으로 자소서를 분석해드려요.<br>강점을 살리고 약점을 보완하는 맞춤 피드백을 받아보세요.</p></div>
+      <div class="rv d4"><button class="hero-cta" onclick="handleCta()">무료로 분석 시작하기<span class="cta-arr">→</span></button></div>
+    </div>
+  </section>
 
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-        import {
-            getAuth, onAuthStateChanged, signInWithPopup, signInWithEmailAndPassword,
-            createUserWithEmailAndPassword, signOut, GoogleAuthProvider
-        }
-            from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+  <!-- 피처 -->
+  <section class="features">
+    <div class="sec-label rv">왜 Ssurd인가요</div>
+    <h2 class="sec-h2 rv d1">합격하는 자소서에는<br>패턴이 있습니다</h2>
+    <div class="feat-grid">
+      <div class="feat-card big rvl d1">
+        <div class="feat-icon">✦</div>
+        <div class="feat-h3">Before / After 실제 첨삭</div>
+        <p class="feat-p">막연한 조언 대신, 원문 문장을 직접 개선한 예시를 보여드려요. 어떻게 바꾸면 되는지 바로 확인할 수 있어요.</p>
+      </div>
+      <div class="feat-card rvr d2">
+        <div class="feat-icon">◎</div>
+        <div class="feat-h3">100점 정밀 점수</div>
+        <p class="feat-p">직무 연관성, 구체성, 진정성 등 5가지 기준으로 객관적인 점수를 제시합니다.</p>
+      </div>
+      <div class="feat-card rv d3">
+        <div class="feat-icon">⌘</div>
+        <div class="feat-h3">직무 키워드 분석</div>
+        <p class="feat-p">지원 직무에서 기대하는 핵심 키워드가 있는지, 빠진 건 무엇인지 한눈에 확인하세요.</p>
+      </div>
+      <div class="feat-card rv d4">
+        <div class="feat-icon">→</div>
+        <div class="feat-h3">30초 즉시 분석</div>
+        <p class="feat-p">기다릴 필요 없어요. 입력하는 순간 채용 담당자급 피드백이 바로 나옵니다.</p>
+      </div>
+    </div>
+  </section>
 
-        const app = initializeApp({
-            apiKey: "AIzaSyCeqiOD3PDMD3xL0IAM52xGMBHJdMOfsDY",
-            authDomain: "ssurd-6400c.firebaseapp.com",
-            projectId: "ssurd-6400c",
-            storageBucket: "ssurd-6400c.firebasestorage.app",
-            messagingSenderId: "574073259312",
-            appId: "1:574073259312:web:5148cc8a6a9897b93474f5"
-        });
-        const auth = getAuth(app);
-        const gProvider = new GoogleAuthProvider();
-        let currentTab = 'login';
+  <!-- 샘플 리포트 -->
+  <section class="sample-sec">
+    <div class="sample-inner">
+      <div class="sample-left rv">
+        <h2>실제 분석 결과는<br>이렇게 나와요</h2>
+        <p>점수, 강점, Before/After 첨삭, 직무 키워드까지 한 페이지에서 확인할 수 있어요.</p>
+        <button class="hero-cta" style="font-size:14px;padding:14px 32px" onclick="handleCta()">내 자소서 분석하기 →</button>
+      </div>
+      <div class="sample-card rvr d1">
+        <div class="sample-card-top">
+          <div>
+            <div style="font-size:11px;font-family:'DM Mono',monospace;color:var(--g3);letter-spacing:.1em;text-transform:uppercase;margin-bottom:4px">분석 리포트 샘플</div>
+            <div class="sample-job">프로덕트 매니저 지원</div>
+          </div>
+          <div class="sample-grade">A</div>
+        </div>
+        <div class="sample-score-row">
+          <div class="sample-score-big">85</div>
+          <div class="sample-bars">
+            <div class="s-bar-row"><span class="s-bar-lbl">연관성</span><div class="s-bar-t"><div class="s-bar-f" style="width:92%"></div></div><span class="s-bar-v">92</span></div>
+            <div class="s-bar-row"><span class="s-bar-lbl">구체성</span><div class="s-bar-t"><div class="s-bar-f" style="width:78%"></div></div><span class="s-bar-v">78</span></div>
+            <div class="s-bar-row"><span class="s-bar-lbl">진정성</span><div class="s-bar-t"><div class="s-bar-f" style="width:85%"></div></div><span class="s-bar-v">85</span></div>
+          </div>
+        </div>
+        <div class="sample-tip">✦ <strong>핵심 조언:</strong> 수치 기반 성과 표현을 추가하면 더욱 설득력 있는 자소서가 됩니다.</div>
+      </div>
+    </div>
+  </section>
 
-        // 로그인 상태 감지
-        onAuthStateChanged(auth, (user) => {
-            const loginBtn = document.getElementById('navLoginBtn');
-            const userMenu = document.getElementById('navUserMenu');
-            const userName = document.getElementById('navUserName');
-            const heroBtn = document.getElementById('heroCtaBtn');
-            if (user) {
-                loginBtn.classList.add('hidden');
-                userMenu.classList.remove('hidden');
-                userMenu.classList.add('flex');
-                userName.textContent = user.displayName || user.email;
-                heroBtn.textContent = '분석 시작하기';
-            } else {
-                loginBtn.classList.remove('hidden');
-                userMenu.classList.add('hidden');
-                userMenu.classList.remove('flex');
-                heroBtn.textContent = 'Free Trial 시작하기';
-            }
-        });
+  <!-- CTA 하단 -->
+  <section class="cta-bottom">
+    <div class="cta-bottom-orb cb-orb1"></div>
+    <div class="cta-bottom-orb cb-orb2"></div>
+    <div class="cta-bottom-inner rv">
+      <h2>지금 바로<br>시작해보세요</h2>
+      <p>첫 번째 분석은 무료예요.<br>신용카드 없이, 30초 안에 결과를 받아보세요.</p>
+      <button class="btn-cta-white" onclick="handleCta()">무료로 분석 시작하기 →</button>
+    </div>
+  </section>
+</main>
 
-        window.handleCta = () => auth.currentUser ? location.href = 'write.html' : openModal();
-        window.openModal = () => document.getElementById('authModal').classList.remove('hidden');
-        window.closeModal = () => {
-            document.getElementById('authModal').classList.add('hidden');
-            document.getElementById('authError').classList.add('hidden');
-        };
+<footer>
+  <div class="footer-inner">
+    <div>
+      <div class="footer-logo">Ss<span class="dot">.</span>urd</div>
+      <div class="footer-copy">© 2025 Ssurd. All rights reserved.</div>
+    </div>
+    <div class="footer-links">
+      <a href="#" class="footer-lnk">개인정보 처리방침</a>
+      <a href="#" class="footer-lnk">이용약관</a>
+      <a href="#" class="footer-lnk">고객지원</a>
+    </div>
+  </div>
+</footer>
 
-        window.switchTab = (tab) => {
-            currentTab = tab;
-            const confirm = document.getElementById('authPasswordConfirm');
-            const submitBtn = document.getElementById('authSubmitBtn');
-            const tLogin = document.getElementById('tabLogin');
-            const tSignup = document.getElementById('tabSignup');
-            if (tab === 'login') {
-                confirm.classList.add('hidden');
-                submitBtn.textContent = '로그인';
-                tLogin.classList.add('bg-white', 'shadow', 'text-primary'); tLogin.classList.remove('text-slate-500');
-                tSignup.classList.remove('bg-white', 'shadow', 'text-primary'); tSignup.classList.add('text-slate-500');
-            } else {
-                confirm.classList.remove('hidden');
-                submitBtn.textContent = '회원가입';
-                tSignup.classList.add('bg-white', 'shadow', 'text-primary'); tSignup.classList.remove('text-slate-500');
-                tLogin.classList.remove('bg-white', 'shadow', 'text-primary'); tLogin.classList.add('text-slate-500');
-            }
-        };
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getAuth, onAuthStateChanged, signInWithPopup, signInWithEmailAndPassword,
+  createUserWithEmailAndPassword, signOut, GoogleAuthProvider }
+  from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 
-        const showError = (msg) => {
-            const el = document.getElementById('authError');
-            el.textContent = msg;
-            el.classList.remove('hidden');
-        };
+const app = initializeApp({
+  apiKey:"AIzaSyCeqiOD3PDMD3xL0IAM52xGMBHJdMOfsDY",
+  authDomain:"ssurd-6400c.firebaseapp.com",
+  projectId:"ssurd-6400c",
+  storageBucket:"ssurd-6400c.firebasestorage.app",
+  messagingSenderId:"574073259312",
+  appId:"1:574073259312:web:5148cc8a6a9897b93474f5"
+});
+const auth=getAuth(app);
+const gProvider=new GoogleAuthProvider();
+let currentTab='login';
 
-        const errMsg = {
-            'auth/user-not-found': '등록되지 않은 이메일입니다.',
-            'auth/wrong-password': '비밀번호가 올바르지 않습니다.',
-            'auth/email-already-in-use': '이미 사용 중인 이메일입니다.',
-            'auth/invalid-email': '올바른 이메일 형식이 아닙니다.',
-            'auth/invalid-credential': '이메일 또는 비밀번호를 확인해주세요.',
-        };
+onAuthStateChanged(auth, user => {
+  if(user){
+    document.getElementById('navLoginBtn').classList.add('hidden');
+    const nu=document.getElementById('navUser');
+    nu.classList.remove('hidden'); nu.style.display='flex';
+    document.getElementById('navUserName').textContent=user.displayName||user.email;
+  } else {
+    document.getElementById('navLoginBtn').classList.remove('hidden');
+    document.getElementById('navUser').classList.add('hidden');
+  }
+});
 
-        window.handleEmailAuth = async () => {
-            const email = document.getElementById('authEmail').value.trim();
-            const pw = document.getElementById('authPassword').value;
-            const pwc = document.getElementById('authPasswordConfirm').value;
-            document.getElementById('authError').classList.add('hidden');
-            if (!email || !pw) { showError('이메일과 비밀번호를 입력해주세요.'); return; }
-            try {
-                if (currentTab === 'login') {
-                    await signInWithEmailAndPassword(auth, email, pw);
-                } else {
-                    if (pw !== pwc) { showError('비밀번호가 일치하지 않습니다.'); return; }
-                    if (pw.length < 6) { showError('비밀번호는 6자 이상이어야 합니다.'); return; }
-                    await createUserWithEmailAndPassword(auth, email, pw);
-                }
-                closeModal();
-                location.href = 'write.html';
-            } catch (e) { showError(errMsg[e.code] || '오류가 발생했습니다.'); }
-        };
+// 스크롤 reveal
+const obs=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('on');});},{threshold:.12});
+document.querySelectorAll('.rv,.rvl,.rvr').forEach(el=>obs.observe(el));
 
-        window.handleGoogleLogin = async () => {
-            try {
-                await signInWithPopup(auth, gProvider);
-                closeModal();
-                location.href = 'write.html';
-            } catch (e) { showError('구글 로그인에 실패했습니다.'); }
-        };
+window.handleCta=()=>auth.currentUser?location.href='write.html':openModal();
+window.openModal=()=>document.getElementById('authModal').classList.remove('hidden');
+window.closeModal=()=>{document.getElementById('authModal').classList.add('hidden');hideErr();};
 
-        window.handleLogout = async () => {
-            await signOut(auth);
-            location.reload();
-        };
-    </script>
+window.switchTab=tab=>{
+  currentTab=tab;
+  const pwc=document.getElementById('authPwc');
+  const sub=document.getElementById('authSubmit');
+  const tl=document.getElementById('tabLogin');
+  const ts=document.getElementById('tabSignup');
+  if(tab==='login'){
+    pwc.classList.add('hidden');sub.textContent='로그인';
+    tl.classList.add('act');ts.classList.remove('act');
+  } else {
+    pwc.classList.remove('hidden');sub.textContent='회원가입';
+    ts.classList.add('act');tl.classList.remove('act');
+  }
+};
+
+const showErr=m=>{const el=document.getElementById('authErr');el.textContent=m;el.classList.remove('hidden');};
+const hideErr=()=>document.getElementById('authErr').classList.add('hidden');
+const errMap={'auth/user-not-found':'등록되지 않은 이메일입니다.','auth/wrong-password':'비밀번호가 올바르지 않습니다.','auth/email-already-in-use':'이미 사용 중인 이메일입니다.','auth/invalid-email':'올바른 이메일 형식이 아닙니다.','auth/invalid-credential':'이메일 또는 비밀번호를 확인해주세요.'};
+
+window.handleEmailAuth=async()=>{
+  const email=document.getElementById('authEmail').value.trim();
+  const pw=document.getElementById('authPw').value;
+  const pwc=document.getElementById('authPwc').value;
+  hideErr();
+  if(!email||!pw){showErr('이메일과 비밀번호를 입력해주세요.');return;}
+  try{
+    if(currentTab==='login'){
+      await signInWithEmailAndPassword(auth,email,pw);
+    } else {
+      if(pw!==pwc){showErr('비밀번호가 일치하지 않습니다.');return;}
+      if(pw.length<6){showErr('비밀번호는 6자 이상이어야 합니다.');return;}
+      await createUserWithEmailAndPassword(auth,email,pw);
+    }
+    closeModal();location.href='write.html';
+  }catch(e){showErr(errMap[e.code]||'오류가 발생했습니다.');}
+};
+
+window.handleGoogleLogin=async()=>{
+  try{await signInWithPopup(auth,gProvider);closeModal();location.href='write.html';}
+  catch{showErr('구글 로그인에 실패했습니다.');}
+};
+
+window.handleLogout=async()=>{await signOut(auth);location.reload();};
+</script>
 </body>
-
 </html>
