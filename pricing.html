@@ -171,13 +171,8 @@
       </li>
     </ul>
 
-    <!-- PayPal button placeholder -->
-    <div id="paypal-button-container" style="width:100%">
-      <button class="btn-plan-starter" id="paypalBtn">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M20.437 7.082c.175-1.132.067-1.904-.365-2.624C19.463 3.46 18.196 3 16.483 3H11.13a.9.9 0 0 0-.889.76L8.07 17.927a.54.54 0 0 0 .534.624h3.523l-.239 1.517a.472.472 0 0 0 .467.547h3.282c.39 0 .72-.283.782-.667l.032-.167.62-3.932.04-.216a.79.79 0 0 1 .78-.667h.492c3.183 0 5.674-1.293 6.401-5.033.304-1.562.147-2.866-.659-3.783a3.14 3.14 0 0 0-.689-.568z"/></svg>
-        Upgrade with PayPal
-      </button>
-    </div>
+    <!-- PayPal subscription button — rendered by SDK -->
+    <div id="paypal-button-container" style="width:100%;min-height:50px"></div>
     <div class="paypal-note">Secure checkout via PayPal · Cancel anytime</div>
   </div>
 
@@ -223,8 +218,17 @@
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
 import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+import { getFirestore, doc, getDoc, setDoc, updateDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
-const app = initializeApp({
+/* ── PayPal config ───────────────────────────────────────────────────────
+   To go live: swap PAYPAL_CLIENT_ID to your live client ID and
+   update PAYPAL_PLAN_ID to the matching live plan ID.
+   ─────────────────────────────────────────────────────────────────────── */
+const PAYPAL_CLIENT_ID = 'BAA1GO-92nOuXGpzCmglb1AyYvJXWgD_Xf0YJKe-05UUF7tp5j-QDr1NqlT3OG3eAk7_e1YfNWXBl8Kh1Q';
+const PAYPAL_PLAN_ID   = 'P-91P9079395605405SNIODRXI';
+
+/* ── Firebase ─────────────────────────────────────────────────────────── */
+const app  = initializeApp({
   apiKey:"AIzaSyCeqiOD3PDMD3xL0IAM52xGMBHJdMOfsDY",
   authDomain:"ssurd-6400c.firebaseapp.com",
   projectId:"ssurd-6400c",
@@ -232,29 +236,92 @@ const app = initializeApp({
   messagingSenderId:"574073259312",
   appId:"1:574073259312:web:5148cc8a6a9897b93474f5"
 });
-const auth=getAuth(app);
+const auth = getAuth(app);
+const db   = getFirestore(app);
 
-onAuthStateChanged(auth, user=>{
-  if(user){
+/* ── PayPal SDK loader ────────────────────────────────────────────────── */
+function loadPayPalSDK() {
+  return new Promise((resolve, reject) => {
+    if (window.paypal) { resolve(); return; }
+    const s = document.createElement('script');
+    s.src = `https://www.paypal.com/sdk/js?client-id=${PAYPAL_CLIENT_ID}&vault=true&intent=subscription`;
+    s.onload = resolve;
+    s.onerror = () => reject(new Error('Failed to load PayPal SDK'));
+    document.head.appendChild(s);
+  });
+}
+
+function renderPayPalButton(user) {
+  paypal.Buttons({
+    style: { layout: 'vertical', color: 'gold', shape: 'rect', label: 'subscribe' },
+    createSubscription(_data, actions) {
+      return actions.subscription.create({ plan_id: PAYPAL_PLAN_ID });
+    },
+    async onApprove(data) {
+      const container = document.getElementById('paypal-button-container');
+      container.innerHTML = '<div style="padding:14px 0;text-align:center;font-size:13px;color:rgba(255,255,255,.6);font-family:var(--mono)">Activating your plan…</div>';
+      try {
+        const userRef = doc(db, 'users', user.uid);
+        const snap = await getDoc(userRef);
+        if (snap.exists()) {
+          await updateDoc(userRef, {
+            plan: 'starter',
+            paypalSubscriptionId: data.subscriptionID,
+          });
+        } else {
+          await setDoc(userRef, {
+            email: user.email || '',
+            plan: 'starter',
+            paypalSubscriptionId: data.subscriptionID,
+            monthlyUsage: 0,
+            monthlyUsageMonth: new Date().toISOString().slice(0, 7),
+          });
+        }
+        location.href = 'dashboard.html';
+      } catch (e) {
+        console.error('Plan upgrade failed:', e);
+        container.innerHTML = '<div style="padding:14px 0;text-align:center;font-size:13px;color:#ff6b6b;font-family:var(--mono)">Upgrade failed. Please contact support.</div>';
+      }
+    },
+    onError(err) {
+      console.error('PayPal error:', err);
+    },
+  }).render('#paypal-button-container');
+}
+
+/* ── Auth state ───────────────────────────────────────────────────────── */
+onAuthStateChanged(auth, async user => {
+  const container = document.getElementById('paypal-button-container');
+  if (user) {
     document.getElementById('navLoginBtn').classList.add('hidden');
-    const nu=document.getElementById('navUser');
-    nu.classList.remove('hidden');nu.style.display='flex';
-    document.getElementById('navUserName').textContent=user.displayName||user.email;
+    const nu = document.getElementById('navUser');
+    nu.classList.remove('hidden'); nu.style.display = 'flex';
+    document.getElementById('navUserName').textContent = user.displayName || user.email;
+
+    const snap = await getDoc(doc(db, 'users', user.uid)).catch(() => null);
+    const plan = snap?.data()?.plan || 'free';
+
+    if (plan === 'starter') {
+      container.innerHTML = '<div style="padding:14px 0;text-align:center;font-size:13px;color:rgba(255,255,255,.55);font-family:var(--mono)">✓ You\'re already on Starter</div>';
+    } else {
+      try {
+        await loadPayPalSDK();
+        renderPayPalButton(user);
+      } catch {
+        container.innerHTML = '<div style="padding:14px 0;text-align:center;font-size:13px;color:#ff6b6b;font-family:var(--mono)">PayPal unavailable. Contact support.</div>';
+      }
+    }
   } else {
     document.getElementById('navLoginBtn').classList.remove('hidden');
     document.getElementById('navUser').classList.add('hidden');
+    container.innerHTML = '<a href="index.html" class="btn-plan-starter" style="text-decoration:none;display:flex;align-items:center;justify-content:center">Sign In to Upgrade →</a>';
   }
 });
 
-const obs=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('on');});},{threshold:.1});
-document.querySelectorAll('.rv').forEach(el=>obs.observe(el));
+const obs = new IntersectionObserver(es => { es.forEach(e => { if (e.isIntersecting) e.target.classList.add('on'); }); }, { threshold: .1 });
+document.querySelectorAll('.rv').forEach(el => obs.observe(el));
 
-window.handleLogout=async()=>{await signOut(auth);location.reload();};
-
-/* PayPal placeholder — wire up your PayPal JS SDK here */
-document.getElementById('paypalBtn').addEventListener('click', ()=>{
-  alert('PayPal checkout coming soon! Contact support@ssurd.com to upgrade manually.');
-});
+window.handleLogout = async () => { await signOut(auth); location.reload(); };
 </script>
 </body>
 </html>
