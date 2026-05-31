@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Ssurd — 분석 히스토리</title>
+<title>Ssurd — Analysis History</title>
 <link rel="stylesheet" href="style.css">
 <style>
 main{padding:72px 32px 64px;max-width:960px;margin:0 auto}
@@ -19,65 +19,66 @@ main{padding:72px 32px 64px;max-width:960px;margin:0 auto}
 <nav>
   <a href="index.html" class="nav-logo">Ss<span class="dot">.</span>urd</a>
   <div class="nav-mid">
-    <a href="index.html" class="nav-lnk">홈</a>
-    <a href="write.html" class="nav-lnk">분석하기</a>
-    <a href="dashboard.html" class="nav-lnk act">히스토리</a>
+    <a href="index.html" class="nav-lnk">Home</a>
+    <a href="write.html" class="nav-lnk">Analyze</a>
+    <a href="dashboard.html" class="nav-lnk act">History</a>
+    <a href="pricing.html" class="nav-lnk">Pricing</a>
   </div>
   <div class="nav-r">
     <div id="navUser" class="hidden" style="display:flex;align-items:center;gap:10px">
       <span id="navUserName" class="nav-uname"></span>
-      <button class="btn-ghost" onclick="handleLogout()">로그아웃</button>
+      <button class="btn-ghost" onclick="handleLogout()">Log Out</button>
     </div>
-    <a href="write.html" class="btn-solid" id="newAnalysisBtn">+ 새 분석</a>
-    <button id="navLoginBtn" class="btn-solid" onclick="location.href='index.html'">로그인</button>
+    <a href="write.html" class="btn-solid" id="newAnalysisBtn">+ New Analysis</a>
+    <button id="navLoginBtn" class="btn-solid" onclick="location.href='index.html'">Log In</button>
   </div>
 </nav>
 
 <main>
   <div class="page-header">
     <div class="page-eyebrow">MY DASHBOARD</div>
-    <h1 class="page-h1">분석 히스토리</h1>
-    <p class="page-sub">과거 분석 결과를 확인하고 자소서 성장을 추적하세요.</p>
+    <h1 class="page-h1">Analysis History</h1>
+    <p class="page-sub">Review past results and track your cover letter progress over time.</p>
   </div>
 
   <div id="loginPrompt" class="login-prompt hidden">
     <div style="font-size:36px;margin-bottom:16px">✦</div>
-    <h2>로그인이 필요해요</h2>
-    <p>히스토리를 보려면 먼저 로그인해 주세요.</p>
-    <a href="index.html" class="btn-dark" style="padding:14px 32px;font-size:14px;text-decoration:none">로그인하러 가기 →</a>
+    <h2>Sign in to view your history</h2>
+    <p>Your past analyses are saved to your account.</p>
+    <a href="index.html" class="btn-dark" style="padding:14px 32px;font-size:14px;text-decoration:none">Go to Sign In →</a>
   </div>
 
   <div id="loadingState" class="loading-state">
     <div class="loading-spin"></div>
-    <div class="loading-txt">히스토리를 불러오고 있어요</div>
+    <div class="loading-txt">Loading your history…</div>
   </div>
 
   <div id="mainContent" class="hidden">
     <div class="usage-card">
       <div class="usage-top">
         <div>
-          <div class="usage-plan" id="planLabel">무료 플랜</div>
-          <div class="usage-remaining"><span id="remainingCount">-</span> <span>회 남음</span></div>
+          <div class="usage-plan" id="planLabel">Free Plan</div>
+          <div class="usage-remaining"><span id="remainingCount">-</span> <span>left this month</span></div>
         </div>
-        <a href="write.html" class="btn-solid" style="background:rgba(255,255,255,.12);border-color:rgba(255,255,255,.2)">+ 새 분석</a>
+        <a href="write.html" class="btn-solid" style="background:rgba(255,255,255,.12);border-color:rgba(255,255,255,.2)">+ New Analysis</a>
       </div>
       <div class="usage-bar-track"><div class="usage-bar-fill" id="usageBarFill" style="width:0%"></div></div>
       <div class="usage-meta">
-        <span class="usage-meta-txt" id="usageLabel">- 회 사용</span>
-        <span class="usage-meta-txt">이번 달</span>
+        <span class="usage-meta-txt" id="usageLabel">- used</span>
+        <span class="usage-meta-txt">This month</span>
       </div>
     </div>
 
     <div class="stats-grid">
-      <div class="stat-card"><div class="stat-label">총 분석</div><div class="stat-num" id="statTotal">-</div><div class="stat-sub">회 분석 완료</div></div>
-      <div class="stat-card blue"><div class="stat-label">평균 점수</div><div class="stat-num" id="statAvg">-</div><div class="stat-sub">/ 100점</div></div>
-      <div class="stat-card green"><div class="stat-label">최고 점수</div><div class="stat-num" id="statBest">-</div><div class="stat-sub">/ 100점</div></div>
-      <div class="stat-card purple"><div class="stat-label">최고 등급</div><div class="stat-num" id="statBestGrade">-</div><div class="stat-sub">Grade</div></div>
+      <div class="stat-card"><div class="stat-label">Total Analyses</div><div class="stat-num" id="statTotal">-</div><div class="stat-sub">completed</div></div>
+      <div class="stat-card blue"><div class="stat-label">Average Score</div><div class="stat-num" id="statAvg">-</div><div class="stat-sub">/ 100</div></div>
+      <div class="stat-card green"><div class="stat-label">Best Score</div><div class="stat-num" id="statBest">-</div><div class="stat-sub">/ 100</div></div>
+      <div class="stat-card purple"><div class="stat-label">Best Grade</div><div class="stat-num" id="statBestGrade">-</div><div class="stat-sub">Grade</div></div>
     </div>
 
     <div class="chart-card" id="chartCard" style="display:none">
       <div class="chart-header">
-        <div class="chart-title">점수 추이</div>
+        <div class="chart-title">Score Trend</div>
         <div class="growth-badge hidden" id="growthBadge"><span id="growthValue"></span></div>
       </div>
       <div class="chart-wrap"><div class="chart-svg-wrap">
@@ -86,15 +87,15 @@ main{padding:72px 32px 64px;max-width:960px;margin:0 auto}
       </div></div>
     </div>
 
-    <div class="list-header"><div class="list-title">최근 분석 내역</div></div>
+    <div class="list-header"><div class="list-title">Recent Analyses</div></div>
     <div id="historyList"></div>
   </div>
 
   <div id="emptyState" class="empty-state hidden">
     <div style="font-size:36px;margin-bottom:14px">✦</div>
-    <h3>아직 분석 기록이 없어요</h3>
-    <p>첫 번째 자소서를 분석해보세요!</p>
-    <a href="write.html" class="btn-dark" style="padding:14px 32px;font-size:14px;text-decoration:none">지금 분석 시작하기 →</a>
+    <h3>No analyses yet</h3>
+    <p>Run your first cover letter analysis to get started!</p>
+    <a href="write.html" class="btn-dark" style="padding:14px 32px;font-size:14px;text-decoration:none">Start Analyzing →</a>
   </div>
 </main>
 
@@ -128,16 +129,15 @@ onAuthStateChanged(auth, async user=>{
   const plan=ud.plan||'free',limit=plan==='starter'?10:3;
   const currentMonth=new Date().toISOString().slice(0,7);
   const used=ud.monthlyUsageMonth===currentMonth?(ud.monthlyUsage||0):0;
-  document.getElementById('planLabel').textContent=plan==='starter'?'스타터 플랜':'무료 플랜';
+  document.getElementById('planLabel').textContent=plan==='starter'?'Starter Plan':'Free Plan';
   document.getElementById('remainingCount').textContent=Math.max(0,limit-used);
-  document.getElementById('usageLabel').textContent=`${limit}회 중 ${used}회 사용`;
+  document.getElementById('usageLabel').textContent=`${used} of ${limit} used`;
   document.getElementById('usageBarFill').style.width=`${Math.min(100,(used/limit)*100)}%`;
 
   try {
     const q=query(collection(db,'analyses'),where('uid','==',user.uid));
     const snap=await getDocs(q);
-    
-    // 클라이언트에서 최신순 정렬 (인덱스 오류 방지)
+
     const docs=snap.docs.map(d=>({id:d.id,...d.data()})).sort((a,b)=>{
       const tA=a.createdAt?.toMillis?a.createdAt.toMillis():0;
       const tB=b.createdAt?.toMillis?b.createdAt.toMillis():0;
@@ -163,18 +163,18 @@ onAuthStateChanged(auth, async user=>{
     renderChart([...docs].reverse().slice(-8));
     const diff=(docs[0].report?.score||0)-(docs[docs.length-1].report?.score||0);
     const gb=document.getElementById('growthBadge');gb.classList.remove('hidden');
-    document.getElementById('growthValue').textContent=(diff>=0?'+':'')+diff+'점';
+    document.getElementById('growthValue').textContent=(diff>=0?'+':'')+diff+' pts';
     gb.style.background=diff>=0?'var(--green-bg)':'var(--red-bg)';
     gb.style.color=diff>=0?'var(--green)':'var(--red)';
   }
-  
+
   renderHistory(docs);
   } catch (error) {
-    console.error("히스토리 로드 실패:", error);
+    console.error("History load failed:", error);
     hide('loadingState');
     show('emptyState');
-    document.querySelector('#emptyState h3').textContent = '데이터를 불러오지 못했습니다';
-    document.querySelector('#emptyState p').textContent = '잠시 후 다시 시도해주세요.';
+    document.querySelector('#emptyState h3').textContent = 'Could not load data';
+    document.querySelector('#emptyState p').textContent = 'Please try again in a moment.';
   }
 });
 
@@ -202,13 +202,13 @@ function renderHistory(docs){
   list.innerHTML='';
   docs.forEach(d=>{
     const date=d.createdAt?.toDate?d.createdAt.toDate():new Date();
-    const dateStr=`${date.getFullYear()}. ${date.getMonth()+1}. ${date.getDate()}`;
+    const dateStr=date.toLocaleDateString('en-US',{year:'numeric',month:'short',day:'numeric'});
     const score=d.report?.score||'-',grade=d.report?.grade||'-',summary=d.report?.summary||'';
     const sc=typeof score==='number'?(score>=80?'var(--green)':score>=60?'var(--primary)':score>=40?'var(--yellow)':'var(--red)'):'var(--t1)';
     const el=document.createElement('div');
     el.className='history-item';
     el.dataset.id=d.id;
-    el.innerHTML=`<div class="hist-left"><div class="hist-date">${esc(dateStr)}</div><div class="hist-job">${esc(d.jobTitle||'—')}</div><div class="hist-summary">${esc(summary)}</div></div><div class="hist-right"><div class="hist-stat"><div class="hist-stat-num" style="color:${sc}">${typeof score==='number'?score:'-'}</div><div class="hist-stat-lbl">점수</div></div><div class="hist-stat"><div class="hist-stat-num" style="color:var(--primary)">${esc(grade)}</div><div class="hist-stat-lbl">등급</div></div><div class="hist-arrow">→</div></div>`;
+    el.innerHTML=`<div class="hist-left"><div class="hist-date">${esc(dateStr)}</div><div class="hist-job">${esc(d.jobTitle||'—')}</div><div class="hist-summary">${esc(summary)}</div></div><div class="hist-right"><div class="hist-stat"><div class="hist-stat-num" style="color:${sc}">${typeof score==='number'?score:'-'}</div><div class="hist-stat-lbl">Score</div></div><div class="hist-stat"><div class="hist-stat-num" style="color:var(--primary)">${esc(grade)}</div><div class="hist-stat-lbl">Grade</div></div><div class="hist-arrow">→</div></div>`;
     el.addEventListener('click',()=>{location.href='write.html?id='+encodeURIComponent(d.id);});
     list.appendChild(el);
   });

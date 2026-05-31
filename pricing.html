@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ssurd — Pricing</title>
+<meta name="description" content="Simple, transparent pricing. Start free. Upgrade when you need more.">
+<link rel="stylesheet" href="style.css">
+<style>
+.pricing-hero{min-height:auto;padding:120px 32px 64px;text-align:center;max-width:640px;margin:0 auto}
+.pricing-hero .sec-label{margin-bottom:12px}
+.pricing-h1{font-size:clamp(28px,5vw,48px);font-weight:900;letter-spacing:-.04em;line-height:1.15;margin-bottom:12px}
+.pricing-sub{font-size:15px;color:var(--t3);line-height:1.7}
+
+.plans-wrap{max-width:760px;margin:0 auto;padding:0 32px 80px;display:grid;grid-template-columns:1fr 1fr;gap:20px;align-items:start}
+.plan-card{background:#fff;border:var(--bw) solid var(--border-bold);border-radius:var(--r-xl);padding:36px;position:relative;transition:transform .2s var(--ease),box-shadow .2s var(--ease)}
+.plan-card:hover{transform:translate(-2px,-2px);box-shadow:var(--shadow)}
+.plan-card.featured{background:var(--t1);color:#fff}
+.plan-badge{display:inline-block;font-family:var(--mono);font-size:10px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;padding:4px 12px;border-radius:var(--r-full);background:var(--primary-light);color:var(--primary);border:1.5px solid var(--primary);margin-bottom:20px}
+.plan-card.featured .plan-badge{background:rgba(255,255,255,.15);color:#fff;border-color:rgba(255,255,255,.3)}
+.plan-name{font-size:22px;font-weight:800;letter-spacing:-.02em;margin-bottom:8px}
+.plan-card.featured .plan-name{color:#fff}
+.plan-desc{font-size:13px;color:var(--t3);margin-bottom:24px;line-height:1.6}
+.plan-card.featured .plan-desc{color:rgba(255,255,255,.45)}
+.plan-price-row{display:flex;align-items:baseline;gap:4px;margin-bottom:6px}
+.plan-price{font-size:44px;font-weight:900;letter-spacing:-.04em;line-height:1;color:var(--t1)}
+.plan-card.featured .plan-price{color:#fff}
+.plan-currency{font-size:20px;font-weight:700;color:var(--t2);align-self:flex-start;padding-top:8px}
+.plan-card.featured .plan-currency{color:rgba(255,255,255,.6)}
+.plan-period{font-size:13px;color:var(--t3);font-weight:500}
+.plan-card.featured .plan-period{color:rgba(255,255,255,.4)}
+.plan-divider{height:var(--bw);background:var(--border);margin:24px 0}
+.plan-card.featured .plan-divider{background:rgba(255,255,255,.12)}
+.plan-features{list-style:none;display:flex;flex-direction:column;gap:12px;margin-bottom:32px}
+.plan-feat{display:flex;align-items:flex-start;gap:10px;font-size:13px;color:var(--t2);line-height:1.5}
+.plan-card.featured .plan-feat{color:rgba(255,255,255,.7)}
+.feat-icon{width:18px;height:18px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;flex-shrink:0;margin-top:1px}
+.feat-icon.yes{background:var(--green-bg);color:var(--green);border:1.5px solid var(--green)}
+.feat-icon.no{background:var(--bg);color:var(--t4);border:1.5px solid var(--border)}
+.plan-card.featured .feat-icon.yes{background:rgba(0,196,113,.15);color:#00c471;border-color:rgba(0,196,113,.4)}
+.feat-text{flex:1}
+.feat-text strong{font-weight:700;color:var(--t1)}
+.plan-card.featured .feat-text strong{color:#fff}
+
+.btn-plan-free{width:100%;padding:14px;border-radius:var(--r-md);border:var(--bw) solid var(--border-bold);background:#fff;color:var(--t1);font-family:var(--font);font-size:14px;font-weight:700;cursor:pointer;transition:all .15s var(--ease);box-shadow:var(--shadow-sm);display:flex;align-items:center;justify-content:center;gap:8px;text-decoration:none}
+.btn-plan-free:hover{background:var(--bg);transform:translate(-1px,-1px);box-shadow:var(--shadow)}
+.btn-plan-starter{width:100%;padding:14px;border-radius:var(--r-md);border:var(--bw) solid rgba(255,255,255,.3);background:var(--primary);color:#fff;font-family:var(--font);font-size:14px;font-weight:700;cursor:pointer;transition:all .15s var(--ease);box-shadow:3px 3px 0 rgba(255,255,255,.15);display:flex;align-items:center;justify-content:center;gap:8px;text-decoration:none}
+.btn-plan-starter:hover{background:#1b64da;transform:translate(-1px,-1px);box-shadow:5px 5px 0 rgba(255,255,255,.15)}
+
+.paypal-note{font-size:11px;color:rgba(255,255,255,.35);text-align:center;margin-top:10px;font-family:var(--mono)}
+.free-note{font-size:11px;color:var(--t4);text-align:center;margin-top:10px;font-family:var(--mono)}
+
+.faq-wrap{max-width:640px;margin:0 auto;padding:0 32px 80px}
+.faq-label{font-family:var(--mono);font-size:12px;color:var(--primary);letter-spacing:.08em;font-weight:500;margin-bottom:12px}
+.faq-h2{font-size:clamp(20px,3vw,28px);font-weight:800;letter-spacing:-.03em;margin-bottom:32px}
+.faq-item{border-top:var(--bw) solid var(--border);padding:20px 0}
+.faq-item:last-child{border-bottom:var(--bw) solid var(--border)}
+.faq-q{font-size:14px;font-weight:700;color:var(--t1);margin-bottom:8px}
+.faq-a{font-size:13px;color:var(--t3);line-height:1.65}
+
+@media(max-width:640px){
+  .plans-wrap{grid-template-columns:1fr;padding:0 20px 60px}
+  .pricing-hero{padding:100px 20px 48px}
+  .faq-wrap{padding:0 20px 60px}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="nav-logo">Ss<span class="dot">.</span>urd</a>
+  <div class="nav-mid">
+    <a href="index.html" class="nav-lnk">Home</a>
+    <a href="write.html" class="nav-lnk">Analyze</a>
+    <a href="dashboard.html" class="nav-lnk">History</a>
+    <a href="pricing.html" class="nav-lnk act">Pricing</a>
+  </div>
+  <div class="nav-r">
+    <div id="navUser" class="hidden" style="display:flex;align-items:center;gap:10px">
+      <span id="navUserName" class="nav-uname"></span>
+      <button class="btn-ghost" onclick="handleLogout()">Log Out</button>
+    </div>
+    <button id="navLoginBtn" class="btn-solid" onclick="location.href='index.html'">Get Started</button>
+  </div>
+</nav>
+
+<div class="pricing-hero rv">
+  <div class="sec-label">PRICING</div>
+  <h1 class="pricing-h1">Simple, honest pricing.</h1>
+  <p class="pricing-sub">Start free. Upgrade when you need more analyses.<br>No hidden fees, no auto-renewal surprises.</p>
+</div>
+
+<div class="plans-wrap">
+
+  <!-- Free Plan -->
+  <div class="plan-card rv d1">
+    <div class="plan-badge">Free</div>
+    <div class="plan-name">Free</div>
+    <div class="plan-desc">Perfect for trying it out or occasional use.</div>
+    <div class="plan-price-row">
+      <span class="plan-currency">$</span>
+      <span class="plan-price">0</span>
+    </div>
+    <div class="plan-period">forever free</div>
+    <div class="plan-divider"></div>
+    <ul class="plan-features">
+      <li class="plan-feat">
+        <span class="feat-icon yes">✓</span>
+        <span class="feat-text"><strong>3 analyses</strong> per month</span>
+      </li>
+      <li class="plan-feat">
+        <span class="feat-icon yes">✓</span>
+        <span class="feat-text">100-point score with 5 sub-scores</span>
+      </li>
+      <li class="plan-feat">
+        <span class="feat-icon yes">✓</span>
+        <span class="feat-text">Before / After sentence rewrites</span>
+      </li>
+      <li class="plan-feat">
+        <span class="feat-icon yes">✓</span>
+        <span class="feat-text">Keyword gap analysis</span>
+      </li>
+      <li class="plan-feat">
+        <span class="feat-icon yes">✓</span>
+        <span class="feat-text">Analysis history (dashboard)</span>
+      </li>
+      <li class="plan-feat">
+        <span class="feat-icon no">—</span>
+        <span class="feat-text" style="color:var(--t4)">Priority analysis queue</span>
+      </li>
+    </ul>
+    <a href="write.html" class="btn-plan-free">Start for Free →</a>
+    <div class="free-note">No credit card required</div>
+  </div>
+
+  <!-- Starter Plan -->
+  <div class="plan-card featured rv d2">
+    <div class="plan-badge">Most Popular</div>
+    <div class="plan-name">Starter</div>
+    <div class="plan-desc">For active job seekers who need more analyses each month.</div>
+    <div class="plan-price-row">
+      <span class="plan-currency">$</span>
+      <span class="plan-price">9</span>
+    </div>
+    <div class="plan-period">per month</div>
+    <div class="plan-divider"></div>
+    <ul class="plan-features">
+      <li class="plan-feat">
+        <span class="feat-icon yes">✓</span>
+        <span class="feat-text"><strong>10 analyses</strong> per month</span>
+      </li>
+      <li class="plan-feat">
+        <span class="feat-icon yes">✓</span>
+        <span class="feat-text">100-point score with 5 sub-scores</span>
+      </li>
+      <li class="plan-feat">
+        <span class="feat-icon yes">✓</span>
+        <span class="feat-text">Before / After sentence rewrites</span>
+      </li>
+      <li class="plan-feat">
+        <span class="feat-icon yes">✓</span>
+        <span class="feat-text">Keyword gap analysis</span>
+      </li>
+      <li class="plan-feat">
+        <span class="feat-icon yes">✓</span>
+        <span class="feat-text">Full analysis history</span>
+      </li>
+      <li class="plan-feat">
+        <span class="feat-icon yes">✓</span>
+        <span class="feat-text"><strong>Priority</strong> analysis queue</span>
+      </li>
+    </ul>
+
+    <!-- PayPal button placeholder -->
+    <div id="paypal-button-container" style="width:100%">
+      <button class="btn-plan-starter" id="paypalBtn">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M20.437 7.082c.175-1.132.067-1.904-.365-2.624C19.463 3.46 18.196 3 16.483 3H11.13a.9.9 0 0 0-.889.76L8.07 17.927a.54.54 0 0 0 .534.624h3.523l-.239 1.517a.472.472 0 0 0 .467.547h3.282c.39 0 .72-.283.782-.667l.032-.167.62-3.932.04-.216a.79.79 0 0 1 .78-.667h.492c3.183 0 5.674-1.293 6.401-5.033.304-1.562.147-2.866-.659-3.783a3.14 3.14 0 0 0-.689-.568z"/></svg>
+        Upgrade with PayPal
+      </button>
+    </div>
+    <div class="paypal-note">Secure checkout via PayPal · Cancel anytime</div>
+  </div>
+
+</div>
+
+<!-- FAQ -->
+<div class="faq-wrap">
+  <div class="faq-label rv">FAQ</div>
+  <h2 class="faq-h2 rv d1">Common questions</h2>
+
+  <div class="faq-item rv d1">
+    <div class="faq-q">Does my monthly usage reset?</div>
+    <div class="faq-a">Yes. Your analysis count resets on the 1st of every month, regardless of when you signed up.</div>
+  </div>
+  <div class="faq-item rv d2">
+    <div class="faq-q">Is my cover letter data stored?</div>
+    <div class="faq-a">Your text is used only to generate your analysis. It is either deleted immediately after, or stored encrypted in your personal history if you choose to save it. You can delete saved analyses at any time.</div>
+  </div>
+  <div class="faq-item rv d3">
+    <div class="faq-q">How accurate is the AI scoring?</div>
+    <div class="faq-a">Our model is prompted to evaluate from a global senior HR perspective and scores across five distinct dimensions. Results are strong reference points — but no AI can guarantee hiring outcomes.</div>
+  </div>
+  <div class="faq-item rv d4">
+    <div class="faq-q">Can I cancel my subscription?</div>
+    <div class="faq-a">Yes, you can cancel at any time. Your Starter plan access continues until the end of the billing period. Contact support if you need help.</div>
+  </div>
+</div>
+
+<footer>
+  <div class="footer-inner">
+    <div>
+      <div class="footer-logo">Ss<span class="dot">.</span>urd</div>
+      <div class="footer-copy">© 2026 Ssurd. All rights reserved.</div>
+    </div>
+    <div class="footer-links">
+      <a href="legal.html?tab=privacy" class="footer-lnk">Privacy Policy</a>
+      <a href="legal.html?tab=terms" class="footer-lnk">Terms of Service</a>
+      <a href="mailto:chlgkrud981109@naver.com" class="footer-lnk">Support</a>
+    </div>
+  </div>
+</footer>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+
+const app = initializeApp({
+  apiKey:"AIzaSyCeqiOD3PDMD3xL0IAM52xGMBHJdMOfsDY",
+  authDomain:"ssurd-6400c.firebaseapp.com",
+  projectId:"ssurd-6400c",
+  storageBucket:"ssurd-6400c.firebasestorage.app",
+  messagingSenderId:"574073259312",
+  appId:"1:574073259312:web:5148cc8a6a9897b93474f5"
+});
+const auth=getAuth(app);
+
+onAuthStateChanged(auth, user=>{
+  if(user){
+    document.getElementById('navLoginBtn').classList.add('hidden');
+    const nu=document.getElementById('navUser');
+    nu.classList.remove('hidden');nu.style.display='flex';
+    document.getElementById('navUserName').textContent=user.displayName||user.email;
+  } else {
+    document.getElementById('navLoginBtn').classList.remove('hidden');
+    document.getElementById('navUser').classList.add('hidden');
+  }
+});
+
+const obs=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('on');});},{threshold:.1});
+document.querySelectorAll('.rv').forEach(el=>obs.observe(el));
+
+window.handleLogout=async()=>{await signOut(auth);location.reload();};
+
+/* PayPal placeholder — wire up your PayPal JS SDK here */
+document.getElementById('paypalBtn').addEventListener('click', ()=>{
+  alert('PayPal checkout coming soon! Contact support@ssurd.com to upgrade manually.');
+});
+</script>
+</body>
+</html>

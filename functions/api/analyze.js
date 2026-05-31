@@ -19,14 +19,14 @@ export async function onRequestPost({ request, env }) {
   // Firebase ID 토큰 검증
   const authHeader = request.headers.get('Authorization');
   if (!authHeader || !authHeader.startsWith('Bearer ')) {
-    return new Response(JSON.stringify({ ok: false, error: '인증이 필요합니다.' }), { status: 401, headers });
+    return new Response(JSON.stringify({ ok: false, error: 'Authentication required.' }), { status: 401, headers });
   }
   const idToken = authHeader.slice(7);
   let payload;
   try {
     payload = await verifyFirebaseToken(idToken, FIREBASE_PROJECT_ID);
   } catch {
-    return new Response(JSON.stringify({ ok: false, error: '인증에 실패했습니다.' }), { status: 401, headers });
+    return new Response(JSON.stringify({ ok: false, error: 'Authentication failed.' }), { status: 401, headers });
   }
   const uid = payload.sub;
   const currentMonth = new Date().toISOString().slice(0, 7); // "2026-05"
@@ -54,23 +54,23 @@ export async function onRequestPost({ request, env }) {
   }
 
   if (used >= limit) {
-    return new Response(JSON.stringify({ ok: false, error: '이번 달 분석 횟수를 모두 사용했습니다.' }), { status: 429, headers });
+    return new Response(JSON.stringify({ ok: false, error: "You've used all your analyses for this month." }), { status: 429, headers });
   }
 
   let body;
   try {
     body = await request.json();
   } catch {
-    return new Response(JSON.stringify({ ok: false, error: '요청 형식이 올바르지 않습니다.' }), { status: 400, headers });
+    return new Response(JSON.stringify({ ok: false, error: 'Invalid request format.' }), { status: 400, headers });
   }
 
   const { jobTitle, coverLetter } = body;
 
   if (!jobTitle || jobTitle.trim().length < 2) {
-    return new Response(JSON.stringify({ ok: false, error: '지원 직무를 입력해주세요.' }), { status: 400, headers });
+    return new Response(JSON.stringify({ ok: false, error: 'Please enter the target role.' }), { status: 400, headers });
   }
   if (!coverLetter || coverLetter.trim().length < 100) {
-    return new Response(JSON.stringify({ ok: false, error: '자기소개서를 100자 이상 입력해주세요.' }), { status: 400, headers });
+    return new Response(JSON.stringify({ ok: false, error: 'Please enter at least 100 characters.' }), { status: 400, headers });
   }
 
   const prompt = buildPrompt(jobTitle.trim(), coverLetter.trim().slice(0, 3000));
@@ -91,13 +91,13 @@ export async function onRequestPost({ request, env }) {
       }),
     });
   } catch {
-    return new Response(JSON.stringify({ ok: false, error: 'Claude API 연결에 실패했습니다.' }), { status: 502, headers });
+    return new Response(JSON.stringify({ ok: false, error: 'Failed to connect to analysis service.' }), { status: 502, headers });
   }
 
   if (!claudeRes.ok) {
     const errBody = await claudeRes.text();
     console.error(`Claude API ${claudeRes.status}: ${errBody}`);
-    return new Response(JSON.stringify({ ok: false, error: `분석 서버 오류 (${claudeRes.status}). 잠시 후 다시 시도해주세요.` }), { status: 502, headers });
+    return new Response(JSON.stringify({ ok: false, error: `Analysis server error (${claudeRes.status}). Please try again shortly.` }), { status: 502, headers });
   }
 
   const claudeData = await claudeRes.json();
@@ -109,7 +109,7 @@ export async function onRequestPost({ request, env }) {
     if (!match) throw new Error('JSON not found');
     report = JSON.parse(match[0]);
   } catch {
-    return new Response(JSON.stringify({ ok: false, error: '분석 결과 파싱 실패. 다시 시도해주세요.' }), { status: 500, headers });
+    return new Response(JSON.stringify({ ok: false, error: 'Failed to parse analysis result. Please try again.' }), { status: 500, headers });
   }
 
   // Firestore 사용량 업데이트 (서버 사이드)
@@ -209,57 +209,57 @@ async function verifyFirebaseToken(token, projectId) {
 // ── 프롬프트 ───────────────────────────────────────────────────────────────
 
 function buildPrompt(jobTitle, coverLetter) {
-  return `당신은 국내 대기업 채용 담당 15년 경력의 시니어 HR 전문가입니다.
-아래 자기소개서를 철저하게 분석하여 지원자가 실질적으로 개선할 수 있는 피드백을 제공하세요.
+  return `You are a global senior HR professional with 15 years of recruiting experience at top-tier companies.
+Thoroughly analyze the cover letter below and provide actionable feedback the applicant can use to improve.
 
-[지원 직무]
+[Target Role]
 ${jobTitle}
 
-[자기소개서 원문]
+[Cover Letter / Resume]
 ${coverLetter}
 
-분석 기준:
-1. 직무 연관성: 해당 직무에서 요구하는 역량과 경험이 얼마나 잘 연결되는가
-2. 구체성: 막연한 표현 대신 수치, 사례, 행동을 구체적으로 서술했는가
-3. 문장 명확성: 능동태, 간결한 문체, 논리적 흐름을 갖추고 있는가
-4. 진정성: 본인만의 고유한 경험과 관점이 드러나는가
-5. 임팩트: 성과와 기여를 설득력 있게 표현했는가
+Evaluation criteria:
+1. Relevance: How well does the applicant's experience and skills connect to what this role requires?
+2. Specificity: Are claims supported with concrete numbers, examples, and actions — rather than vague statements?
+3. Clarity: Is the writing active, concise, and logically structured?
+4. Authenticity: Does it reflect a unique perspective and genuine personal experience?
+5. Impact: Are achievements and contributions communicated persuasively?
 
-반드시 아래 JSON 형식만 반환하고 다른 텍스트는 절대 포함하지 마세요:
+Return ONLY the JSON object below. Do not include any other text:
 
 {
-  "score": <종합 점수 0-100 정수>,
+  "score": <overall score 0-100 integer>,
   "grade": <"S" | "A" | "B" | "C" | "D">,
-  "summary": "<전체 평가 한 줄 요약, 40자 이내>",
+  "summary": "<one-sentence overall assessment, max 100 characters>",
   "scores": {
-    "relevance": <직무연관성 0-100>,
-    "specificity": <구체성 0-100>,
-    "clarity": <문장명확성 0-100>,
-    "authenticity": <진정성 0-100>,
-    "impact": <임팩트 0-100>
+    "relevance": <0-100>,
+    "specificity": <0-100>,
+    "clarity": <0-100>,
+    "authenticity": <0-100>,
+    "impact": <0-100>
   },
   "strengths": [
-    { "title": "<강점 제목 20자 이내>", "detail": "<구체적 근거 60자 이내>" },
-    { "title": "<강점 제목 20자 이내>", "detail": "<구체적 근거 60자 이내>" }
+    { "title": "<strength title, max 40 characters>", "detail": "<specific evidence, max 120 characters>" },
+    { "title": "<strength title, max 40 characters>", "detail": "<specific evidence, max 120 characters>" }
   ],
   "improvements": [
     {
-      "issue": "<문제점 제목 20자 이내>",
-      "why": "<왜 문제인지 50자 이내>",
-      "before": "<원문에서 가져온 개선 전 표현>",
-      "after": "<실제 개선된 문장>"
+      "issue": "<issue title, max 40 characters>",
+      "why": "<why it's a problem, max 100 characters>",
+      "before": "<original phrase from the text>",
+      "after": "<improved rewrite>"
     },
     {
-      "issue": "<문제점 제목 20자 이내>",
-      "why": "<왜 문제인지 50자 이내>",
-      "before": "<원문에서 가져온 개선 전 표현>",
-      "after": "<실제 개선된 문장>"
+      "issue": "<issue title, max 40 characters>",
+      "why": "<why it's a problem, max 100 characters>",
+      "before": "<original phrase from the text>",
+      "after": "<improved rewrite>"
     }
   ],
   "keywords": {
-    "matched": ["<발견된 키워드>", "<발견된 키워드>", "<발견된 키워드>"],
-    "missing": ["<추가 권장 키워드>", "<추가 권장 키워드>", "<추가 권장 키워드>"]
+    "matched": ["<keyword found>", "<keyword found>", "<keyword found>"],
+    "missing": ["<suggested keyword>", "<suggested keyword>", "<suggested keyword>"]
   },
-  "oneLineTip": "<채용 담당자로서 전하는 핵심 한마디 50자 이내>"
+  "oneLineTip": "<the single most important piece of advice from an HR perspective, max 120 characters>"
 }`;
 }

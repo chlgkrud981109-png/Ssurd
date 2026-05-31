@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Ssurd — 당신의 취업을 응원합니다</title>
-<meta name="description" content="30초 만에 자소서를 점수로. 채용 담당자 시선의 즉시 첨삭 서비스.">
+<title>Ssurd — Land Your Dream Job</title>
+<meta name="description" content="Score your cover letter in 30 seconds. Instant feedback from a senior HR professional's perspective.">
 <link rel="stylesheet" href="style.css">
 <style>
 /* ─ Hero ─ */
@@ -48,7 +48,7 @@
 .sc-score-big{font-size:52px;font-weight:900;letter-spacing:-.04em;color:var(--green);line-height:1}
 .sc-bars{flex:1;display:flex;flex-direction:column;gap:8px}
 .sb-row{display:flex;align-items:center;gap:8px}
-.sb-lbl{font-size:11px;color:var(--t3);width:48px;font-weight:500}
+.sb-lbl{font-size:11px;color:var(--t3);width:64px;font-weight:500}
 .sb-track{flex:1;height:4px;background:var(--bg);border-radius:2px;overflow:hidden}
 .sb-fill{height:100%;border-radius:2px;background:var(--primary)}
 .sb-v{font-family:var(--mono);font-size:11px;font-weight:500;color:var(--t2);width:22px;text-align:right}
@@ -72,25 +72,25 @@
 </head>
 <body>
 
-<!-- 로그인 모달 -->
+<!-- Auth Modal -->
 <div id="authModal" class="modal-overlay hidden">
   <div class="modal-box">
     <button class="modal-close" onclick="closeModal()">✕</button>
     <div class="modal-title">Ss<span style="color:var(--primary)">.</span>urd</div>
-    <div class="modal-sub">취업을 응원합니다</div>
+    <div class="modal-sub">Your career, elevated.</div>
     <div id="authErr" class="auth-err hidden"></div>
     <div class="tab-row">
-      <button id="tabLogin" class="tab-btn act" onclick="switchTab('login')">로그인</button>
-      <button id="tabSignup" class="tab-btn" onclick="switchTab('signup')">회원가입</button>
+      <button id="tabLogin" class="tab-btn act" onclick="switchTab('login')">Log In</button>
+      <button id="tabSignup" class="tab-btn" onclick="switchTab('signup')">Sign Up</button>
     </div>
-    <input id="authEmail" class="f-input" type="email" placeholder="이메일"/>
-    <input id="authPw" class="f-input" type="password" placeholder="비밀번호 (6자 이상)"/>
-    <input id="authPwc" class="f-input hidden" type="password" placeholder="비밀번호 확인"/>
-    <button id="authSubmit" class="btn-auth" onclick="handleEmailAuth()">로그인</button>
-    <div class="divider"><div class="divider-line"></div><span class="divider-txt">또는</span><div class="divider-line"></div></div>
+    <input id="authEmail" class="f-input" type="email" placeholder="Email address"/>
+    <input id="authPw" class="f-input" type="password" placeholder="Password (min. 6 characters)"/>
+    <input id="authPwc" class="f-input hidden" type="password" placeholder="Confirm password"/>
+    <button id="authSubmit" class="btn-auth" onclick="handleEmailAuth()">Log In</button>
+    <div class="divider"><div class="divider-line"></div><span class="divider-txt">or</span><div class="divider-line"></div></div>
     <button class="btn-google" onclick="handleGoogleLogin()">
       <svg width="16" height="16" viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>
-      Google로 계속하기
+      Continue with Google
     </button>
   </div>
 </div>
@@ -98,28 +98,29 @@
 <nav>
   <a href="index.html" class="nav-logo">Ss<span class="dot">.</span>urd</a>
   <div class="nav-mid">
-    <a href="index.html" class="nav-lnk act">홈</a>
-    <a href="write.html" class="nav-lnk">분석하기</a>
-    <a href="dashboard.html" class="nav-lnk">히스토리</a>
+    <a href="index.html" class="nav-lnk act">Home</a>
+    <a href="write.html" class="nav-lnk">Analyze</a>
+    <a href="dashboard.html" class="nav-lnk">History</a>
+    <a href="pricing.html" class="nav-lnk">Pricing</a>
   </div>
   <div class="nav-r">
     <div id="navUser" class="hidden" style="display:flex;align-items:center;gap:10px">
       <span id="navUserName" class="nav-uname"></span>
-      <button class="btn-ghost" onclick="handleLogout()">로그아웃</button>
+      <button class="btn-ghost" onclick="handleLogout()">Log Out</button>
     </div>
-    <button id="navLoginBtn" class="btn-solid" onclick="openModal()">시작하기</button>
+    <button id="navLoginBtn" class="btn-solid" onclick="openModal()">Get Started</button>
   </div>
 </nav>
 
 <main>
   <section class="hero">
     <div class="hero-inner">
-      <div class="rv"><div class="hero-badge"><span class="badge-dot"></span>스마트 자기소개서 분석</div></div>
-      <div class="rv d1"><h1 class="hero-h1" id="heroTitle">당신의 취업을<br><span class="hl">응원합니다</span></h1></div>
-      <div class="rv d2"><p class="hero-sub">채용 담당자의 시선으로 자소서를 분석해드려요.<br>30초 만에 점수와 맞춤 피드백을 받아보세요.</p></div>
+      <div class="rv"><div class="hero-badge"><span class="badge-dot"></span>Smart Cover Letter Analysis</div></div>
+      <div class="rv d1"><h1 class="hero-h1" id="heroTitle">Land Your<br><span class="hl">Dream Job</span></h1></div>
+      <div class="rv d2"><p class="hero-sub">Get your cover letter scored by an AI trained on senior HR expertise.<br>Score + tailored feedback in 30 seconds.</p></div>
       <div class="rv d3">
         <div class="hero-cta-row">
-          <button class="btn-primary" style="padding:14px 36px;font-size:15px" onclick="handleCta()">무료로 분석 시작하기 →</button>
+          <button class="btn-primary" style="padding:14px 36px;font-size:15px" onclick="handleCta()">Analyze for Free →</button>
         </div>
       </div>
     </div>
@@ -127,27 +128,27 @@
 
   <section class="sec">
     <div class="sec-label rv">FEATURES</div>
-    <h2 class="sec-h2 rv d1">합격하는 자소서에는<br>패턴이 있습니다</h2>
+    <h2 class="sec-h2 rv d1">Great cover letters<br>follow a pattern.</h2>
     <div class="bento">
       <div class="card rv d1">
         <div class="card-icon blue">⚡</div>
-        <h3>30초 즉시 분석</h3>
-        <p>기다릴 필요 없어요. 붙여넣는 순간 채용 담당자급 피드백이 나옵니다. 언제든, 몇 번이든.</p>
+        <h3>30-Second Analysis</h3>
+        <p>No waiting. Paste your cover letter and get senior HR-level feedback instantly — anytime, as many times as you need.</p>
       </div>
       <div class="card rv d2">
         <div class="card-icon green">◎</div>
-        <h3>100점 정밀 점수</h3>
-        <p>직무 연관성, 구체성, 진정성 등 5가지 기준 객관 점수.</p>
+        <h3>100-Point Precision Score</h3>
+        <p>Objective scoring across 5 criteria: relevance, specificity, clarity, authenticity, and impact.</p>
       </div>
       <div class="card rv d3">
         <div class="card-icon dark">⌘</div>
-        <h3>직무 키워드 분석</h3>
-        <p>핵심 키워드 매칭과 누락 키워드를 한눈에.</p>
+        <h3>Keyword Gap Analysis</h3>
+        <p>See matched keywords and the ones you're missing — at a glance.</p>
       </div>
       <div class="card-accent card rv d4">
         <div class="card-icon">✦</div>
-        <h3>Before / After 실제 첨삭</h3>
-        <p>막연한 조언이 아닌, 원문 문장을 직접 개선한 예시를 보여드려요. 어떻게 바꾸면 되는지 바로 확인.</p>
+        <h3>Before / After Rewrites</h3>
+        <p>Not vague advice — actual sentence-level rewrites showing exactly how to improve your text.</p>
       </div>
     </div>
   </section>
@@ -156,24 +157,24 @@
     <div class="sample">
       <div class="sample-left rv">
         <div class="sec-label">SAMPLE</div>
-        <h2>실제 분석 결과는<br>이렇게 나와요</h2>
-        <p>점수, 강점, Before/After 첨삭, 직무 키워드까지 한 페이지에서 확인할 수 있어요.</p>
-        <button class="btn-dark" onclick="handleCta()">내 자소서 분석하기 →</button>
+        <h2>Here's what a<br>real report looks like</h2>
+        <p>Score, strengths, Before/After rewrites, and keyword analysis — all on one page.</p>
+        <button class="btn-dark" onclick="handleCta()">Analyze My Cover Letter →</button>
       </div>
       <div class="sample-card rv d1">
         <div class="sc-top">
-          <div class="sc-job">프로덕트 매니저 지원</div>
+          <div class="sc-job">Product Manager Application</div>
           <div class="sc-grade">A</div>
         </div>
         <div class="sc-score-row">
           <div class="sc-score-big">85</div>
           <div class="sc-bars">
-            <div class="sb-row"><span class="sb-lbl">연관성</span><div class="sb-track"><div class="sb-fill" style="width:92%"></div></div><span class="sb-v">92</span></div>
-            <div class="sb-row"><span class="sb-lbl">구체성</span><div class="sb-track"><div class="sb-fill" style="width:78%"></div></div><span class="sb-v">78</span></div>
-            <div class="sb-row"><span class="sb-lbl">진정성</span><div class="sb-track"><div class="sb-fill" style="width:85%"></div></div><span class="sb-v">85</span></div>
+            <div class="sb-row"><span class="sb-lbl">Relevance</span><div class="sb-track"><div class="sb-fill" style="width:92%"></div></div><span class="sb-v">92</span></div>
+            <div class="sb-row"><span class="sb-lbl">Specificity</span><div class="sb-track"><div class="sb-fill" style="width:78%"></div></div><span class="sb-v">78</span></div>
+            <div class="sb-row"><span class="sb-lbl">Authenticity</span><div class="sb-track"><div class="sb-fill" style="width:85%"></div></div><span class="sb-v">85</span></div>
           </div>
         </div>
-        <div class="sc-tip">✦ <strong>핵심 조언:</strong> 수치 기반 성과 표현을 추가하면 더욱 설득력 있는 자소서가 됩니다.</div>
+        <div class="sc-tip">✦ <strong>Key Insight:</strong> Adding metric-based outcomes will make this cover letter significantly more persuasive.</div>
       </div>
     </div>
   </section>
@@ -181,9 +182,9 @@
 
 <section class="cta-bot">
   <div class="rv">
-    <h2>지금 바로<br>시작해보세요</h2>
-    <p>첫 번째 분석은 무료예요. 신용카드 없이, 30초 안에.</p>
-    <button class="btn-white" onclick="handleCta()">무료로 분석 시작하기 →</button>
+    <h2>Start now.<br>It's free.</h2>
+    <p>Your first analysis is on us. No credit card. Under 30 seconds.</p>
+    <button class="btn-white" onclick="handleCta()">Analyze for Free →</button>
   </div>
 </section>
 
@@ -194,9 +195,10 @@
       <div class="footer-copy">© 2026 Ssurd. All rights reserved.</div>
     </div>
     <div class="footer-links">
-      <a href="legal.html?tab=privacy" class="footer-lnk">개인정보 처리방침</a>
-      <a href="legal.html?tab=terms" class="footer-lnk">이용약관</a>
-      <a href="mailto:chlgkrud981109@naver.com" class="footer-lnk">고객지원</a>
+      <a href="legal.html?tab=privacy" class="footer-lnk">Privacy Policy</a>
+      <a href="legal.html?tab=terms" class="footer-lnk">Terms of Service</a>
+      <a href="pricing.html" class="footer-lnk">Pricing</a>
+      <a href="mailto:chlgkrud981109@naver.com" class="footer-lnk">Support</a>
     </div>
   </div>
 </footer>
@@ -219,11 +221,9 @@ const auth=getAuth(app);
 const gProvider=new GoogleAuthProvider();
 let currentTab='login';
 
-function getGivenName(name){
+function getFirstName(name){
   if(!name)return'';
-  const n=name.trim();
-  if(/^[가-힣]{2,4}$/.test(n))return n.length<=2?n.slice(-1):n.slice(-2);
-  return n.split(/\s+/)[0];
+  return name.trim().split(/\s+/)[0];
 }
 
 onAuthStateChanged(auth, user => {
@@ -233,15 +233,15 @@ onAuthStateChanged(auth, user => {
     const nu=document.getElementById('navUser');
     nu.classList.remove('hidden');nu.style.display='flex';
     document.getElementById('navUserName').textContent=user.displayName||user.email;
-    const given=getGivenName(user.displayName);
+    const given=getFirstName(user.displayName);
     if(given){
-      heroEl.innerHTML=`${given}님의 취업을<br><span class="hl">응원합니다</span>`;
-      document.title=`Ssurd — ${given}님의 취업을 응원합니다`;
+      heroEl.innerHTML=`${given}'s Next<br><span class="hl">Dream Job</span>`;
+      document.title=`Ssurd — ${given}'s Career`;
     }
   } else {
     document.getElementById('navLoginBtn').classList.remove('hidden');
     document.getElementById('navUser').classList.add('hidden');
-    heroEl.innerHTML='당신의 취업을<br><span class="hl">응원합니다</span>';
+    heroEl.innerHTML='Land Your<br><span class="hl">Dream Job</span>';
   }
 });
 
@@ -256,34 +256,40 @@ window.switchTab=tab=>{
   currentTab=tab;
   const pwc=document.getElementById('authPwc'),sub=document.getElementById('authSubmit');
   const tl=document.getElementById('tabLogin'),ts=document.getElementById('tabSignup');
-  if(tab==='login'){pwc.classList.add('hidden');sub.textContent='로그인';tl.classList.add('act');ts.classList.remove('act');}
-  else{pwc.classList.remove('hidden');sub.textContent='회원가입';ts.classList.add('act');tl.classList.remove('act');}
+  if(tab==='login'){pwc.classList.add('hidden');sub.textContent='Log In';tl.classList.add('act');ts.classList.remove('act');}
+  else{pwc.classList.remove('hidden');sub.textContent='Sign Up';ts.classList.add('act');tl.classList.remove('act');}
 };
 
 const showErr=m=>{const el=document.getElementById('authErr');el.textContent=m;el.classList.remove('hidden');};
 const hideErr=()=>document.getElementById('authErr').classList.add('hidden');
-const errMap={'auth/user-not-found':'등록되지 않은 이메일입니다.','auth/wrong-password':'비밀번호가 올바르지 않습니다.','auth/email-already-in-use':'이미 사용 중인 이메일입니다.','auth/invalid-email':'올바른 이메일 형식이 아닙니다.','auth/invalid-credential':'이메일 또는 비밀번호를 확인해주세요.'};
+const errMap={
+  'auth/user-not-found':'No account found with this email.',
+  'auth/wrong-password':'Incorrect password.',
+  'auth/email-already-in-use':'This email is already registered.',
+  'auth/invalid-email':'Please enter a valid email address.',
+  'auth/invalid-credential':'Incorrect email or password.'
+};
 
 window.handleEmailAuth=async()=>{
   const email=document.getElementById('authEmail').value.trim();
   const pw=document.getElementById('authPw').value;
   const pwc=document.getElementById('authPwc').value;
   hideErr();
-  if(!email||!pw){showErr('이메일과 비밀번호를 입력해주세요.');return;}
+  if(!email||!pw){showErr('Please enter your email and password.');return;}
   try{
     if(currentTab==='login'){await signInWithEmailAndPassword(auth,email,pw);}
     else{
-      if(pw!==pwc){showErr('비밀번호가 일치하지 않습니다.');return;}
-      if(pw.length<6){showErr('비밀번호는 6자 이상이어야 합니다.');return;}
+      if(pw!==pwc){showErr('Passwords do not match.');return;}
+      if(pw.length<6){showErr('Password must be at least 6 characters.');return;}
       await createUserWithEmailAndPassword(auth,email,pw);
     }
     closeModal();location.href='write.html';
-  }catch(e){showErr(errMap[e.code]||'오류가 발생했습니다.');}
+  }catch(e){showErr(errMap[e.code]||'Something went wrong. Please try again.');}
 };
 
 window.handleGoogleLogin=async()=>{
   try{await signInWithPopup(auth,gProvider);closeModal();location.href='write.html';}
-  catch{showErr('구글 로그인에 실패했습니다.');}
+  catch{showErr('Google sign-in failed. Please try again.');}
 };
 
 window.handleLogout=async()=>{await signOut(auth);location.reload();};
