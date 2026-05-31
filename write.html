@@ -141,7 +141,7 @@
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
 import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
-import { getFirestore, collection, addDoc, doc, getDoc, setDoc, updateDoc, serverTimestamp }
+import { getFirestore, collection, addDoc, doc, getDoc, serverTimestamp }
   from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
 const app = initializeApp({
@@ -159,6 +159,7 @@ const show=id=>document.getElementById(id).classList.remove('hidden');
 const hide=id=>document.getElementById(id).classList.add('hidden');
 const showErr=m=>{const el=document.getElementById('errMsg');el.textContent=m;el.classList.remove('hidden');};
 const hideErr=()=>document.getElementById('errMsg').classList.add('hidden');
+const esc=s=>String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#039;');
 
 onAuthStateChanged(auth, async u=>{
   if(!u){show('authGate');return;}
@@ -167,30 +168,23 @@ onAuthStateChanged(auth, async u=>{
   document.getElementById('navUserName').textContent=u.displayName||u.email;
   const snap=await getDoc(doc(db,'users',u.uid));
   const d=snap.exists()?snap.data():{};
+  const currentMonth=new Date().toISOString().slice(0,7);
+  const used=d.monthlyUsageMonth===currentMonth?(d.monthlyUsage||0):0;
   show('usageRow');
-  document.getElementById('usageCount').textContent=Math.max(0,(d.plan==='starter'?10:3)-(d.monthlyUsage||0));
+  document.getElementById('usageCount').textContent=Math.max(0,(d.plan==='starter'?10:3)-used);
 
-  // URL에 id 파라미터가 있으면 저장된 히스토리 불러오기
-  const params = new URLSearchParams(window.location.search);
-  const histId = params.get('id');
-  if (histId) {
-    try {
-      const histSnap = await getDoc(doc(db, 'analyses', histId));
-      if (histSnap.exists() && histSnap.data().uid === u.uid) {
-        const histData = histSnap.data();
-        cReport = histData.report;
-        cJob = histData.jobTitle;
-        cLetter = histData.coverLetter;
-        renderResult(cReport, cJob);
-        // 이미 저장된 결과이므로 저장 버튼 비활성화
-        ['saveBtn', 'saveBtnB'].forEach(id => {
-          const btn = document.getElementById(id);
-          if (btn) { btn.style.display = 'none'; }
-        });
+  const params=new URLSearchParams(window.location.search);
+  const histId=params.get('id');
+  if(histId){
+    try{
+      const histSnap=await getDoc(doc(db,'analyses',histId));
+      if(histSnap.exists()&&histSnap.data().uid===u.uid){
+        const histData=histSnap.data();
+        cReport=histData.report;cJob=histData.jobTitle;cLetter=histData.coverLetter;
+        renderResult(cReport,cJob);
+        ['saveBtn','saveBtnB'].forEach(id=>{const btn=document.getElementById(id);if(btn)btn.style.display='none';});
       }
-    } catch (e) {
-      console.error("히스토리 로드 실패:", e);
-    }
+    }catch(e){console.error("히스토리 로드 실패:",e);}
   }
 });
 
@@ -216,23 +210,38 @@ window.startAnalysis=async()=>{
   if(!cUser){show('authGate');return;}
   if(!job){showErr('지원 직무를 입력해주세요.');return;}
   if(letter.length<100){showErr('자기소개서를 100자 이상 입력해주세요.');return;}
+
+  // UX용 클라이언트 사전 확인 (월별 리셋 적용)
   const uRef=doc(db,'users',cUser.uid);
   const snap=await getDoc(uRef);
   const d=snap.exists()?snap.data():{};
-  const used=d.monthlyUsage||0,limit=d.plan==='starter'?10:3;
+  const currentMonth=new Date().toISOString().slice(0,7);
+  const used=d.monthlyUsageMonth===currentMonth?(d.monthlyUsage||0):0;
+  const limit=d.plan==='starter'?10:3;
   if(used>=limit){showErr('이번 달 분석 횟수를 모두 사용했습니다.');return;}
+
   show('loadingOverlay');
   document.getElementById('analyzeBtn').disabled=true;
   setLS(1);
   const ts=[setTimeout(()=>setLS(2),2000),setTimeout(()=>setLS(3),4000),setTimeout(()=>setLS(4),6000)];
   try{
-    const res=await fetch('/api/analyze',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({jobTitle:job,coverLetter:letter})});
+    const idToken=await cUser.getIdToken();
+    const res=await fetch('/api/analyze',{
+      method:'POST',
+      headers:{'Content-Type':'application/json','Authorization':`Bearer ${idToken}`},
+      body:JSON.stringify({jobTitle:job,coverLetter:letter}),
+    });
     ts.forEach(clearTimeout);
     const json=await res.json();
     if(!json.ok)throw new Error(json.error||'분석에 실패했습니다.');
     cReport=json.report;cJob=job;cLetter=letter;
-    if(snap.exists()){await updateDoc(uRef,{monthlyUsage:used+1});}
-    else{await setDoc(uRef,{email:cUser.email,plan:'free',monthlyUsage:1,createdAt:serverTimestamp()});}
+
+    // 서버가 Firestore 업데이트를 완료했으므로 최신 사용량 재조회
+    const updatedSnap=await getDoc(uRef);
+    const updatedD=updatedSnap.exists()?updatedSnap.data():{};
+    const newUsed=updatedD.monthlyUsageMonth===currentMonth?(updatedD.monthlyUsage||0):0;
+    document.getElementById('usageCount').textContent=Math.max(0,limit-newUsed);
+
     hide('loadingOverlay');
     document.getElementById('analyzeBtn').disabled=false;
     renderResult(json.report,job);
@@ -262,24 +271,27 @@ function renderResult(r,job){
   Object.entries(r.scores||{}).forEach(([k,v])=>{
     const p=Math.min(100,Math.max(0,v));
     const c=p>=75?'h':p>=55?'m':p>=35?'l':'vl';
-    barsEl.innerHTML+=`<div class="sbar-row"><span class="sbar-lbl">${lbl[k]||k}</span><div class="sbar-track"><div class="sbar-fill ${c}" data-w="${p}"></div></div><span class="sbar-v">${p}</span></div>`;
+    barsEl.innerHTML+=`<div class="sbar-row"><span class="sbar-lbl">${esc(lbl[k]||k)}</span><div class="sbar-track"><div class="sbar-fill ${c}" data-w="${p}"></div></div><span class="sbar-v">${p}</span></div>`;
   });
   setTimeout(()=>{document.querySelectorAll('.sbar-fill').forEach(el=>{el.style.width=el.dataset.w+'%';});},100);
   const sEl2=document.getElementById('strList');sEl2.innerHTML='';
   (r.strengths||[]).forEach(s=>{
-    const t=typeof s==='string'?s:s.title,d2=typeof s==='object'?(s.detail||''):'';
+    const t=esc(typeof s==='string'?s:(s.title||''));
+    const d2=esc(typeof s==='object'?(s.detail||''):'');
     sEl2.innerHTML+=`<div class="str-item"><div class="str-t">${t}</div>${d2?`<div class="str-d">${d2}</div>`:''}</div>`;
   });
   const iEl=document.getElementById('impList');iEl.innerHTML='';
   (r.improvements||[]).forEach(imp=>{
-    const issue=typeof imp==='string'?imp:(imp.issue||'');
-    const why=imp.why||'',before=imp.before||'',after=imp.suggestion||imp.after||'';
+    const issue=esc(typeof imp==='string'?imp:(imp.issue||''));
+    const why=esc(imp.why||'');
+    const before=esc(imp.before||'');
+    const after=esc(imp.suggestion||imp.after||'');
     iEl.innerHTML+=`<div class="imp-item"><div class="imp-issue">${issue}</div>${why?`<div class="imp-why">${why}</div>`:''}`
       +`${before?`<div class="ba ba-b"><div class="ba-lbl">Before</div><div class="ba-txt">"${before}"</div></div>`:''}`
       +`${after?`<div class="ba ba-a"><div class="ba-lbl">After</div><div class="ba-txt">"${after}"</div></div>`:''}</div>`;
   });
-  document.getElementById('kwM').innerHTML=(r.keywords?.matched||[]).map(k=>`<span class="kw p">${k}</span>`).join('');
-  document.getElementById('kwMs').innerHTML=(r.keywords?.missing||[]).map(k=>`<span class="kw ms">+ ${k}</span>`).join('');
+  document.getElementById('kwM').innerHTML=(r.keywords?.matched||[]).map(k=>`<span class="kw p">${esc(k)}</span>`).join('');
+  document.getElementById('kwMs').innerHTML=(r.keywords?.missing||[]).map(k=>`<span class="kw ms">+ ${esc(k)}</span>`).join('');
   document.getElementById('otText').textContent=r.oneLineTip||'';
 }
 

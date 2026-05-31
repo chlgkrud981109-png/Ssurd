@@ -47,7 +47,7 @@ main{padding:72px 32px 64px;max-width:960px;margin:0 auto}
     <a href="index.html" class="btn-dark" style="padding:14px 32px;font-size:14px;text-decoration:none">로그인하러 가기 →</a>
   </div>
 
-  <div id="loadingState" class="loading-state hidden">
+  <div id="loadingState" class="loading-state">
     <div class="loading-spin"></div>
     <div class="loading-txt">히스토리를 불러오고 있어요</div>
   </div>
@@ -101,7 +101,7 @@ main{padding:72px 32px 64px;max-width:960px;margin:0 auto}
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
 import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
-import { getFirestore, collection, query, where, orderBy, getDocs, doc, getDoc }
+import { getFirestore, collection, query, where, getDocs, doc, getDoc }
   from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
 const app = initializeApp({
@@ -115,18 +115,19 @@ const app = initializeApp({
 const auth=getAuth(app),db=getFirestore(app);
 const show=id=>{document.getElementById(id).classList.remove('hidden');};
 const hide=id=>document.getElementById(id).classList.add('hidden');
+const esc=s=>String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#039;');
 
 onAuthStateChanged(auth, async user=>{
-  hide('loadingState');
-  if(!user){show('loginPrompt');return;}
+  if(!user){hide('loadingState');show('loginPrompt');return;}
   hide('navLoginBtn');
   const nu=document.getElementById('navUser');nu.classList.remove('hidden');nu.style.display='flex';
   document.getElementById('navUserName').textContent=user.displayName||user.email;
-  show('loadingState');
 
   const userSnap=await getDoc(doc(db,'users',user.uid));
   const ud=userSnap.exists()?userSnap.data():{};
-  const plan=ud.plan||'free',limit=plan==='starter'?10:3,used=ud.monthlyUsage||0;
+  const plan=ud.plan||'free',limit=plan==='starter'?10:3;
+  const currentMonth=new Date().toISOString().slice(0,7);
+  const used=ud.monthlyUsageMonth===currentMonth?(ud.monthlyUsage||0):0;
   document.getElementById('planLabel').textContent=plan==='starter'?'스타터 플랜':'무료 플랜';
   document.getElementById('remainingCount').textContent=Math.max(0,limit-used);
   document.getElementById('usageLabel').textContent=`${limit}회 중 ${used}회 사용`;
@@ -197,13 +198,20 @@ function renderChart(docs){
 }
 
 function renderHistory(docs){
-  document.getElementById('historyList').innerHTML=docs.map(d=>{
+  const list=document.getElementById('historyList');
+  list.innerHTML='';
+  docs.forEach(d=>{
     const date=d.createdAt?.toDate?d.createdAt.toDate():new Date();
     const dateStr=`${date.getFullYear()}. ${date.getMonth()+1}. ${date.getDate()}`;
     const score=d.report?.score||'-',grade=d.report?.grade||'-',summary=d.report?.summary||'';
     const sc=typeof score==='number'?(score>=80?'var(--green)':score>=60?'var(--primary)':score>=40?'var(--yellow)':'var(--red)'):'var(--t1)';
-    return `<div class="history-item" onclick="location.href='write.html?id=${d.id}'"><div class="hist-left"><div class="hist-date">${dateStr}</div><div class="hist-job">${d.jobTitle||'—'}</div><div class="hist-summary">${summary}</div></div><div class="hist-right"><div class="hist-stat"><div class="hist-stat-num" style="color:${sc}">${score}</div><div class="hist-stat-lbl">점수</div></div><div class="hist-stat"><div class="hist-stat-num" style="color:var(--primary)">${grade}</div><div class="hist-stat-lbl">등급</div></div><div class="hist-arrow">→</div></div></div>`;
-  }).join('');
+    const el=document.createElement('div');
+    el.className='history-item';
+    el.dataset.id=d.id;
+    el.innerHTML=`<div class="hist-left"><div class="hist-date">${esc(dateStr)}</div><div class="hist-job">${esc(d.jobTitle||'—')}</div><div class="hist-summary">${esc(summary)}</div></div><div class="hist-right"><div class="hist-stat"><div class="hist-stat-num" style="color:${sc}">${typeof score==='number'?score:'-'}</div><div class="hist-stat-lbl">점수</div></div><div class="hist-stat"><div class="hist-stat-num" style="color:var(--primary)">${esc(grade)}</div><div class="hist-stat-lbl">등급</div></div><div class="hist-arrow">→</div></div>`;
+    el.addEventListener('click',()=>{location.href='write.html?id='+encodeURIComponent(d.id);});
+    list.appendChild(el);
+  });
 }
 
 window.handleLogout=async()=>{await signOut(auth);location.href='index.html';};
