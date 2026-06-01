@@ -218,7 +218,7 @@ window.startAnalysis=async()=>{
   const currentMonth=new Date().toISOString().slice(0,7);
   const used=d.monthlyUsageMonth===currentMonth?(d.monthlyUsage||0):0;
   const limit=d.plan==='starter'?10:3;
-  if(used>=limit){showErr("You've used all your analyses for this month.");return;}
+  if(used>=limit){showErr("You've used all your free analyses. Paid plan coming soon — check back shortly!");return;}
 
   show('loadingOverlay');
   document.getElementById('analyzeBtn').disabled=true;

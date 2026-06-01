@@ -54,7 +54,7 @@ export async function onRequestPost({ request, env }) {
   }
 
   if (used >= limit) {
-    return new Response(JSON.stringify({ ok: false, error: "You've used all your analyses for this month." }), { status: 429, headers });
+    return new Response(JSON.stringify({ ok: false, error: "You've used all your free analyses. Paid plan coming soon — check back shortly!" }), { status: 429, headers });
   }
 
   let body;
