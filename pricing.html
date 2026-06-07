@@ -237,7 +237,7 @@
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
 import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
-import { getFirestore, doc, setDoc, addDoc, collection, serverTimestamp }
+import { getFirestore, doc, setDoc, getDoc, serverTimestamp }
   from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
 const app  = initializeApp({
@@ -252,7 +252,7 @@ const auth = getAuth(app);
 const db = getFirestore(app);
 let cUser = null;
 
-onAuthStateChanged(auth, user => {
+onAuthStateChanged(auth, async user => {
   cUser = user;
   if (user) {
     document.getElementById('navLoginBtn').classList.add('hidden');
@@ -261,6 +261,13 @@ onAuthStateChanged(auth, user => {
     document.getElementById('navUserName').textContent = user.displayName || user.email;
     const emailInput = document.getElementById('waitlistEmail');
     if (emailInput && user.email) emailInput.value = user.email;
+    const snap = await getDoc(doc(db, 'analyses', `waitlist_${user.uid}`));
+    if (snap.exists()) {
+      document.getElementById('waitlistInput').style.display = 'none';
+      const note = document.getElementById('waitlistNote');
+      note.textContent = "✓ You're already on the list!";
+      note.style.color = '#86efac';
+    }
   } else {
     document.getElementById('navLoginBtn').classList.remove('hidden');
     document.getElementById('navUser').classList.add('hidden');
@@ -275,20 +282,27 @@ document.querySelector('.plan-card.featured').addEventListener('click', () => {
 });
 
 window.handleWaitlist = async () => {
-  const email = document.getElementById('waitlistEmail').value.trim();
   const note = document.getElementById('waitlistNote');
+  if (!cUser) {
+    note.textContent = 'Sign in first to get notified.';
+    note.style.color = '#f87171';
+    setTimeout(() => { location.href = 'index.html'; }, 1200);
+    return;
+  }
+  const email = document.getElementById('waitlistEmail').value.trim();
   if (!email || !email.includes('@')) {
     note.textContent = 'Please enter a valid email address.';
     note.style.color = '#f87171';
     return;
   }
   try {
-    if (cUser) {
-      await setDoc(doc(db, 'users', cUser.uid), { waitlistOptIn: true }, { merge: true });
-    } else {
-      await addDoc(collection(db, 'waitlist'), { email, submittedAt: serverTimestamp() });
-    }
-  } catch { /* silent fail — still show success UX */ }
+    await setDoc(doc(db, 'analyses', `waitlist_${cUser.uid}`), {
+      uid: cUser.uid,
+      waitlistEmail: email,
+      type: 'waitlist',
+      registeredAt: serverTimestamp(),
+    });
+  } catch (e) { console.error('Waitlist failed:', e); }
   document.getElementById('waitlistInput').style.display = 'none';
   note.textContent = "✓ You're on the list! We'll reach out when the paid plan launches.";
   note.style.color = '#86efac';

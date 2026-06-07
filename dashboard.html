@@ -155,7 +155,7 @@ onAuthStateChanged(auth, async user=>{
     const q=query(collection(db,'analyses'),where('uid','==',user.uid));
     const snap=await getDocs(q);
 
-    const docs=snap.docs.map(d=>({id:d.id,...d.data()})).sort((a,b)=>{
+    const docs=snap.docs.filter(d=>d.data().type!=='waitlist').map(d=>({id:d.id,...d.data()})).sort((a,b)=>{
       const tA=a.createdAt?.toMillis?a.createdAt.toMillis():0;
       const tB=b.createdAt?.toMillis?b.createdAt.toMillis():0;
       return tB - tA;
