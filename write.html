@@ -229,7 +229,7 @@ onAuthStateChanged(auth, async u=>{
   const currentMonth=new Date().toISOString().slice(0,7);
   const used=d.monthlyUsageMonth===currentMonth?(d.monthlyUsage||0):0;
   show('usageRow');
-  document.getElementById('usageCount').textContent=Math.max(0,(d.plan==='starter'?10:3)-used);
+  document.getElementById('usageCount').textContent=d.plan==='admin'?'∞':Math.max(0,(d.plan==='starter'?10:3)-used);
 
   const params=new URLSearchParams(window.location.search);
   const histId=params.get('id');
@@ -278,7 +278,7 @@ window.startAnalysis=async()=>{
   const currentMonth=new Date().toISOString().slice(0,7);
   const used=d.monthlyUsageMonth===currentMonth?(d.monthlyUsage||0):0;
   const limit=d.plan==='starter'?10:3;
-  if(used>=limit){showErr("You've used all your free analyses. Paid plan coming soon — check back shortly!");return;}
+  if(d.plan!=='admin'&&used>=limit){showErr("You've used all your free analyses. Paid plan coming soon — check back shortly!");return;}
 
   gtag('event','analysis_start',{job_title:job});
   show('loadingOverlay');
