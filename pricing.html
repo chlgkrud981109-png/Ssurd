@@ -13,6 +13,12 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Ssurd — Pricing</title>
 <meta name="description" content="Simple, transparent pricing. Start free. Upgrade when you need more.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Ssurd">
+<meta property="og:title" content="Ssurd — Pricing">
+<meta property="og:description" content="Simple, transparent pricing. Start free. 3 cover letter analyses per month, no credit card required.">
+<meta name="twitter:card" content="summary">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%233182f6'/%3E%3Ctext x='16' y='22' text-anchor='middle' fill='white' font-size='20' font-weight='700' font-family='system-ui'%3ES%3C/text%3E%3C/svg%3E">
 <link rel="stylesheet" href="style.css">
 <style>
 .pricing-hero{min-height:auto;padding:120px 32px 64px;text-align:center;max-width:640px;margin:0 auto}
@@ -180,8 +186,13 @@
     </ul>
 
     <button class="btn-plan-starter" disabled style="opacity:.4;cursor:not-allowed">Coming Soon</button>
-    <div class="paypal-note">Paid plan launching soon. Stay tuned!</div>
-    <div class="paypal-note">Secure checkout via PayPal · Cancel anytime</div>
+    <div style="margin-top:16px">
+      <div id="waitlistInput" style="display:flex;gap:8px">
+        <input id="waitlistEmail" type="email" placeholder="your@email.com" style="flex:1;padding:10px 14px;border-radius:var(--r-md);border:1.5px solid rgba(255,255,255,.2);background:rgba(255,255,255,.08);color:#fff;font-family:var(--font);font-size:13px;outline:none;min-width:0"/>
+        <button onclick="handleWaitlist()" style="padding:10px 16px;border-radius:var(--r-md);background:rgba(255,255,255,.15);border:1.5px solid rgba(255,255,255,.25);color:#fff;font-family:var(--font);font-size:13px;font-weight:600;cursor:pointer;white-space:nowrap;flex-shrink:0">Notify me</button>
+      </div>
+      <div id="waitlistNote" class="paypal-note" style="margin-top:8px">Get notified when the paid plan launches.</div>
+    </div>
   </div>
 
 </div>
@@ -205,7 +216,7 @@
   </div>
   <div class="faq-item rv d4">
     <div class="faq-q">Can I cancel my subscription?</div>
-    <div class="faq-a">Yes, you can cancel at any time. Your Starter plan access continues until the end of the billing period. Contact support if you need help.</div>
+    <div class="faq-a">Yes. Once the Starter plan is live, you can cancel at any time. Your access will continue until the end of the billing period.</div>
   </div>
 </div>
 
@@ -226,6 +237,8 @@
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
 import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+import { getFirestore, doc, setDoc, addDoc, collection, serverTimestamp }
+  from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
 const app  = initializeApp({
   apiKey:"AIzaSyCeqiOD3PDMD3xL0IAM52xGMBHJdMOfsDY",
@@ -236,13 +249,18 @@ const app  = initializeApp({
   appId:"1:574073259312:web:5148cc8a6a9897b93474f5"
 });
 const auth = getAuth(app);
+const db = getFirestore(app);
+let cUser = null;
 
 onAuthStateChanged(auth, user => {
+  cUser = user;
   if (user) {
     document.getElementById('navLoginBtn').classList.add('hidden');
     const nu = document.getElementById('navUser');
     nu.classList.remove('hidden'); nu.style.display = 'flex';
     document.getElementById('navUserName').textContent = user.displayName || user.email;
+    const emailInput = document.getElementById('waitlistEmail');
+    if (emailInput && user.email) emailInput.value = user.email;
   } else {
     document.getElementById('navLoginBtn').classList.remove('hidden');
     document.getElementById('navUser').classList.add('hidden');
@@ -255,6 +273,26 @@ document.querySelectorAll('.rv').forEach(el => obs.observe(el));
 document.querySelector('.plan-card.featured').addEventListener('click', () => {
   gtag('event', 'pricing_click', { plan: 'starter' });
 });
+
+window.handleWaitlist = async () => {
+  const email = document.getElementById('waitlistEmail').value.trim();
+  const note = document.getElementById('waitlistNote');
+  if (!email || !email.includes('@')) {
+    note.textContent = 'Please enter a valid email address.';
+    note.style.color = '#f87171';
+    return;
+  }
+  try {
+    if (cUser) {
+      await setDoc(doc(db, 'users', cUser.uid), { waitlistOptIn: true }, { merge: true });
+    } else {
+      await addDoc(collection(db, 'waitlist'), { email, submittedAt: serverTimestamp() });
+    }
+  } catch { /* silent fail — still show success UX */ }
+  document.getElementById('waitlistInput').style.display = 'none';
+  note.textContent = "✓ You're on the list! We'll reach out when the paid plan launches.";
+  note.style.color = '#86efac';
+};
 
 window.handleLogout = async () => { await signOut(auth); location.reload(); };
 </script>

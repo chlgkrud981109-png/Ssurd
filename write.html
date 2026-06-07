@@ -12,6 +12,13 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Ssurd — Cover Letter Analysis</title>
+<meta name="description" content="Get your cover letter scored by AI trained on senior HR expertise. Score + tailored feedback in 30 seconds.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Ssurd">
+<meta property="og:title" content="Ssurd — Cover Letter Analysis">
+<meta property="og:description" content="Get your cover letter scored by AI trained on senior HR expertise. Score + tailored feedback in 30 seconds.">
+<meta name="twitter:card" content="summary">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%233182f6'/%3E%3Ctext x='16' y='22' text-anchor='middle' fill='white' font-size='20' font-weight='700' font-family='system-ui'%3ES%3C/text%3E%3C/svg%3E">
 <link rel="stylesheet" href="style.css">
 <style>
 @media(max-width:768px){
@@ -21,6 +28,12 @@
   .one-tip{flex-direction:column;gap:16px}
   .r-footer{flex-wrap:wrap}
   .form-sec{padding:40px 20px 60px}.form-card{padding:24px 20px}
+}
+@media print{
+  nav,.r-acts,.r-footer,#viewInput,.loading-overlay,.modal-overlay,#authGate,#usageRow{display:none!important}
+  #viewResult{padding-top:0!important}
+  .score-num,.score-badge,.sbar-fill,.kw,.feat-icon{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .score-blk,.r-body,.one-tip{page-break-inside:avoid;break-inside:avoid}
 }
 </style>
 </head>
@@ -77,7 +90,41 @@
     <div class="form-card rv d1">
       <div id="errMsg" class="err-msg hidden"></div>
       <label class="f-label">Target Role</label>
-      <input id="jobTitle" class="f-job" type="text" placeholder="e.g. Product Manager at Google, Software Engineer at Stripe" autocomplete="off"/>
+      <input id="jobTitle" class="f-job" type="text" list="roleList" placeholder="e.g. Product Manager at Google, Software Engineer at Stripe" autocomplete="off"/>
+      <datalist id="roleList">
+        <option value="Software Engineer">
+        <option value="Senior Software Engineer">
+        <option value="Frontend Developer">
+        <option value="Backend Developer">
+        <option value="Full Stack Engineer">
+        <option value="iOS Developer">
+        <option value="Android Developer">
+        <option value="DevOps Engineer">
+        <option value="Machine Learning Engineer">
+        <option value="Data Scientist">
+        <option value="Data Analyst">
+        <option value="Research Scientist">
+        <option value="Product Manager">
+        <option value="Senior Product Manager">
+        <option value="Product Designer">
+        <option value="UX Designer">
+        <option value="UI/UX Designer">
+        <option value="Graphic Designer">
+        <option value="Marketing Manager">
+        <option value="Growth Manager">
+        <option value="Content Writer">
+        <option value="Copywriter">
+        <option value="Sales Manager">
+        <option value="Account Manager">
+        <option value="Customer Success Manager">
+        <option value="Business Analyst">
+        <option value="Project Manager">
+        <option value="Financial Analyst">
+        <option value="Investment Banker">
+        <option value="Consulting Analyst">
+        <option value="HR Manager">
+        <option value="Operations Manager">
+      </datalist>
       <label class="f-label">Cover Letter / Resume</label>
       <textarea id="coverLetter" class="f-letter" maxlength="3000" placeholder="Paste your cover letter or resume here.&#10;200+ characters will yield more accurate results."></textarea>
       <div class="f-meta">
@@ -104,6 +151,7 @@
       </div>
       <div class="r-acts">
         <button class="btn-rw btn-rw-out" onclick="resetToInput()">← Analyze Again</button>
+        <button id="shareBtn" class="btn-rw btn-rw-out" onclick="shareScore(event)">↗ Share</button>
         <button id="saveBtn" class="btn-rw btn-rw-white" onclick="saveReport()">Save Report</button>
       </div>
     </div>
@@ -143,6 +191,7 @@
   </div>
   <div class="r-footer">
     <button class="btn-re" onclick="resetToInput()">← Analyze Again</button>
+    <button class="btn-re" onclick="window.print()">⬇ Download PDF</button>
     <button id="saveBtnB" class="btn-save" onclick="saveReport()">Save to History</button>
   </div>
 </div>
@@ -199,6 +248,9 @@ onAuthStateChanged(auth, async u=>{
 
 document.getElementById('coverLetter').addEventListener('input',e=>{
   document.getElementById('charCount').textContent=e.target.value.length;
+});
+document.getElementById('coverLetter').addEventListener('keydown',e=>{
+  if(e.key==='Enter'&&(e.ctrlKey||e.metaKey)){e.preventDefault();startAnalysis();}
 });
 
 const obs=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('on');});},{threshold:.1});
@@ -315,7 +367,25 @@ async function doSave(){
   }catch{bs.forEach(b=>{b.disabled=false;b.textContent='Save Report';});showErr('Save failed. Please try again.');}
 }
 window.saveReport=doSave;
-window.resetToInput=()=>{hide('viewResult');show('viewInput');document.getElementById('analyzeBtn').disabled=false;hideErr();window.scrollTo({top:0,behavior:'smooth'});};
+window.shareScore=async(e)=>{
+  if(!cReport)return;
+  const text=`I scored ${cReport.score}/100 (Grade ${cReport.grade}) on my cover letter for "${cJob}" — analyzed by Ssurd AI.\n\nScore yours free: ${window.location.origin}`;
+  const btn=e.currentTarget;
+  try{
+    await navigator.clipboard.writeText(text);
+    const orig=btn.textContent;btn.textContent='✓ Copied!';
+    setTimeout(()=>{btn.textContent=orig;},2000);
+  }catch{prompt('Copy this to share:',text);}
+  gtag('event','share_score',{score:cReport.score,grade:cReport.grade,job_title:cJob});
+};
+window.resetToInput=()=>{
+  hide('viewResult');show('viewInput');
+  document.getElementById('analyzeBtn').disabled=false;
+  hideErr();
+  if(cJob)document.getElementById('jobTitle').value=cJob;
+  if(cLetter){document.getElementById('coverLetter').value=cLetter;document.getElementById('charCount').textContent=cLetter.length;}
+  window.scrollTo({top:0,behavior:'smooth'});
+};
 window.handleLogout=async()=>{await signOut(auth);location.href='index.html';};
 </script>
 </body>

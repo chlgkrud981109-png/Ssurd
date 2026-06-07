@@ -13,6 +13,14 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Ssurd — Land Your Dream Job</title>
 <meta name="description" content="Score your cover letter in 30 seconds. Instant feedback from a senior HR professional's perspective.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Ssurd">
+<meta property="og:title" content="Ssurd — Land Your Dream Job">
+<meta property="og:description" content="Score your cover letter in 30 seconds. Instant feedback from a senior HR professional's perspective.">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Ssurd — Land Your Dream Job">
+<meta name="twitter:description" content="Score your cover letter in 30 seconds. Instant feedback from a senior HR professional's perspective.">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%233182f6'/%3E%3Ctext x='16' y='22' text-anchor='middle' fill='white' font-size='20' font-weight='700' font-family='system-ui'%3ES%3C/text%3E%3C/svg%3E">
 <link rel="stylesheet" href="style.css">
 <style>
 /* ─ Hero ─ */
@@ -93,6 +101,9 @@
     </div>
     <input id="authEmail" class="f-input" type="email" placeholder="Email address"/>
     <input id="authPw" class="f-input" type="password" placeholder="Password (min. 6 characters)"/>
+    <div id="forgotPwRow" style="text-align:right;margin-top:-8px;margin-bottom:4px">
+      <button type="button" style="background:none;border:none;color:var(--primary);font-size:12px;font-weight:500;cursor:pointer;padding:0;font-family:var(--font)" onclick="handleForgotPassword()">Forgot password?</button>
+    </div>
     <input id="authPwc" class="f-input hidden" type="password" placeholder="Confirm password"/>
     <button id="authSubmit" class="btn-auth" onclick="handleEmailAuth()">Log In</button>
     <div class="divider"><div class="divider-line"></div><span class="divider-txt">or</span><div class="divider-line"></div></div>
@@ -129,6 +140,11 @@
       <div class="rv d3">
         <div class="hero-cta-row">
           <button class="btn-primary" style="padding:14px 36px;font-size:15px" onclick="handleCta()">Analyze for Free →</button>
+        </div>
+        <div style="display:flex;gap:20px;justify-content:center;flex-wrap:wrap;margin-top:14px">
+          <span style="font-size:12px;color:var(--t4);display:flex;align-items:center;gap:5px"><span style="color:var(--green);font-weight:700">✓</span> No credit card</span>
+          <span style="font-size:12px;color:var(--t4);display:flex;align-items:center;gap:5px"><span style="color:var(--green);font-weight:700">✓</span> 3 free analyses / month</span>
+          <span style="font-size:12px;color:var(--t4);display:flex;align-items:center;gap:5px"><span style="color:var(--green);font-weight:700">✓</span> Results in 30 seconds</span>
         </div>
       </div>
     </div>
@@ -214,7 +230,8 @@
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
 import { getAuth, onAuthStateChanged, signInWithPopup, signInWithEmailAndPassword,
-  createUserWithEmailAndPassword, signOut, GoogleAuthProvider, getAdditionalUserInfo }
+  createUserWithEmailAndPassword, signOut, GoogleAuthProvider, getAdditionalUserInfo,
+  sendPasswordResetEmail }
   from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 
 const app = initializeApp({
@@ -264,11 +281,12 @@ window.switchTab=tab=>{
   currentTab=tab;
   const pwc=document.getElementById('authPwc'),sub=document.getElementById('authSubmit');
   const tl=document.getElementById('tabLogin'),ts=document.getElementById('tabSignup');
-  if(tab==='login'){pwc.classList.add('hidden');sub.textContent='Log In';tl.classList.add('act');ts.classList.remove('act');}
-  else{pwc.classList.remove('hidden');sub.textContent='Sign Up';ts.classList.add('act');tl.classList.remove('act');}
+  const fp=document.getElementById('forgotPwRow');
+  if(tab==='login'){pwc.classList.add('hidden');sub.textContent='Log In';tl.classList.add('act');ts.classList.remove('act');fp.style.display='';}
+  else{pwc.classList.remove('hidden');sub.textContent='Sign Up';ts.classList.add('act');tl.classList.remove('act');fp.style.display='none';}
 };
 
-const showErr=m=>{const el=document.getElementById('authErr');el.textContent=m;el.classList.remove('hidden');};
+const showErr=m=>{const el=document.getElementById('authErr');el.textContent=m;el.style.color='';el.classList.remove('hidden');};
 const hideErr=()=>document.getElementById('authErr').classList.add('hidden');
 const errMap={
   'auth/user-not-found':'No account found with this email.',
@@ -304,6 +322,17 @@ window.handleGoogleLogin=async()=>{
   }catch{showErr('Google sign-in failed. Please try again.');}
 };
 
+window.handleForgotPassword=async()=>{
+  const email=document.getElementById('authEmail').value.trim();
+  if(!email){showErr('Please enter your email address first.');return;}
+  try{
+    await sendPasswordResetEmail(auth,email);
+    const el=document.getElementById('authErr');
+    el.textContent='Password reset email sent. Check your inbox.';
+    el.style.color='var(--green)';
+    el.classList.remove('hidden');
+  }catch(e){showErr(errMap[e.code]||'Could not send reset email. Please try again.');}
+};
 window.handleLogout=async()=>{await signOut(auth);location.reload();};
 </script>
 </body>

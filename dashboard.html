@@ -12,9 +12,18 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Ssurd — Analysis History</title>
+<meta name="description" content="Review your past cover letter analyses and track your progress over time.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Ssurd">
+<meta property="og:title" content="Ssurd — Analysis History">
+<meta property="og:description" content="Review your past cover letter analyses and track your progress over time.">
+<meta name="twitter:card" content="summary">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%233182f6'/%3E%3Ctext x='16' y='22' text-anchor='middle' fill='white' font-size='20' font-weight='700' font-family='system-ui'%3ES%3C/text%3E%3C/svg%3E">
 <link rel="stylesheet" href="style.css">
 <style>
 main{padding:72px 32px 64px;max-width:960px;margin:0 auto}
+.hist-del{background:none;border:none;color:rgba(0,0,0,.18);font-size:13px;cursor:pointer;padding:6px 8px;border-radius:var(--r-sm);transition:color .15s,background .15s;line-height:1;flex-shrink:0;margin-left:4px}
+.hist-del:hover{color:#f04452;background:rgba(240,68,82,.08)}
 @media(max-width:768px){
   main{padding:68px 16px 48px}
   .stats-grid{grid-template-columns:repeat(2,1fr)}
@@ -110,7 +119,7 @@ main{padding:72px 32px 64px;max-width:960px;margin:0 auto}
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
 import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
-import { getFirestore, collection, query, where, getDocs, doc, getDoc }
+import { getFirestore, collection, query, where, getDocs, doc, getDoc, deleteDoc }
   from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
 const app = initializeApp({
@@ -218,6 +227,19 @@ function renderHistory(docs){
     el.dataset.id=d.id;
     el.innerHTML=`<div class="hist-left"><div class="hist-date">${esc(dateStr)}</div><div class="hist-job">${esc(d.jobTitle||'—')}</div><div class="hist-summary">${esc(summary)}</div></div><div class="hist-right"><div class="hist-stat"><div class="hist-stat-num" style="color:${sc}">${typeof score==='number'?score:'-'}</div><div class="hist-stat-lbl">Score</div></div><div class="hist-stat"><div class="hist-stat-num" style="color:var(--primary)">${esc(grade)}</div><div class="hist-stat-lbl">Grade</div></div><div class="hist-arrow">→</div></div>`;
     el.addEventListener('click',()=>{location.href='write.html?id='+encodeURIComponent(d.id);});
+    const delBtn=document.createElement('button');
+    delBtn.className='hist-del';delBtn.innerHTML='✕';delBtn.title='Delete analysis';
+    delBtn.addEventListener('click',async e=>{
+      e.stopPropagation();
+      if(!confirm('Delete this analysis? This cannot be undone.'))return;
+      try{
+        await deleteDoc(doc(db,'analyses',d.id));
+        el.style.transition='opacity .25s,transform .25s';
+        el.style.opacity='0';el.style.transform='translateX(8px)';
+        setTimeout(()=>el.remove(),250);
+      }catch{alert('Delete failed. Please try again.');}
+    });
+    el.querySelector('.hist-right').appendChild(delBtn);
     list.appendChild(el);
   });
 }
