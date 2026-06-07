@@ -228,6 +228,7 @@ window.startAnalysis=async()=>{
   const limit=d.plan==='starter'?10:3;
   if(used>=limit){showErr("You've used all your free analyses. Paid plan coming soon — check back shortly!");return;}
 
+  gtag('event','analysis_start',{job_title:job});
   show('loadingOverlay');
   document.getElementById('analyzeBtn').disabled=true;
   setLS(1);
@@ -252,6 +253,7 @@ window.startAnalysis=async()=>{
     hide('loadingOverlay');
     document.getElementById('analyzeBtn').disabled=false;
     renderResult(json.report,job);
+    gtag('event','analysis_complete',{score:json.report.score,grade:json.report.grade,job_title:job});
   }catch(e){
     ts.forEach(clearTimeout);hide('loadingOverlay');
     document.getElementById('analyzeBtn').disabled=false;
@@ -309,6 +311,7 @@ async function doSave(){
   try{
     await addDoc(collection(db,'analyses'),{uid:cUser.uid,jobTitle:cJob,coverLetter:cLetter,report:cReport,createdAt:serverTimestamp()});
     bs.forEach(b=>{b.textContent='✓ Saved';});
+    gtag('event','save_report',{job_title:cJob});
   }catch{bs.forEach(b=>{b.disabled=false;b.textContent='Save Report';});showErr('Save failed. Please try again.');}
 }
 window.saveReport=doSave;

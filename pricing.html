@@ -252,6 +252,10 @@ onAuthStateChanged(auth, user => {
 const obs = new IntersectionObserver(es => { es.forEach(e => { if (e.isIntersecting) e.target.classList.add('on'); }); }, { threshold: .1 });
 document.querySelectorAll('.rv').forEach(el => obs.observe(el));
 
+document.querySelector('.plan-card.featured').addEventListener('click', () => {
+  gtag('event', 'pricing_click', { plan: 'starter' });
+});
+
 window.handleLogout = async () => { await signOut(auth); location.reload(); };
 </script>
 </body>

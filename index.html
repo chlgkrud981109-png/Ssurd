@@ -214,7 +214,7 @@
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
 import { getAuth, onAuthStateChanged, signInWithPopup, signInWithEmailAndPassword,
-  createUserWithEmailAndPassword, signOut, GoogleAuthProvider }
+  createUserWithEmailAndPassword, signOut, GoogleAuthProvider, getAdditionalUserInfo }
   from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 
 const app = initializeApp({
@@ -256,7 +256,7 @@ onAuthStateChanged(auth, user => {
 const obs=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('on');});},{threshold:.1});
 document.querySelectorAll('.rv').forEach(el=>obs.observe(el));
 
-window.handleCta=()=>auth.currentUser?location.href='write.html':openModal();
+window.handleCta=()=>{gtag('event','cta_click',{button_location:'hero'});auth.currentUser?location.href='write.html':openModal();};
 window.openModal=()=>document.getElementById('authModal').classList.remove('hidden');
 window.closeModal=()=>{document.getElementById('authModal').classList.add('hidden');hideErr();};
 
@@ -285,19 +285,23 @@ window.handleEmailAuth=async()=>{
   hideErr();
   if(!email||!pw){showErr('Please enter your email and password.');return;}
   try{
-    if(currentTab==='login'){await signInWithEmailAndPassword(auth,email,pw);}
+    if(currentTab==='login'){await signInWithEmailAndPassword(auth,email,pw);gtag('event','login',{method:'email'});}
     else{
       if(pw!==pwc){showErr('Passwords do not match.');return;}
       if(pw.length<6){showErr('Password must be at least 6 characters.');return;}
-      await createUserWithEmailAndPassword(auth,email,pw);
+      await createUserWithEmailAndPassword(auth,email,pw);gtag('event','sign_up',{method:'email'});
     }
     closeModal();location.href='write.html';
   }catch(e){showErr(errMap[e.code]||'Something went wrong. Please try again.');}
 };
 
 window.handleGoogleLogin=async()=>{
-  try{await signInWithPopup(auth,gProvider);closeModal();location.href='write.html';}
-  catch{showErr('Google sign-in failed. Please try again.');}
+  try{
+    const result=await signInWithPopup(auth,gProvider);
+    const isNew=getAdditionalUserInfo(result)?.isNewUser;
+    gtag('event',isNew?'sign_up':'login',{method:'google'});
+    closeModal();location.href='write.html';
+  }catch{showErr('Google sign-in failed. Please try again.');}
 };
 
 window.handleLogout=async()=>{await signOut(auth);location.reload();};
