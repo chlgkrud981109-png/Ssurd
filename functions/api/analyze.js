@@ -33,7 +33,7 @@ export async function onRequestPost({ request, env }) {
 
   // Firestore REST API로 사용량 확인 (서버 사이드)
   const userDocUrl = `${FIRESTORE_BASE}/users/${uid}`;
-  let used = 0, limit = 3, userDocExists = false;
+  let used = 0, limit = 3, userDocExists = false, plan = 'free';
   try {
     const userRes = await fetch(userDocUrl, {
       headers: { 'Authorization': `Bearer ${idToken}` },
@@ -42,7 +42,7 @@ export async function onRequestPost({ request, env }) {
       userDocExists = true;
       const userDoc = await userRes.json();
       const fields = userDoc.fields || {};
-      const plan = fields.plan?.stringValue || 'free';
+      plan = fields.plan?.stringValue || 'free';
       limit = plan === 'starter' ? 10 : 3;
       const storedMonth = fields.monthlyUsageMonth?.stringValue;
       used = storedMonth === currentMonth
@@ -53,7 +53,7 @@ export async function onRequestPost({ request, env }) {
     // 사용량 확인 실패 시 통과 (fail-open)
   }
 
-  if (used >= limit) {
+  if (plan !== 'admin' && used >= limit) {
     return new Response(JSON.stringify({ ok: false, error: "You've used all your free analyses. Paid plan coming soon — check back shortly!" }), { status: 429, headers });
   }
 
