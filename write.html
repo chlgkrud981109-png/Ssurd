@@ -278,7 +278,13 @@ window.startAnalysis=async()=>{
   const currentMonth=new Date().toISOString().slice(0,7);
   const used=d.monthlyUsageMonth===currentMonth?(d.monthlyUsage||0):0;
   const limit=d.plan==='starter'?10:3;
-  if(d.plan!=='admin'&&used>=limit){showErr("You've used all your free analyses. Paid plan coming soon — check back shortly!");return;}
+  if(d.plan!=='admin'&&used>=limit){
+    showErr("You've used all 3 free analyses this month. Reset on the 1st.");
+    const btn=document.getElementById('analyzeBtn');
+    btn.textContent='Join Waitlist →';
+    btn.onclick=()=>location.href='pricing.html';
+    return;
+  }
 
   gtag('event','analysis_start',{job_title:job});
   show('loadingOverlay');

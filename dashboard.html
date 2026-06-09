@@ -146,10 +146,10 @@ onAuthStateChanged(auth, async user=>{
   const plan=ud.plan||'free',limit=plan==='starter'?10:3;
   const currentMonth=new Date().toISOString().slice(0,7);
   const used=ud.monthlyUsageMonth===currentMonth?(ud.monthlyUsage||0):0;
-  document.getElementById('planLabel').textContent=plan==='starter'?'Starter Plan':'Free Plan';
-  document.getElementById('remainingCount').textContent=Math.max(0,limit-used);
-  document.getElementById('usageLabel').textContent=`${used} of ${limit} used`;
-  document.getElementById('usageBarFill').style.width=`${Math.min(100,(used/limit)*100)}%`;
+  document.getElementById('planLabel').textContent=plan==='admin'?'Admin':plan==='starter'?'Starter Plan':'Free Plan';
+  document.getElementById('remainingCount').textContent=plan==='admin'?'∞':Math.max(0,limit-used);
+  document.getElementById('usageLabel').textContent=plan==='admin'?'Unlimited':`${used} of ${limit} used`;
+  document.getElementById('usageBarFill').style.width=plan==='admin'?'100%':`${Math.min(100,(used/limit)*100)}%`;
 
   try {
     const q=query(collection(db,'analyses'),where('uid','==',user.uid));
