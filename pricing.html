@@ -244,8 +244,7 @@ const app = initializeApp({
 const auth = getAuth(app);
 const db = getFirestore(app);
 
-const VARIANT_ID = '1803451';
-const STORE = 'ssurd';
+const CHECKOUT_URL = 'https://ssurd.lemonsqueezy.com/checkout/buy/564ac14e-d752-41eb-a45c-f7f187b37dc4';
 
 onAuthStateChanged(auth, async user => {
   const btn = document.getElementById('starterBtn');
@@ -266,7 +265,7 @@ onAuthStateChanged(auth, async user => {
       btn.style.pointerEvents = 'none';
       note.textContent = 'You are already on the Starter plan.';
     } else {
-      const url = `https://${STORE}.lemonsqueezy.com/checkout/buy/${VARIANT_ID}`
+      const url = CHECKOUT_URL
         + `?checkout[custom][uid]=${encodeURIComponent(user.uid)}`
         + `&checkout[email]=${encodeURIComponent(user.email || '')}`;
       btn.href = url;
