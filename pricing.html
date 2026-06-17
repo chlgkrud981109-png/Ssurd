@@ -185,14 +185,8 @@
       </li>
     </ul>
 
-    <button class="btn-plan-starter" disabled style="opacity:.4;cursor:not-allowed">Coming Soon</button>
-    <div style="margin-top:16px">
-      <div id="waitlistInput" style="display:flex;gap:8px">
-        <input id="waitlistEmail" type="email" placeholder="your@email.com" style="flex:1;padding:10px 14px;border-radius:var(--r-md);border:1.5px solid rgba(255,255,255,.2);background:rgba(255,255,255,.08);color:#fff;font-family:var(--font);font-size:13px;outline:none;min-width:0"/>
-        <button onclick="handleWaitlist()" style="padding:10px 16px;border-radius:var(--r-md);background:rgba(255,255,255,.15);border:1.5px solid rgba(255,255,255,.25);color:#fff;font-family:var(--font);font-size:13px;font-weight:600;cursor:pointer;white-space:nowrap;flex-shrink:0">Notify me</button>
-      </div>
-      <div id="waitlistNote" class="paypal-note" style="margin-top:8px">Get notified when the paid plan launches.</div>
-    </div>
+    <a id="starterBtn" href="index.html" class="btn-plan-starter">Get Started — $9/mo →</a>
+    <div class="paypal-note" id="starterNote" style="margin-top:10px">Secure checkout · Cancel anytime</div>
   </div>
 
 </div>
@@ -237,10 +231,9 @@
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
 import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
-import { getFirestore, doc, setDoc, getDoc, serverTimestamp }
-  from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
-const app  = initializeApp({
+const app = initializeApp({
   apiKey:"AIzaSyCeqiOD3PDMD3xL0IAM52xGMBHJdMOfsDY",
   authDomain:"ssurd-6400c.firebaseapp.com",
   projectId:"ssurd-6400c",
@@ -250,65 +243,49 @@ const app  = initializeApp({
 });
 const auth = getAuth(app);
 const db = getFirestore(app);
-let cUser = null;
+
+const VARIANT_ID = '1152533';
+const STORE = 'ssurd';
 
 onAuthStateChanged(auth, async user => {
-  cUser = user;
+  const btn = document.getElementById('starterBtn');
+  const note = document.getElementById('starterNote');
+
   if (user) {
     document.getElementById('navLoginBtn').classList.add('hidden');
     const nu = document.getElementById('navUser');
     nu.classList.remove('hidden'); nu.style.display = 'flex';
     document.getElementById('navUserName').textContent = user.displayName || user.email;
-    const emailInput = document.getElementById('waitlistEmail');
-    if (emailInput && user.email) emailInput.value = user.email;
-    const snap = await getDoc(doc(db, 'analyses', `waitlist_${user.uid}`));
-    if (snap.exists()) {
-      document.getElementById('waitlistInput').style.display = 'none';
-      const note = document.getElementById('waitlistNote');
-      note.textContent = "✓ You're already on the list!";
-      note.style.color = '#86efac';
+
+    const snap = await getDoc(doc(db, 'users', user.uid));
+    const plan = snap.exists() ? snap.data().plan : 'free';
+
+    if (plan === 'starter' || plan === 'admin') {
+      btn.textContent = '✓ Current Plan';
+      btn.style.opacity = '0.55';
+      btn.style.pointerEvents = 'none';
+      note.textContent = 'You are already on the Starter plan.';
+    } else {
+      const url = `https://${STORE}.lemonsqueezy.com/checkout/buy/${VARIANT_ID}`
+        + `?checkout[custom][uid]=${encodeURIComponent(user.uid)}`
+        + `&checkout[email]=${encodeURIComponent(user.email || '')}`;
+      btn.href = url;
+      btn.classList.add('lemonsqueezy-button');
+      btn.addEventListener('click', () => gtag('event', 'checkout_start', { plan: 'starter' }));
     }
   } else {
     document.getElementById('navLoginBtn').classList.remove('hidden');
     document.getElementById('navUser').classList.add('hidden');
+    btn.href = 'index.html';
+    btn.addEventListener('click', () => gtag('event', 'pricing_click', { plan: 'starter' }));
   }
 });
 
 const obs = new IntersectionObserver(es => { es.forEach(e => { if (e.isIntersecting) e.target.classList.add('on'); }); }, { threshold: .1 });
 document.querySelectorAll('.rv').forEach(el => obs.observe(el));
 
-document.querySelector('.plan-card.featured').addEventListener('click', () => {
-  gtag('event', 'pricing_click', { plan: 'starter' });
-});
-
-window.handleWaitlist = async () => {
-  const note = document.getElementById('waitlistNote');
-  if (!cUser) {
-    note.textContent = 'Sign in first to get notified.';
-    note.style.color = '#f87171';
-    setTimeout(() => { location.href = 'index.html'; }, 1200);
-    return;
-  }
-  const email = document.getElementById('waitlistEmail').value.trim();
-  if (!email || !email.includes('@')) {
-    note.textContent = 'Please enter a valid email address.';
-    note.style.color = '#f87171';
-    return;
-  }
-  try {
-    await setDoc(doc(db, 'analyses', `waitlist_${cUser.uid}`), {
-      uid: cUser.uid,
-      waitlistEmail: email,
-      type: 'waitlist',
-      registeredAt: serverTimestamp(),
-    });
-  } catch (e) { console.error('Waitlist failed:', e); }
-  document.getElementById('waitlistInput').style.display = 'none';
-  note.textContent = "✓ You're on the list! We'll reach out when the paid plan launches.";
-  note.style.color = '#86efac';
-};
-
 window.handleLogout = async () => { await signOut(auth); location.reload(); };
 </script>
+<script src="https://app.lemonsqueezy.com/js/lemon.js" defer></script>
 </body>
 </html>
