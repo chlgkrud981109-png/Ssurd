@@ -21,35 +21,34 @@
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%233182f6'/%3E%3Ctext x='16' y='22' text-anchor='middle' fill='white' font-size='20' font-weight='700' font-family='system-ui'%3ES%3C/text%3E%3C/svg%3E">
 <link rel="stylesheet" href="style.css">
 <style>
-/* Role chips */
-.role-suggest{margin:8px 0 20px}
-.role-cats{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px}
-.role-cat-btn{font-size:11px;font-weight:700;font-family:var(--mono);padding:5px 12px;border-radius:20px;border:var(--bw) solid var(--border);background:#fff;color:var(--t3);cursor:pointer;transition:all .15s;letter-spacing:.04em;line-height:1}
-.role-cat-btn.act{background:var(--t1);color:#fff;border-color:var(--t1)}
-.role-chips-wrap{display:flex;flex-wrap:wrap;gap:6px}
-.role-chip{font-size:12px;padding:5px 13px;border-radius:20px;border:var(--bw) solid var(--border);background:#fff;color:var(--t2);cursor:pointer;transition:all .15s;font-family:var(--font);white-space:nowrap;line-height:1.4}
-.role-chip:hover{border-color:var(--primary);color:var(--primary);background:var(--primary-light)}
-/* Company selector */
-.co-sec{margin:4px 0 20px;padding:16px;background:var(--bg);border-radius:var(--r-md);border:var(--bw) solid var(--border)}
-.co-sec-hd{display:flex;align-items:center;gap:8px;margin-bottom:14px}
-.co-hd-lbl{font-size:12px;font-weight:700;color:var(--t1)}
+/* Dropdown shared */
+.dd-wrap{position:relative;margin-bottom:6px}
+.dd-panel{position:absolute;left:0;right:0;top:calc(100% + 4px);background:#fff;border:var(--bw) solid var(--border-bold);border-radius:var(--r-md);box-shadow:0 8px 32px rgba(0,0,0,.1);z-index:200;overflow:hidden}
+.dd-search{width:100%;padding:10px 14px;border:none;border-bottom:var(--bw) solid var(--border);font-family:var(--font);font-size:13px;color:var(--t1);outline:none;background:var(--bg);box-sizing:border-box}
+.dd-body{max-height:220px;overflow-y:auto}
+.dd-cat{font-size:10px;font-weight:700;color:var(--t4);letter-spacing:.08em;text-transform:uppercase;padding:10px 14px 4px;font-family:var(--mono);background:var(--bg)}
+.dd-item{padding:9px 14px;font-size:13px;color:var(--t2);cursor:pointer;transition:background .1s;border-left:2px solid transparent}
+.dd-item:hover{background:var(--primary-light);color:var(--primary);border-left-color:var(--primary)}
+.dd-empty{padding:14px;font-size:13px;color:var(--t4);text-align:center}
+/* Role input trigger */
+.role-dd-trigger{display:flex;align-items:center;justify-content:space-between;margin-top:6px;padding:7px 12px;border-radius:var(--r-sm);border:var(--bw) solid var(--border);background:var(--bg);cursor:pointer;font-size:12px;color:var(--t3);user-select:none;transition:border-color .15s}
+.role-dd-trigger:hover{border-color:var(--primary);color:var(--primary)}
+.role-dd-trigger.open{border-color:var(--primary);color:var(--primary)}
+.role-dd-arrow{font-size:10px;transition:transform .2s}
+.role-dd-trigger.open .role-dd-arrow{transform:rotate(180deg)}
+/* Company field */
+.co-field{position:relative;margin-bottom:20px}
+.co-field-hd{display:flex;align-items:center;gap:8px;margin-bottom:8px}
 .co-plan-badge{font-family:var(--mono);font-size:9px;font-weight:700;letter-spacing:.06em;padding:2px 7px;border-radius:20px;background:var(--primary-light);color:var(--primary);border:1px solid var(--primary)}
-.co-opt{font-size:11px;color:var(--t4);margin-left:auto}
-.co-tags{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px}
-.co-tag{display:inline-flex;align-items:center;gap:5px;padding:5px 10px 5px 7px;border-radius:20px;background:var(--primary-light);border:1.5px solid var(--primary);font-size:12px;font-weight:600;color:var(--primary);line-height:1}
-.co-tag img{width:14px;height:14px;border-radius:2px;object-fit:contain}
-.co-tag-rm{background:none;border:none;color:var(--primary);cursor:pointer;font-size:12px;padding:0 0 0 3px;line-height:1;opacity:.6}
+.co-row{display:flex;align-items:center;flex-wrap:wrap;gap:6px;min-height:32px}
+.co-tags{display:flex;flex-wrap:wrap;gap:6px}
+.co-tag{display:inline-flex;align-items:center;gap:5px;padding:4px 10px 4px 10px;border-radius:20px;background:var(--primary-light);border:1.5px solid var(--primary);font-size:12px;font-weight:600;color:var(--primary);line-height:1}
+.co-tag-rm{background:none;border:none;color:var(--primary);cursor:pointer;font-size:11px;padding:0 0 0 4px;line-height:1;opacity:.6}
 .co-tag-rm:hover{opacity:1}
-.co-search{width:100%;padding:9px 13px;border-radius:var(--r-sm);border:var(--bw) solid var(--border);font-family:var(--font);font-size:13px;color:var(--t1);background:#fff;outline:none;transition:border-color .15s;box-sizing:border-box;margin-bottom:10px}
-.co-search:focus{border-color:var(--primary)}
-.co-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(115px,1fr));gap:6px}
-.co-chip{display:flex;align-items:center;gap:7px;padding:8px 11px;border-radius:var(--r-sm);border:var(--bw) solid var(--border);background:#fff;cursor:pointer;transition:all .15s;font-size:12px;font-weight:500;color:var(--t1);font-family:var(--font);text-align:left;white-space:nowrap;overflow:hidden;min-width:0}
-.co-chip img{width:15px;height:15px;border-radius:2px;flex-shrink:0;object-fit:contain}
-.co-chip span{overflow:hidden;text-overflow:ellipsis}
-.co-chip:hover{border-color:var(--primary);color:var(--primary);background:var(--primary-light)}
-.co-chip.sel{border-color:var(--primary);background:var(--primary-light);color:var(--primary);font-weight:600}
-.co-gate{margin-top:10px;font-size:12px;color:var(--t3);text-align:center;padding:10px;border-radius:var(--r-sm);background:rgba(49,130,246,.04);border:var(--bw) dashed var(--border-bold)}
-.co-gate a{color:var(--primary);font-weight:600;text-decoration:none}
+.co-add-btn{font-size:12px;font-weight:600;color:var(--primary);background:var(--primary-light);border:var(--bw) solid var(--primary);border-radius:20px;padding:5px 13px;cursor:pointer;font-family:var(--font);white-space:nowrap;transition:all .15s;line-height:1}
+.co-add-btn:hover{background:var(--primary);color:#fff}
+.co-gate-note{font-size:11px;color:var(--t4);font-family:var(--mono)}
+.co-gate-note a{color:var(--primary);text-decoration:none;font-weight:600}
 /* Company insights in result */
 .ci-sec{border-top:var(--bw) solid var(--border);padding:32px}
 .ci-hd{font-size:13px;font-weight:700;color:var(--t1);margin-bottom:20px;display:flex;align-items:center;gap:8px}
@@ -137,24 +136,30 @@
     <div class="form-card rv d1">
       <div id="errMsg" class="err-msg hidden"></div>
       <label class="f-label">Target Role</label>
-      <input id="jobTitle" class="f-job" type="text" placeholder="e.g. Product Manager, Software Engineer" autocomplete="off"/>
-      <div class="role-suggest">
-        <div id="roleCats" class="role-cats"></div>
-        <div id="roleChipsWrap" class="role-chips-wrap"></div>
+      <div class="dd-wrap" id="roleWrap">
+        <input id="jobTitle" class="f-job" type="text" placeholder="e.g. Product Manager, Software Engineer" autocomplete="off"/>
+        <div class="role-dd-trigger" id="roleTrigger" onclick="toggleRoleDD()">
+          <span>Browse popular roles</span><span class="role-dd-arrow">▾</span>
+        </div>
+        <div class="dd-panel" id="roleDD" style="display:none">
+          <input class="dd-search" id="roleSearch" placeholder="Search roles…" autocomplete="off" oninput="filterRoles(this.value)"/>
+          <div class="dd-body" id="roleListEl"></div>
+        </div>
       </div>
 
-      <label class="f-label" style="margin-top:4px">Target Companies <span style="font-size:11px;color:var(--t4);font-weight:400">— optional</span></label>
-      <div class="co-sec">
-        <div class="co-sec-hd">
-          <span class="co-hd-lbl">Company Intelligence</span>
+      <div class="co-field" id="coWrap">
+        <div class="co-field-hd">
+          <label class="f-label" style="margin:0">Target Companies</label>
           <span class="co-plan-badge">STARTER</span>
-          <span class="co-opt" id="coMaxNote">max 3</span>
         </div>
-        <div id="selectedCos" class="co-tags"></div>
-        <input id="coSearch" class="co-search" placeholder="🔍  Search or type any company..." autocomplete="off"/>
-        <div id="coGrid" class="co-grid"></div>
-        <div id="coGate" class="co-gate hidden">
-          <a href="pricing.html">Upgrade to Starter</a> to unlock company-specific news insights
+        <div class="co-row">
+          <div id="selectedCos" class="co-tags"></div>
+          <button class="co-add-btn" id="coAddBtn" onclick="toggleCoDD()">+ Add company</button>
+          <span id="coGateNote" class="co-gate-note hidden">— <a href="pricing.html">Upgrade to Starter</a></span>
+        </div>
+        <div class="dd-panel" id="coDD" style="display:none">
+          <input class="dd-search" id="coSearch" placeholder="Search company…" autocomplete="off" oninput="filterCos(this.value)"/>
+          <div class="dd-body" id="coListEl"></div>
         </div>
       </div>
 
@@ -249,72 +254,94 @@ const auth=getAuth(app),db=getFirestore(app);
 let cUser=null,cReport=null,cJob=null,cLetter=null,cUserPlan='free',selectedCos=[];
 
 const ROLES={
-  'Engineering':['Software Engineer','Frontend Developer','Backend Developer','Full Stack Engineer','ML Engineer','DevOps Engineer','iOS Developer','Android Developer'],
-  'Data':['Data Scientist','Data Analyst','Research Scientist','Data Engineer','BI Analyst'],
-  'Product':['Product Manager','Senior PM','Product Designer','UX Designer','UI/UX Designer'],
-  'Marketing':['Marketing Manager','Growth Manager','Content Writer','Copywriter','SEO Specialist'],
-  'Business':['Business Analyst','Consulting Analyst','Financial Analyst','Investment Banker','Operations Manager'],
-  'Sales':['Sales Manager','Account Manager','Customer Success Manager','Sales Development Rep'],
+  'Engineering':['Software Engineer','Senior Software Engineer','Staff Engineer','Principal Engineer','Frontend Developer','Backend Developer','Full Stack Engineer','iOS Developer','Android Developer','DevOps Engineer','Platform Engineer','Site Reliability Engineer','Security Engineer','Machine Learning Engineer','AI Engineer','Cloud Architect','Solutions Architect','Embedded Systems Engineer','Game Developer','Mobile Developer'],
+  'Data':['Data Scientist','Senior Data Scientist','Data Analyst','Business Intelligence Analyst','Research Scientist','Applied Scientist','ML Researcher','Quantitative Analyst','Data Engineer','Analytics Engineer','AI Researcher','Computer Vision Engineer','NLP Engineer'],
+  'Product':['Product Manager','Senior Product Manager','Group Product Manager','Principal PM','Technical PM','Director of Product','Product Designer','UX Designer','UI Designer','UX Researcher','UX Writer','Service Designer','Design Lead'],
+  'Marketing':['Marketing Manager','Growth Manager','Content Writer','Copywriter','Content Strategist','SEO Specialist','Performance Marketer','Brand Manager','Social Media Manager','Product Marketing Manager','Demand Generation Manager','Email Marketing Manager','Marketing Analyst'],
+  'Business':['Business Analyst','Strategy Analyst','Management Consultant','Consulting Analyst','Operations Manager','Program Manager','Project Manager','Strategy Manager','Corporate Development','Chief of Staff','Operations Analyst','Business Development Manager','Partnerships Manager'],
+  'Finance':['Financial Analyst','Investment Analyst','Investment Banker','FP&A Analyst','Private Equity Associate','Portfolio Manager','Risk Analyst','Quantitative Finance','Corporate Finance Analyst','Controller','Equity Research Analyst','Credit Analyst'],
+  'Sales':['Account Executive','Account Manager','Sales Manager','Customer Success Manager','Sales Development Representative','Business Development Representative','Enterprise Sales','Inside Sales Representative','Sales Engineer','Revenue Operations'],
 };
-const COMPANIES=[
-  {n:'Google',d:'google.com'},{n:'Meta',d:'meta.com'},{n:'Amazon',d:'amazon.com'},
-  {n:'Apple',d:'apple.com'},{n:'Microsoft',d:'microsoft.com'},{n:'Netflix',d:'netflix.com'},
-  {n:'Spotify',d:'spotify.com'},{n:'Airbnb',d:'airbnb.com'},{n:'Uber',d:'uber.com'},
-  {n:'Stripe',d:'stripe.com'},{n:'OpenAI',d:'openai.com'},{n:'Salesforce',d:'salesforce.com'},
-  {n:'Adobe',d:'adobe.com'},{n:'LinkedIn',d:'linkedin.com'},{n:'Figma',d:'figma.com'},
-  {n:'McKinsey',d:'mckinsey.com'},{n:'BCG',d:'bcg.com'},{n:'Bain',d:'bain.com'},
-  {n:'Goldman Sachs',d:'goldmansachs.com'},{n:'JP Morgan',d:'jpmorgan.com'},
-  {n:'Deloitte',d:'deloitte.com'},{n:'Accenture',d:'accenture.com'},
-];
-let activeRoleCat=Object.keys(ROLES)[0];
+const CO_GROUPS={
+  'Tech Giants':['Google','Meta','Amazon','Apple','Microsoft','Netflix','Tesla','Nvidia','Intel','Samsung','Sony','IBM'],
+  'AI & Research':['OpenAI','Anthropic','DeepMind','Cohere','Mistral','Stability AI','Scale AI','Hugging Face','Inflection AI'],
+  'High Growth':['Stripe','Airbnb','Uber','Lyft','DoorDash','Figma','Notion','Canva','Miro','Linear','Vercel','Cloudflare','Rippling','Brex','Plaid'],
+  'Enterprise SaaS':['Salesforce','Adobe','Workday','ServiceNow','Zendesk','HubSpot','Atlassian','GitHub','GitLab','Datadog','Snowflake','Databricks','MongoDB','HashiCorp','Twilio'],
+  'Social & Media':['LinkedIn','Twitter / X','Slack','Zoom','Discord','Snapchat','Reddit','Pinterest','Spotify','TikTok','Twitch'],
+  'Fintech & Finance':['Goldman Sachs','JP Morgan','Morgan Stanley','Visa','Mastercard','PayPal','Coinbase','Robinhood','Revolut','Klarna','Affirm','Block'],
+  'Consulting':['McKinsey','BCG','Bain','Deloitte','Accenture','PwC','EY','KPMG','Oliver Wyman','Roland Berger'],
+  'E-commerce':['Shopify','eBay','Etsy','Wayfair','Chewy','Rakuten','Zalando'],
+  'Aerospace & Auto':['SpaceX','Tesla','Waymo','Rivian','Boeing','Lockheed Martin','Airbus','Northrop Grumman'],
+};
+const ALL_COMPANIES=Object.entries(CO_GROUPS).flatMap(([g,cos])=>cos.map(n=>({n,g})));
 
-function faviconUrl(domain){return `https://www.google.com/s2/favicons?domain=${domain}&sz=32`;}
+let roleDDOpen=false,coDDOpen=false;
 
-function renderRoleCats(){
-  document.getElementById('roleCats').innerHTML=Object.keys(ROLES).map(cat=>
-    `<button class="role-cat-btn${cat===activeRoleCat?' act':''}" onclick="setRoleCat('${cat}')">${cat}</button>`
-  ).join('');
+function buildRoleList(filter=''){
+  const el=document.getElementById('roleListEl');
+  const q=filter.toLowerCase();
+  let html='';
+  Object.entries(ROLES).forEach(([cat,roles])=>{
+    const filtered=q?roles.filter(r=>r.toLowerCase().includes(q)):roles;
+    if(!filtered.length)return;
+    html+=`<div class="dd-cat">${cat}</div>`;
+    html+=filtered.map(r=>`<div class="dd-item" onclick="pickRole('${r.replace(/'/g,"\\'")}')"> ${r}</div>`).join('');
+  });
+  el.innerHTML=html||`<div class="dd-empty">No results</div>`;
 }
-function renderRoleChips(){
-  document.getElementById('roleChipsWrap').innerHTML=ROLES[activeRoleCat].map(r=>
-    `<button class="role-chip" onclick="setRole('${r}')">${r}</button>`
-  ).join('');
+function buildCoList(filter=''){
+  const el=document.getElementById('coListEl');
+  const q=filter.toLowerCase();
+  let list=q?ALL_COMPANIES.filter(c=>c.n.toLowerCase().includes(q)):ALL_COMPANIES;
+  // custom entry
+  if(q&&!ALL_COMPANIES.find(c=>c.n.toLowerCase()===q)){
+    list=[{n:filter.trim(),g:'Custom'},...list];
+  }
+  let lastG='';let html='';
+  list.forEach(c=>{
+    if(!q&&c.g!==lastG){html+=`<div class="dd-cat">${c.g}</div>`;lastG=c.g;}
+    const sel=selectedCos.some(s=>s.n===c.n);
+    html+=`<div class="dd-item${sel?' dd-item-sel':''}" onclick="pickCo('${c.n.replace(/'/g,"\\'")}')"><span style="display:inline-block;width:14px;color:var(--primary)">${sel?'✓':''}</span>${c.n}</div>`;
+  });
+  el.innerHTML=html||`<div class="dd-empty">No results</div>`;
 }
-window.setRoleCat=cat=>{activeRoleCat=cat;renderRoleCats();renderRoleChips();};
-window.setRole=role=>{document.getElementById('jobTitle').value=role;};
-
-function renderSelectedCos(){
-  document.getElementById('selectedCos').innerHTML=selectedCos.map(c=>
-    `<span class="co-tag"><img src="${faviconUrl(c.d)}" onerror="this.style.display='none'">${c.n}<button class="co-tag-rm" onclick="removeCo('${c.n}')">✕</button></span>`
-  ).join('');
-  document.getElementById('coMaxNote').textContent=selectedCos.length>0?`${selectedCos.length}/3 selected`:'max 3';
-}
-function renderCoGrid(filter=''){
-  const list=filter
-    ?COMPANIES.filter(c=>c.n.toLowerCase().includes(filter.toLowerCase()))
-      .concat(filter.length>1&&!COMPANIES.find(c=>c.n.toLowerCase()===filter.toLowerCase())
-        ?[{n:filter.trim(),d:filter.trim().toLowerCase().replace(/\s+/g,'')+'.com',custom:true}]
-        :[])
-    :COMPANIES;
-  document.getElementById('coGrid').innerHTML=list.map(c=>
-    `<button class="co-chip${selectedCos.some(s=>s.n===c.n)?' sel':''}" onclick="toggleCo('${c.n.replace(/'/g,"\\'")}','${c.d}')">
-      <img src="${faviconUrl(c.d)}" onerror="this.style.display='none'"><span>${c.n}</span>
-    </button>`
-  ).join('');
-}
-window.toggleCo=(name,domain)=>{
-  if(cUserPlan==='free'&&cUserPlan!=='admin'){
-    document.getElementById('coGate').classList.remove('hidden');return;
+window.filterRoles=v=>buildRoleList(v);
+window.filterCos=v=>buildCoList(v);
+window.pickRole=role=>{document.getElementById('jobTitle').value=role;closeRoleDD();};
+window.pickCo=name=>{
+  if(cUserPlan==='free'){
+    closeCoDD();
+    document.getElementById('coGateNote').classList.remove('hidden');
+    document.getElementById('coAddBtn').style.display='none';
+    return;
   }
   const idx=selectedCos.findIndex(c=>c.n===name);
   if(idx>=0){selectedCos.splice(idx,1);}
-  else if(selectedCos.length<3){selectedCos.push({n:name,d:domain});}
-  renderSelectedCos();renderCoGrid(document.getElementById('coSearch').value);
+  else if(selectedCos.length<3){selectedCos.push({n:name});}
+  renderSelectedCos();buildCoList(document.getElementById('coSearch').value);
+  if(selectedCos.length>=3)closeCoDD();
 };
 window.removeCo=name=>{
   selectedCos=selectedCos.filter(c=>c.n!==name);
-  renderSelectedCos();renderCoGrid(document.getElementById('coSearch').value);
+  renderSelectedCos();buildCoList(document.getElementById('coSearch')?.value||'');
 };
+function renderSelectedCos(){
+  document.getElementById('selectedCos').innerHTML=selectedCos.map(c=>
+    `<span class="co-tag">${c.n}<button class="co-tag-rm" onclick="removeCo('${c.n.replace(/'/g,"\\'")}')">✕</button></span>`
+  ).join('');
+  const addBtn=document.getElementById('coAddBtn');
+  if(addBtn)addBtn.style.display=selectedCos.length>=3?'none':'';
+}
+function openRoleDD(){if(roleDDOpen)return;roleDDOpen=true;buildRoleList();document.getElementById('roleDD').style.display='block';document.getElementById('roleTrigger').classList.add('open');}
+function closeRoleDD(){roleDDOpen=false;document.getElementById('roleDD').style.display='none';document.getElementById('roleTrigger').classList.remove('open');document.getElementById('roleSearch').value='';buildRoleList();}
+function openCoDD(){if(coDDOpen)return;coDDOpen=true;buildCoList();document.getElementById('coDD').style.display='block';}
+function closeCoDD(){coDDOpen=false;document.getElementById('coDD').style.display='none';document.getElementById('coSearch').value='';}
+window.toggleRoleDD=()=>roleDDOpen?closeRoleDD():openRoleDD();
+window.toggleCoDD=()=>{if(cUserPlan==='free'){document.getElementById('coGateNote').classList.remove('hidden');document.getElementById('coAddBtn').style.display='none';return;}coDDOpen?closeCoDD():openCoDD();};
+document.addEventListener('click',e=>{
+  if(roleDDOpen&&!document.getElementById('roleWrap').contains(e.target))closeRoleDD();
+  if(coDDOpen&&!document.getElementById('coWrap').contains(e.target))closeCoDD();
+});
 
 const show=id=>document.getElementById(id).classList.remove('hidden');
 const hide=id=>document.getElementById(id).classList.add('hidden');
@@ -322,9 +349,7 @@ const showErr=m=>{const el=document.getElementById('errMsg');el.textContent=m;el
 const hideErr=()=>document.getElementById('errMsg').classList.add('hidden');
 const esc=s=>String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#039;');
 
-// Init UI
-renderRoleCats();renderRoleChips();renderCoGrid();
-document.getElementById('coSearch').addEventListener('input',e=>renderCoGrid(e.target.value));
+// Init
 
 onAuthStateChanged(auth, async u=>{
   if(!u){show('authGate');return;}
@@ -334,11 +359,6 @@ onAuthStateChanged(auth, async u=>{
   const snap=await getDoc(doc(db,'users',u.uid));
   const d=snap.exists()?snap.data():{};
   cUserPlan=d.plan||'free';
-  if(cUserPlan==='starter'||cUserPlan==='admin'){
-    document.getElementById('coGate').classList.add('hidden');
-  } else {
-    document.getElementById('coGate').classList.remove('hidden');
-  }
   const currentMonth=new Date().toISOString().slice(0,7);
   const used=d.monthlyUsageMonth===currentMonth?(d.monthlyUsage||0):0;
   show('usageRow');
@@ -481,14 +501,10 @@ function renderResult(r,job){
     ciSec.innerHTML=`<div class="ci-hd"><div class="ci-hd-dot"></div>Company Intelligence</div>`
       +r.companyInsights.map(co=>`
         <div class="ci-co">
-          <div class="ci-co-name">
-            <img src="${faviconUrl(co.domain||co.company.toLowerCase().replace(/\s/g,'')+'.com')}" onerror="this.style.display='none'">
-            ${esc(co.company)}
-          </div>
+          <div class="ci-co-name">${esc(co.company)}</div>
           <div class="ci-news">
             ${(co.news||[]).map(item=>`
               <a class="ci-card" href="${esc(item.url)}" target="_blank" rel="noopener">
-                <div class="ci-src"><img src="${faviconUrl(item.source||'google.com')}" onerror="this.style.display='none'"></div>
                 <div class="ci-card-body">
                   <div class="ci-card-title">${esc(item.title)}</div>
                   <div class="ci-card-sum">${esc(item.summary)}</div>
