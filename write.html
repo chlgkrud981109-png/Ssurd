@@ -21,6 +21,51 @@
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%233182f6'/%3E%3Ctext x='16' y='22' text-anchor='middle' fill='white' font-size='20' font-weight='700' font-family='system-ui'%3ES%3C/text%3E%3C/svg%3E">
 <link rel="stylesheet" href="style.css">
 <style>
+/* Role chips */
+.role-suggest{margin:8px 0 20px}
+.role-cats{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px}
+.role-cat-btn{font-size:11px;font-weight:700;font-family:var(--mono);padding:5px 12px;border-radius:20px;border:var(--bw) solid var(--border);background:#fff;color:var(--t3);cursor:pointer;transition:all .15s;letter-spacing:.04em;line-height:1}
+.role-cat-btn.act{background:var(--t1);color:#fff;border-color:var(--t1)}
+.role-chips-wrap{display:flex;flex-wrap:wrap;gap:6px}
+.role-chip{font-size:12px;padding:5px 13px;border-radius:20px;border:var(--bw) solid var(--border);background:#fff;color:var(--t2);cursor:pointer;transition:all .15s;font-family:var(--font);white-space:nowrap;line-height:1.4}
+.role-chip:hover{border-color:var(--primary);color:var(--primary);background:var(--primary-light)}
+/* Company selector */
+.co-sec{margin:4px 0 20px;padding:16px;background:var(--bg);border-radius:var(--r-md);border:var(--bw) solid var(--border)}
+.co-sec-hd{display:flex;align-items:center;gap:8px;margin-bottom:14px}
+.co-hd-lbl{font-size:12px;font-weight:700;color:var(--t1)}
+.co-plan-badge{font-family:var(--mono);font-size:9px;font-weight:700;letter-spacing:.06em;padding:2px 7px;border-radius:20px;background:var(--primary-light);color:var(--primary);border:1px solid var(--primary)}
+.co-opt{font-size:11px;color:var(--t4);margin-left:auto}
+.co-tags{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px}
+.co-tag{display:inline-flex;align-items:center;gap:5px;padding:5px 10px 5px 7px;border-radius:20px;background:var(--primary-light);border:1.5px solid var(--primary);font-size:12px;font-weight:600;color:var(--primary);line-height:1}
+.co-tag img{width:14px;height:14px;border-radius:2px;object-fit:contain}
+.co-tag-rm{background:none;border:none;color:var(--primary);cursor:pointer;font-size:12px;padding:0 0 0 3px;line-height:1;opacity:.6}
+.co-tag-rm:hover{opacity:1}
+.co-search{width:100%;padding:9px 13px;border-radius:var(--r-sm);border:var(--bw) solid var(--border);font-family:var(--font);font-size:13px;color:var(--t1);background:#fff;outline:none;transition:border-color .15s;box-sizing:border-box;margin-bottom:10px}
+.co-search:focus{border-color:var(--primary)}
+.co-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(115px,1fr));gap:6px}
+.co-chip{display:flex;align-items:center;gap:7px;padding:8px 11px;border-radius:var(--r-sm);border:var(--bw) solid var(--border);background:#fff;cursor:pointer;transition:all .15s;font-size:12px;font-weight:500;color:var(--t1);font-family:var(--font);text-align:left;white-space:nowrap;overflow:hidden;min-width:0}
+.co-chip img{width:15px;height:15px;border-radius:2px;flex-shrink:0;object-fit:contain}
+.co-chip span{overflow:hidden;text-overflow:ellipsis}
+.co-chip:hover{border-color:var(--primary);color:var(--primary);background:var(--primary-light)}
+.co-chip.sel{border-color:var(--primary);background:var(--primary-light);color:var(--primary);font-weight:600}
+.co-gate{margin-top:10px;font-size:12px;color:var(--t3);text-align:center;padding:10px;border-radius:var(--r-sm);background:rgba(49,130,246,.04);border:var(--bw) dashed var(--border-bold)}
+.co-gate a{color:var(--primary);font-weight:600;text-decoration:none}
+/* Company insights in result */
+.ci-sec{border-top:var(--bw) solid var(--border);padding:32px}
+.ci-hd{font-size:13px;font-weight:700;color:var(--t1);margin-bottom:20px;display:flex;align-items:center;gap:8px}
+.ci-hd-dot{width:8px;height:8px;border-radius:50%;background:var(--primary)}
+.ci-co{margin-bottom:24px}
+.ci-co-name{font-size:12px;font-weight:700;color:var(--t2);font-family:var(--mono);letter-spacing:.06em;text-transform:uppercase;margin-bottom:10px;display:flex;align-items:center;gap:6px}
+.ci-co-name img{width:14px;height:14px;border-radius:2px;object-fit:contain}
+.ci-news{display:flex;flex-direction:column;gap:8px}
+.ci-card{display:flex;align-items:flex-start;gap:12px;padding:12px 14px;border-radius:var(--r-md);border:var(--bw) solid var(--border);background:#fff;text-decoration:none;transition:border-color .15s,transform .15s}
+.ci-card:hover{border-color:var(--primary);transform:translate(-1px,-1px)}
+.ci-src{display:flex;align-items:center;gap:5px;flex-shrink:0;padding-top:2px}
+.ci-src img{width:16px;height:16px;border-radius:3px;object-fit:contain}
+.ci-card-body{flex:1;min-width:0}
+.ci-card-title{font-size:13px;font-weight:600;color:var(--t1);margin-bottom:4px;line-height:1.4;display:-webkit-box;-webkit-line-clamp:2;line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.ci-card-sum{font-size:12px;color:var(--t3);line-height:1.5}
+.ci-card-arrow{font-size:12px;color:var(--t4);flex-shrink:0;padding-top:2px}
 @media(max-width:768px){
   .r-hero-inner{flex-direction:column;align-items:flex-start}
   .score-blk{grid-template-columns:1fr}.score-l{border-right:none;border-bottom:var(--bw) solid var(--border)}
@@ -28,6 +73,8 @@
   .one-tip{flex-direction:column;gap:16px}
   .r-footer{flex-wrap:wrap}
   .form-sec{padding:40px 20px 60px}.form-card{padding:24px 20px}
+  .co-grid{grid-template-columns:repeat(auto-fill,minmax(100px,1fr))}
+  .ci-sec{padding:24px 20px}
 }
 @media print{
   nav,.r-acts,.r-footer,#viewInput,.loading-overlay,.modal-overlay,#authGate,#usageRow{display:none!important}
@@ -90,41 +137,27 @@
     <div class="form-card rv d1">
       <div id="errMsg" class="err-msg hidden"></div>
       <label class="f-label">Target Role</label>
-      <input id="jobTitle" class="f-job" type="text" list="roleList" placeholder="e.g. Product Manager at Google, Software Engineer at Stripe" autocomplete="off"/>
-      <datalist id="roleList">
-        <option value="Software Engineer">
-        <option value="Senior Software Engineer">
-        <option value="Frontend Developer">
-        <option value="Backend Developer">
-        <option value="Full Stack Engineer">
-        <option value="iOS Developer">
-        <option value="Android Developer">
-        <option value="DevOps Engineer">
-        <option value="Machine Learning Engineer">
-        <option value="Data Scientist">
-        <option value="Data Analyst">
-        <option value="Research Scientist">
-        <option value="Product Manager">
-        <option value="Senior Product Manager">
-        <option value="Product Designer">
-        <option value="UX Designer">
-        <option value="UI/UX Designer">
-        <option value="Graphic Designer">
-        <option value="Marketing Manager">
-        <option value="Growth Manager">
-        <option value="Content Writer">
-        <option value="Copywriter">
-        <option value="Sales Manager">
-        <option value="Account Manager">
-        <option value="Customer Success Manager">
-        <option value="Business Analyst">
-        <option value="Project Manager">
-        <option value="Financial Analyst">
-        <option value="Investment Banker">
-        <option value="Consulting Analyst">
-        <option value="HR Manager">
-        <option value="Operations Manager">
-      </datalist>
+      <input id="jobTitle" class="f-job" type="text" placeholder="e.g. Product Manager, Software Engineer" autocomplete="off"/>
+      <div class="role-suggest">
+        <div id="roleCats" class="role-cats"></div>
+        <div id="roleChipsWrap" class="role-chips-wrap"></div>
+      </div>
+
+      <label class="f-label" style="margin-top:4px">Target Companies <span style="font-size:11px;color:var(--t4);font-weight:400">— optional</span></label>
+      <div class="co-sec">
+        <div class="co-sec-hd">
+          <span class="co-hd-lbl">Company Intelligence</span>
+          <span class="co-plan-badge">STARTER</span>
+          <span class="co-opt" id="coMaxNote">max 3</span>
+        </div>
+        <div id="selectedCos" class="co-tags"></div>
+        <input id="coSearch" class="co-search" placeholder="🔍  Search or type any company..." autocomplete="off"/>
+        <div id="coGrid" class="co-grid"></div>
+        <div id="coGate" class="co-gate hidden">
+          <a href="pricing.html">Upgrade to Starter</a> to unlock company-specific news insights
+        </div>
+      </div>
+
       <label class="f-label">Cover Letter / Resume</label>
       <textarea id="coverLetter" class="f-letter" maxlength="3000" placeholder="Paste your cover letter or resume here.&#10;200+ characters will yield more accurate results."></textarea>
       <div class="f-meta">
@@ -189,6 +222,8 @@
       <div id="otText" class="ot-text"></div>
     </div>
   </div>
+  <div id="ciSec" class="ci-sec hidden"></div>
+
   <div class="r-footer">
     <button class="btn-re" onclick="resetToInput()">← Analyze Again</button>
     <button class="btn-re" onclick="window.print()">⬇ Download PDF</button>
@@ -211,13 +246,85 @@ const app = initializeApp({
   appId:"1:574073259312:web:5148cc8a6a9897b93474f5"
 });
 const auth=getAuth(app),db=getFirestore(app);
-let cUser=null,cReport=null,cJob=null,cLetter=null;
+let cUser=null,cReport=null,cJob=null,cLetter=null,cUserPlan='free',selectedCos=[];
+
+const ROLES={
+  'Engineering':['Software Engineer','Frontend Developer','Backend Developer','Full Stack Engineer','ML Engineer','DevOps Engineer','iOS Developer','Android Developer'],
+  'Data':['Data Scientist','Data Analyst','Research Scientist','Data Engineer','BI Analyst'],
+  'Product':['Product Manager','Senior PM','Product Designer','UX Designer','UI/UX Designer'],
+  'Marketing':['Marketing Manager','Growth Manager','Content Writer','Copywriter','SEO Specialist'],
+  'Business':['Business Analyst','Consulting Analyst','Financial Analyst','Investment Banker','Operations Manager'],
+  'Sales':['Sales Manager','Account Manager','Customer Success Manager','Sales Development Rep'],
+};
+const COMPANIES=[
+  {n:'Google',d:'google.com'},{n:'Meta',d:'meta.com'},{n:'Amazon',d:'amazon.com'},
+  {n:'Apple',d:'apple.com'},{n:'Microsoft',d:'microsoft.com'},{n:'Netflix',d:'netflix.com'},
+  {n:'Spotify',d:'spotify.com'},{n:'Airbnb',d:'airbnb.com'},{n:'Uber',d:'uber.com'},
+  {n:'Stripe',d:'stripe.com'},{n:'OpenAI',d:'openai.com'},{n:'Salesforce',d:'salesforce.com'},
+  {n:'Adobe',d:'adobe.com'},{n:'LinkedIn',d:'linkedin.com'},{n:'Figma',d:'figma.com'},
+  {n:'McKinsey',d:'mckinsey.com'},{n:'BCG',d:'bcg.com'},{n:'Bain',d:'bain.com'},
+  {n:'Goldman Sachs',d:'goldmansachs.com'},{n:'JP Morgan',d:'jpmorgan.com'},
+  {n:'Deloitte',d:'deloitte.com'},{n:'Accenture',d:'accenture.com'},
+];
+let activeRoleCat=Object.keys(ROLES)[0];
+
+function faviconUrl(domain){return `https://www.google.com/s2/favicons?domain=${domain}&sz=32`;}
+
+function renderRoleCats(){
+  document.getElementById('roleCats').innerHTML=Object.keys(ROLES).map(cat=>
+    `<button class="role-cat-btn${cat===activeRoleCat?' act':''}" onclick="setRoleCat('${cat}')">${cat}</button>`
+  ).join('');
+}
+function renderRoleChips(){
+  document.getElementById('roleChipsWrap').innerHTML=ROLES[activeRoleCat].map(r=>
+    `<button class="role-chip" onclick="setRole('${r}')">${r}</button>`
+  ).join('');
+}
+window.setRoleCat=cat=>{activeRoleCat=cat;renderRoleCats();renderRoleChips();};
+window.setRole=role=>{document.getElementById('jobTitle').value=role;};
+
+function renderSelectedCos(){
+  document.getElementById('selectedCos').innerHTML=selectedCos.map(c=>
+    `<span class="co-tag"><img src="${faviconUrl(c.d)}" onerror="this.style.display='none'">${c.n}<button class="co-tag-rm" onclick="removeCo('${c.n}')">✕</button></span>`
+  ).join('');
+  document.getElementById('coMaxNote').textContent=selectedCos.length>0?`${selectedCos.length}/3 selected`:'max 3';
+}
+function renderCoGrid(filter=''){
+  const list=filter
+    ?COMPANIES.filter(c=>c.n.toLowerCase().includes(filter.toLowerCase()))
+      .concat(filter.length>1&&!COMPANIES.find(c=>c.n.toLowerCase()===filter.toLowerCase())
+        ?[{n:filter.trim(),d:filter.trim().toLowerCase().replace(/\s+/g,'')+'.com',custom:true}]
+        :[])
+    :COMPANIES;
+  document.getElementById('coGrid').innerHTML=list.map(c=>
+    `<button class="co-chip${selectedCos.some(s=>s.n===c.n)?' sel':''}" onclick="toggleCo('${c.n.replace(/'/g,"\\'")}','${c.d}')">
+      <img src="${faviconUrl(c.d)}" onerror="this.style.display='none'"><span>${c.n}</span>
+    </button>`
+  ).join('');
+}
+window.toggleCo=(name,domain)=>{
+  if(cUserPlan==='free'&&cUserPlan!=='admin'){
+    document.getElementById('coGate').classList.remove('hidden');return;
+  }
+  const idx=selectedCos.findIndex(c=>c.n===name);
+  if(idx>=0){selectedCos.splice(idx,1);}
+  else if(selectedCos.length<3){selectedCos.push({n:name,d:domain});}
+  renderSelectedCos();renderCoGrid(document.getElementById('coSearch').value);
+};
+window.removeCo=name=>{
+  selectedCos=selectedCos.filter(c=>c.n!==name);
+  renderSelectedCos();renderCoGrid(document.getElementById('coSearch').value);
+};
 
 const show=id=>document.getElementById(id).classList.remove('hidden');
 const hide=id=>document.getElementById(id).classList.add('hidden');
 const showErr=m=>{const el=document.getElementById('errMsg');el.textContent=m;el.classList.remove('hidden');};
 const hideErr=()=>document.getElementById('errMsg').classList.add('hidden');
 const esc=s=>String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#039;');
+
+// Init UI
+renderRoleCats();renderRoleChips();renderCoGrid();
+document.getElementById('coSearch').addEventListener('input',e=>renderCoGrid(e.target.value));
 
 onAuthStateChanged(auth, async u=>{
   if(!u){show('authGate');return;}
@@ -226,6 +333,12 @@ onAuthStateChanged(auth, async u=>{
   document.getElementById('navUserName').textContent=u.displayName||u.email;
   const snap=await getDoc(doc(db,'users',u.uid));
   const d=snap.exists()?snap.data():{};
+  cUserPlan=d.plan||'free';
+  if(cUserPlan==='starter'||cUserPlan==='admin'){
+    document.getElementById('coGate').classList.add('hidden');
+  } else {
+    document.getElementById('coGate').classList.remove('hidden');
+  }
   const currentMonth=new Date().toISOString().slice(0,7);
   const used=d.monthlyUsageMonth===currentMonth?(d.monthlyUsage||0):0;
   show('usageRow');
@@ -296,7 +409,7 @@ window.startAnalysis=async()=>{
     const res=await fetch('/api/analyze',{
       method:'POST',
       headers:{'Content-Type':'application/json','Authorization':`Bearer ${idToken}`},
-      body:JSON.stringify({jobTitle:job,coverLetter:letter}),
+      body:JSON.stringify({jobTitle:job,coverLetter:letter,companies:selectedCos.map(c=>({name:c.n,domain:c.d}))}),
     });
     ts.forEach(clearTimeout);
     const json=await res.json();
@@ -360,6 +473,35 @@ function renderResult(r,job){
   document.getElementById('kwM').innerHTML=(r.keywords?.matched||[]).map(k=>`<span class="kw p">${esc(k)}</span>`).join('');
   document.getElementById('kwMs').innerHTML=(r.keywords?.missing||[]).map(k=>`<span class="kw ms">+ ${esc(k)}</span>`).join('');
   document.getElementById('otText').textContent=r.oneLineTip||'';
+
+  // Company Intelligence
+  const ciSec=document.getElementById('ciSec');
+  if(r.companyInsights&&r.companyInsights.length>0){
+    ciSec.classList.remove('hidden');
+    ciSec.innerHTML=`<div class="ci-hd"><div class="ci-hd-dot"></div>Company Intelligence</div>`
+      +r.companyInsights.map(co=>`
+        <div class="ci-co">
+          <div class="ci-co-name">
+            <img src="${faviconUrl(co.domain||co.company.toLowerCase().replace(/\s/g,'')+'.com')}" onerror="this.style.display='none'">
+            ${esc(co.company)}
+          </div>
+          <div class="ci-news">
+            ${(co.news||[]).map(item=>`
+              <a class="ci-card" href="${esc(item.url)}" target="_blank" rel="noopener">
+                <div class="ci-src"><img src="${faviconUrl(item.source||'google.com')}" onerror="this.style.display='none'"></div>
+                <div class="ci-card-body">
+                  <div class="ci-card-title">${esc(item.title)}</div>
+                  <div class="ci-card-sum">${esc(item.summary)}</div>
+                </div>
+                <div class="ci-card-arrow">→</div>
+              </a>
+            `).join('')}
+          </div>
+        </div>
+      `).join('');
+  } else {
+    ciSec.classList.add('hidden');
+  }
 }
 
 async function doSave(){

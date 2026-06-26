@@ -64,7 +64,7 @@ export async function onRequestPost({ request, env }) {
     return new Response(JSON.stringify({ ok: false, error: 'Invalid request format.' }), { status: 400, headers });
   }
 
-  const { jobTitle, coverLetter } = body;
+  const { jobTitle, coverLetter, companies = [] } = body;
 
   if (!jobTitle || jobTitle.trim().length < 2) {
     return new Response(JSON.stringify({ ok: false, error: 'Please enter the target role.' }), { status: 400, headers });
@@ -73,7 +73,13 @@ export async function onRequestPost({ request, env }) {
     return new Response(JSON.stringify({ ok: false, error: 'Please enter at least 100 characters.' }), { status: 400, headers });
   }
 
-  const prompt = buildPrompt(jobTitle.trim(), coverLetter.trim().slice(0, 3000));
+  // Fetch company news if Starter/Admin plan and companies provided
+  let companyNewsContext = [];
+  if ((plan === 'starter' || plan === 'admin') && Array.isArray(companies) && companies.length > 0) {
+    companyNewsContext = await fetchCompanyNews(companies.slice(0, 3));
+  }
+
+  const prompt = buildPrompt(jobTitle.trim(), coverLetter.trim().slice(0, 3000), companyNewsContext);
 
   let claudeRes;
   try {
@@ -206,9 +212,35 @@ async function verifyFirebaseToken(token, projectId) {
   return payload;
 }
 
+// ── 뉴스 수집 ──────────────────────────────────────────────────────────────
+
+async function fetchCompanyNews(companies) {
+  const results = await Promise.all(companies.map(async ({ name, domain }) => {
+    try {
+      const url = `https://news.google.com/rss/search?q=${encodeURIComponent(name)}+company&hl=en&gl=US&ceid=US:en`;
+      const res = await fetch(url, { headers: { 'User-Agent': 'Mozilla/5.0' }, signal: AbortSignal.timeout(5000) });
+      if (!res.ok) return null;
+      const xml = await res.text();
+      const items = [];
+      const itemRegex = /<item>([\s\S]*?)<\/item>/g;
+      let match;
+      while ((match = itemRegex.exec(xml)) !== null && items.length < 4) {
+        const block = match[1];
+        const title = (/<title><!\[CDATA\[(.*?)\]\]><\/title>/.exec(block)||/<title>(.*?)<\/title>/.exec(block)||[])[1]?.trim();
+        const link = (/<link>(.*?)<\/link>/.exec(block)||[])[1]?.trim();
+        const srcMatch = /<source url="(.*?)"/.exec(block);
+        const srcDomain = srcMatch ? new URL(srcMatch[1]).hostname.replace('www.','') : (domain || 'news');
+        if (title && link) items.push({ title, url: link, source: srcDomain });
+      }
+      return { company: name, domain: domain || '', news: items };
+    } catch { return null; }
+  }));
+  return results.filter(Boolean);
+}
+
 // ── 프롬프트 ───────────────────────────────────────────────────────────────
 
-function buildPrompt(jobTitle, coverLetter) {
+function buildPrompt(jobTitle, coverLetter, companyNews = []) {
   return `You are a seasoned HR director with 20 years of talent acquisition experience at top-tier companies. You have reviewed over 10,000 cover letters and resumes. Analyze with a strict, honest lens — avoid vague generalities. Every piece of feedback must be directly actionable.
 
 [Target Role]
@@ -231,6 +263,15 @@ Scoring calibration (be honest — grade inflation helps no one):
 - 35-54: Weak. Generic claims, lacks evidence, needs significant rework.
 - 0-34: Poor. Does not demonstrate fit for the role.
 
+${companyNews.length > 0 ? `
+[Target Companies — Recent News]
+${companyNews.map(co => `
+${co.company}:
+${co.news.map((n, i) => `${i+1}. "${n.title}" (${n.source})`).join('\n')}
+`).join('\n')}
+
+For each company above, provide 1-sentence job-application insight per news item — how does this news affect what this candidate should emphasize? Be direct and specific.
+` : ''}
 Return ONLY the JSON object below. Do not include any other text or explanation:
 
 {
@@ -273,6 +314,20 @@ Return ONLY the JSON object below. Do not include any other text or explanation:
     "matched": ["<keyword or skill found in the text>", "<keyword>", "<keyword>", "<keyword>"],
     "missing": ["<important keyword for this role that is absent>", "<keyword>", "<keyword>", "<keyword>"]
   },
-  "oneLineTip": "<the single highest-leverage change this applicant should make — be direct and specific, max 150 characters>"
+  "oneLineTip": "<the single highest-leverage change this applicant should make — be direct and specific, max 150 characters>"${companyNews.length > 0 ? `,
+  "companyInsights": [
+    {
+      "company": "<company name>",
+      "domain": "<company domain e.g. google.com>",
+      "news": [
+        {
+          "title": "<news headline>",
+          "url": "<original article url>",
+          "source": "<source domain e.g. reuters.com>",
+          "summary": "<1 sentence: how this news is relevant to the applicant's cover letter — be specific and actionable, max 120 chars>"
+        }
+      ]
+    }
+  ]` : ''}
 }`;
 }
