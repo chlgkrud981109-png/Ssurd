@@ -19,57 +19,52 @@
 <meta property="og:description" content="Simple, transparent pricing. Start free. 3 cover letter analyses per month, no credit card required.">
 <meta name="twitter:card" content="summary">
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%233182f6'/%3E%3Ctext x='16' y='22' text-anchor='middle' fill='white' font-size='20' font-weight='700' font-family='system-ui'%3ES%3C/text%3E%3C/svg%3E">
+<script>(function(){var t=null;try{t=localStorage.getItem('ssurd_theme')}catch(e){}
+document.documentElement.setAttribute('data-theme',t==='light'?'light':'dark')})();
+function ssurdToggleTheme(){var h=document.documentElement,
+n=h.getAttribute('data-theme')==='light'?'dark':'light';h.setAttribute('data-theme',n);
+try{localStorage.setItem('ssurd_theme',n)}catch(e){}}</script>
 <link rel="stylesheet" href="style.css">
 <style>
 .pricing-hero{min-height:auto;padding:120px 32px 64px;text-align:center;max-width:640px;margin:0 auto}
 .pricing-hero .sec-label{margin-bottom:12px}
-.pricing-h1{font-size:clamp(28px,5vw,48px);font-weight:900;letter-spacing:-.04em;line-height:1.15;margin-bottom:12px}
+.pricing-h1{font-size:clamp(32px,5vw,56px);font-weight:600;letter-spacing:-.04em;line-height:1.1;margin-bottom:12px}
 .pricing-sub{font-size:15px;color:var(--t3);line-height:1.7}
 
 .plans-wrap{max-width:760px;margin:0 auto;padding:0 32px 80px;display:grid;grid-template-columns:1fr 1fr;gap:20px;align-items:start}
-.plan-card{background:#fff;border:var(--bw) solid var(--border-bold);border-radius:var(--r-xl);padding:36px;position:relative;transition:transform .2s var(--ease),box-shadow .2s var(--ease)}
-.plan-card:hover{transform:translate(-2px,-2px);box-shadow:var(--shadow)}
-.plan-card.featured{background:var(--t1);color:#fff}
-.plan-badge{display:inline-block;font-family:var(--mono);font-size:10px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;padding:4px 12px;border-radius:var(--r-full);background:var(--primary-light);color:var(--primary);border:1.5px solid var(--primary);margin-bottom:20px}
-.plan-card.featured .plan-badge{background:rgba(255,255,255,.15);color:#fff;border-color:rgba(255,255,255,.3)}
-.plan-name{font-size:22px;font-weight:800;letter-spacing:-.02em;margin-bottom:8px}
-.plan-card.featured .plan-name{color:#fff}
+.plan-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-xl);padding:36px;position:relative;transition:border-color .2s var(--ease)}
+.plan-card:hover{border-color:var(--border-strong)}
+.plan-card.featured{background:var(--surface-2);border-color:var(--t3)}
+.plan-badge{display:inline-block;font-size:11px;font-weight:600;padding:4px 12px;border-radius:var(--r-full);background:var(--primary-light);color:var(--primary);margin-bottom:20px}
+.plan-name{font-size:22px;font-weight:600;letter-spacing:-.02em;margin-bottom:8px}
 .plan-desc{font-size:13px;color:var(--t3);margin-bottom:24px;line-height:1.6}
-.plan-card.featured .plan-desc{color:rgba(255,255,255,.45)}
 .plan-price-row{display:flex;align-items:baseline;gap:4px;margin-bottom:6px}
-.plan-price{font-size:44px;font-weight:900;letter-spacing:-.04em;line-height:1;color:var(--t1)}
-.plan-card.featured .plan-price{color:#fff}
-.plan-currency{font-size:20px;font-weight:700;color:var(--t2);align-self:flex-start;padding-top:8px}
-.plan-card.featured .plan-currency{color:rgba(255,255,255,.6)}
+.plan-price{font-size:44px;font-weight:700;letter-spacing:-.04em;line-height:1;color:var(--t1);font-family:var(--mono)}
+.plan-currency{font-size:20px;font-weight:600;color:var(--t2);align-self:flex-start;padding-top:8px}
 .plan-period{font-size:13px;color:var(--t3);font-weight:500}
-.plan-card.featured .plan-period{color:rgba(255,255,255,.4)}
-.plan-divider{height:var(--bw);background:var(--border);margin:24px 0}
-.plan-card.featured .plan-divider{background:rgba(255,255,255,.12)}
+.plan-divider{height:1px;background:var(--border);margin:24px 0}
 .plan-features{list-style:none;display:flex;flex-direction:column;gap:12px;margin-bottom:32px}
 .plan-feat{display:flex;align-items:flex-start;gap:10px;font-size:13px;color:var(--t2);line-height:1.5}
-.plan-card.featured .plan-feat{color:rgba(255,255,255,.7)}
 .feat-icon{width:18px;height:18px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;flex-shrink:0;margin-top:1px}
-.feat-icon.yes{background:var(--green-bg);color:var(--green);border:1.5px solid var(--green)}
-.feat-icon.no{background:var(--bg);color:var(--t4);border:1.5px solid var(--border)}
-.plan-card.featured .feat-icon.yes{background:rgba(0,196,113,.15);color:#00c471;border-color:rgba(0,196,113,.4)}
+.feat-icon.yes{background:var(--green-bg);color:var(--green)}
+.feat-icon.no{background:var(--surface-dim);color:var(--t4)}
 .feat-text{flex:1}
-.feat-text strong{font-weight:700;color:var(--t1)}
-.plan-card.featured .feat-text strong{color:#fff}
+.feat-text strong{font-weight:600;color:var(--t1)}
 
-.btn-plan-free{width:100%;padding:14px;border-radius:var(--r-md);border:var(--bw) solid var(--border-bold);background:#fff;color:var(--t1);font-family:var(--font);font-size:14px;font-weight:700;cursor:pointer;transition:all .15s var(--ease);box-shadow:var(--shadow-sm);display:flex;align-items:center;justify-content:center;gap:8px;text-decoration:none}
-.btn-plan-free:hover{background:var(--bg);transform:translate(-1px,-1px);box-shadow:var(--shadow)}
-.btn-plan-starter{width:100%;padding:14px;border-radius:var(--r-md);border:var(--bw) solid rgba(255,255,255,.3);background:var(--primary);color:#fff;font-family:var(--font);font-size:14px;font-weight:700;cursor:pointer;transition:all .15s var(--ease);box-shadow:3px 3px 0 rgba(255,255,255,.15);display:flex;align-items:center;justify-content:center;gap:8px;text-decoration:none}
-.btn-plan-starter:hover{background:#1b64da;transform:translate(-1px,-1px);box-shadow:5px 5px 0 rgba(255,255,255,.15)}
+.btn-plan-free{width:100%;padding:14px;border-radius:var(--r-md);border:1px solid var(--border);background:transparent;color:var(--t1);font-family:var(--font);font-size:14px;font-weight:600;cursor:pointer;transition:border-color .15s var(--ease);display:flex;align-items:center;justify-content:center;gap:8px;text-decoration:none}
+.btn-plan-free:hover{border-color:var(--border-strong)}
+.btn-plan-starter{width:100%;padding:14px;border-radius:var(--r-md);border:none;background:var(--inv-bg);color:var(--inv-fg);font-family:var(--font);font-size:14px;font-weight:600;cursor:pointer;transition:opacity .15s var(--ease);display:flex;align-items:center;justify-content:center;gap:8px;text-decoration:none}
+.btn-plan-starter:hover{opacity:.88}
 
-.paypal-note{font-size:11px;color:rgba(255,255,255,.35);text-align:center;margin-top:10px;font-family:var(--mono)}
-.free-note{font-size:11px;color:var(--t4);text-align:center;margin-top:10px;font-family:var(--mono)}
+.paypal-note{font-size:11px;color:var(--t4);text-align:center;margin-top:10px}
+.free-note{font-size:11px;color:var(--t4);text-align:center;margin-top:10px}
 
 .faq-wrap{max-width:640px;margin:0 auto;padding:0 32px 80px}
-.faq-label{font-family:var(--mono);font-size:12px;color:var(--primary);letter-spacing:.08em;font-weight:500;margin-bottom:12px}
-.faq-h2{font-size:clamp(20px,3vw,28px);font-weight:800;letter-spacing:-.03em;margin-bottom:32px}
-.faq-item{border-top:var(--bw) solid var(--border);padding:20px 0}
-.faq-item:last-child{border-bottom:var(--bw) solid var(--border)}
-.faq-q{font-size:14px;font-weight:700;color:var(--t1);margin-bottom:8px}
+.faq-label{font-size:13px;color:var(--t3);font-weight:500;margin-bottom:12px}
+.faq-h2{font-size:clamp(22px,3vw,32px);font-weight:600;letter-spacing:-.03em;margin-bottom:32px}
+.faq-item{border-top:1px solid var(--border);padding:20px 0}
+.faq-item:last-child{border-bottom:1px solid var(--border)}
+.faq-q{font-size:14px;font-weight:600;color:var(--t1);margin-bottom:8px}
 .faq-a{font-size:13px;color:var(--t3);line-height:1.65}
 
 @media(max-width:640px){
@@ -90,6 +85,7 @@
     <a href="pricing.html" class="nav-lnk act">Pricing</a>
   </div>
   <div class="nav-r">
+    <button class="theme-btn" onclick="ssurdToggleTheme()" aria-label="Switch theme"></button>
     <div id="navUser" class="hidden" style="display:flex;align-items:center;gap:10px">
       <span id="navUserName" class="nav-uname"></span>
       <button class="btn-ghost" onclick="handleLogout()">Log Out</button>
@@ -99,7 +95,7 @@
 </nav>
 
 <div class="pricing-hero rv">
-  <div class="sec-label">PRICING</div>
+  <div class="sec-label" style="font-size:13px;color:var(--t3);font-weight:500">Pricing</div>
   <h1 class="pricing-h1">Simple, honest pricing.</h1>
   <p class="pricing-sub">Start free. Upgrade when you need more analyses.<br>No hidden fees, no auto-renewal surprises.</p>
 </div>
@@ -132,7 +128,11 @@
       </li>
       <li class="plan-feat">
         <span class="feat-icon yes">✓</span>
-        <span class="feat-text">Keyword gap analysis</span>
+        <span class="feat-text"><strong>ATS check & JD matching</strong> included</span>
+      </li>
+      <li class="plan-feat">
+        <span class="feat-icon yes">✓</span>
+        <span class="feat-text">Revision tracking & score deltas</span>
       </li>
       <li class="plan-feat">
         <span class="feat-icon yes">✓</span>
@@ -140,7 +140,7 @@
       </li>
       <li class="plan-feat">
         <span class="feat-icon no">—</span>
-        <span class="feat-text" style="color:var(--t4)">Priority analysis queue</span>
+        <span class="feat-text" style="color:var(--t4)">Company Intelligence (news-based insights)</span>
       </li>
     </ul>
     <a href="write.html" class="btn-plan-free">Start for Free →</a>
@@ -169,19 +169,19 @@
       </li>
       <li class="plan-feat">
         <span class="feat-icon yes">✓</span>
-        <span class="feat-text">Before / After sentence rewrites</span>
+        <span class="feat-text">Everything in Free — ATS, JD matching, rewrites</span>
       </li>
       <li class="plan-feat">
         <span class="feat-icon yes">✓</span>
-        <span class="feat-text">Keyword gap analysis</span>
+        <span class="feat-text"><strong>Company Intelligence</strong> — real-time company news insights</span>
       </li>
       <li class="plan-feat">
         <span class="feat-icon yes">✓</span>
-        <span class="feat-text">Full analysis history</span>
+        <span class="feat-text">Target up to 3 companies per analysis</span>
       </li>
       <li class="plan-feat">
         <span class="feat-icon yes">✓</span>
-        <span class="feat-text"><strong>Priority</strong> analysis queue</span>
+        <span class="feat-text">Headroom for revision loops — improve & re-score</span>
       </li>
     </ul>
 
@@ -210,7 +210,7 @@
   </div>
   <div class="faq-item rv d4">
     <div class="faq-q">Can I cancel my subscription?</div>
-    <div class="faq-a">Yes. Once the Starter plan is live, you can cancel at any time. Your access will continue until the end of the billing period.</div>
+    <div class="faq-a">Yes. You can cancel at any time from the checkout portal. Your access continues until the end of the billing period.</div>
   </div>
 </div>
 

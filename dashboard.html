@@ -19,11 +19,26 @@
 <meta property="og:description" content="Review your past cover letter analyses and track your progress over time.">
 <meta name="twitter:card" content="summary">
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%233182f6'/%3E%3Ctext x='16' y='22' text-anchor='middle' fill='white' font-size='20' font-weight='700' font-family='system-ui'%3ES%3C/text%3E%3C/svg%3E">
+<script>(function(){var t=null;try{t=localStorage.getItem('ssurd_theme')}catch(e){}
+document.documentElement.setAttribute('data-theme',t==='light'?'light':'dark')})();
+function ssurdToggleTheme(){var h=document.documentElement,
+n=h.getAttribute('data-theme')==='light'?'dark':'light';h.setAttribute('data-theme',n);
+try{localStorage.setItem('ssurd_theme',n)}catch(e){}}</script>
 <link rel="stylesheet" href="style.css">
 <style>
 main{padding:72px 32px 64px;max-width:960px;margin:0 auto}
-.hist-del{background:none;border:none;color:rgba(0,0,0,.18);font-size:13px;cursor:pointer;padding:6px 8px;border-radius:var(--r-sm);transition:color .15s,background .15s;line-height:1;flex-shrink:0;margin-left:4px}
-.hist-del:hover{color:#f04452;background:rgba(240,68,82,.08)}
+.hist-del{background:none;border:none;color:var(--t4);font-size:13px;cursor:pointer;padding:6px 8px;border-radius:var(--r-sm);transition:color .15s,background .15s;line-height:1;flex-shrink:0;margin-left:4px}
+.hist-del:hover{color:var(--red);background:var(--red-bg)}
+.hist-badges{display:flex;align-items:center;gap:6px;margin-top:4px}
+.hist-expand{background:none;border:1px solid var(--border);border-radius:var(--r-full);color:var(--t3);font-size:11px;font-weight:500;padding:2px 10px;cursor:pointer;transition:all .15s}
+.hist-expand:hover{border-color:var(--border-strong);color:var(--t1)}
+.hist-chain{margin:-4px 0 8px 24px;border-left:1px solid var(--border);padding-left:14px;display:flex;flex-direction:column;gap:6px}
+.hist-sub{display:flex;align-items:center;justify-content:space-between;gap:12px;background:var(--surface);border:1px solid var(--border);border-radius:var(--r-md);padding:10px 16px;cursor:pointer;transition:border-color .15s}
+.hist-sub:hover{border-color:var(--border-strong)}
+.hist-sub-l{display:flex;align-items:center;gap:10px;min-width:0}
+.hist-sub-v{font-family:var(--mono);font-size:10px;font-weight:600;color:var(--primary);flex-shrink:0}
+.hist-sub-date{font-family:var(--mono);font-size:10px;color:var(--t4)}
+.hist-sub-score{font-family:var(--mono);font-size:13px;font-weight:700}
 @media(max-width:768px){
   main{padding:68px 16px 48px}
   .stats-grid{grid-template-columns:repeat(2,1fr)}
@@ -42,6 +57,7 @@ main{padding:72px 32px 64px;max-width:960px;margin:0 auto}
     <a href="pricing.html" class="nav-lnk">Pricing</a>
   </div>
   <div class="nav-r">
+    <button class="theme-btn" onclick="ssurdToggleTheme()" aria-label="Switch theme"></button>
     <div id="navUser" class="hidden" style="display:flex;align-items:center;gap:10px">
       <span id="navUserName" class="nav-uname"></span>
       <button class="btn-ghost" onclick="handleLogout()">Log Out</button>
@@ -53,7 +69,7 @@ main{padding:72px 32px 64px;max-width:960px;margin:0 auto}
 
 <main>
   <div class="page-header">
-    <div class="page-eyebrow">MY DASHBOARD</div>
+    <div class="page-eyebrow">Dashboard</div>
     <h1 class="page-h1">Analysis History</h1>
     <p class="page-sub">Review past results and track your cover letter progress over time.</p>
   </div>
@@ -77,7 +93,7 @@ main{padding:72px 32px 64px;max-width:960px;margin:0 auto}
           <div class="usage-plan" id="planLabel">Free Plan</div>
           <div class="usage-remaining"><span id="remainingCount">-</span> <span>left this month</span></div>
         </div>
-        <span style="font-size:11px;color:rgba(255,255,255,.35);font-family:var(--mono)">Paid plan coming soon</span>
+        <a href="pricing.html" style="font-size:11px;color:var(--t3);text-decoration:none">Upgrade →</a>
       </div>
       <div class="usage-bar-track"><div class="usage-bar-fill" id="usageBarFill" style="width:0%"></div></div>
       <div class="usage-meta">
@@ -90,7 +106,7 @@ main{padding:72px 32px 64px;max-width:960px;margin:0 auto}
       <div class="stat-card"><div class="stat-label">Total Analyses</div><div class="stat-num" id="statTotal">-</div><div class="stat-sub">completed</div></div>
       <div class="stat-card blue"><div class="stat-label">Average Score</div><div class="stat-num" id="statAvg">-</div><div class="stat-sub">/ 100</div></div>
       <div class="stat-card green"><div class="stat-label">Best Score</div><div class="stat-num" id="statBest">-</div><div class="stat-sub">/ 100</div></div>
-      <div class="stat-card purple"><div class="stat-label">Best Grade</div><div class="stat-num" id="statBestGrade">-</div><div class="stat-sub">Grade</div></div>
+      <div class="stat-card purple"><div class="stat-label">Best Improvement</div><div class="stat-num" id="statBestImp">-</div><div class="stat-sub">pts gained</div></div>
     </div>
 
     <div class="chart-card" id="chartCard" style="display:none">
@@ -169,11 +185,25 @@ onAuthStateChanged(auth, async user=>{
   const scores=docs.map(d=>d.report?.score||0);
   const avg=Math.round(scores.reduce((a,b)=>a+b,0)/scores.length);
   const best=Math.max(...scores);
-  const bestDoc=docs.find(d=>d.report?.score===best);
   document.getElementById('statTotal').textContent=docs.length;
   document.getElementById('statAvg').textContent=avg;
   document.getElementById('statBest').textContent=best;
-  document.getElementById('statBestGrade').textContent=bestDoc?.report?.grade||'-';
+
+  // Group revision chains by rootId (legacy docs fall back to their own id)
+  const groups=new Map();
+  docs.forEach(d=>{
+    const key=d.rootId||d.id;
+    if(!groups.has(key))groups.set(key,[]);
+    groups.get(key).push(d);
+  });
+  groups.forEach(arr=>arr.sort((a,b)=>(a.version||1)-(b.version||1)||((a.createdAt?.toMillis?.()||0)-(b.createdAt?.toMillis?.()||0))));
+  let bestImp=null;
+  groups.forEach(arr=>{
+    if(arr.length<2)return;
+    const d=(arr[arr.length-1].report?.score||0)-(arr[0].report?.score||0);
+    if(bestImp===null||d>bestImp)bestImp=d;
+  });
+  document.getElementById('statBestImp').textContent=bestImp===null?'—':(bestImp>=0?'+':'')+bestImp;
 
   if(docs.length>=2){
     document.getElementById('chartCard').style.display='block';
@@ -185,7 +215,7 @@ onAuthStateChanged(auth, async user=>{
     gb.style.color=diff>=0?'var(--green)':'var(--red)';
   }
 
-  renderHistory(docs);
+  renderHistory(docs,groups);
   } catch (error) {
     console.error("History load failed:", error);
     hide('loadingState');
@@ -203,44 +233,77 @@ function renderChart(docs){
   const pts=scores.map((s,i)=>({x:P+i*xS,y:H-P-(s-mn)*yS}));
   const pathD=pts.map((p,i)=>`${i===0?'M':'L'}${p.x.toFixed(1)},${p.y.toFixed(1)}`).join(' ');
   const areaD=pathD+` L${pts[pts.length-1].x},${H} L${pts[0].x},${H} Z`;
+  // SVG presentation attributes can't hold var() — colors must live in style=""
   document.getElementById('trendChart').innerHTML=`
-    <defs><linearGradient id="cg" x1="0" x2="0" y1="0" y2="1"><stop offset="0%" stop-color="#3182f6" stop-opacity="0.12"/><stop offset="100%" stop-color="#3182f6" stop-opacity="0"/></linearGradient></defs>
-    <path d="${pathD}" fill="none" stroke="#3182f6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    <defs><linearGradient id="cg" x1="0" x2="0" y1="0" y2="1"><stop offset="0%" style="stop-color:var(--primary);stop-opacity:.12"/><stop offset="100%" style="stop-color:var(--primary);stop-opacity:0"/></linearGradient></defs>
+    <path d="${pathD}" fill="none" style="stroke:var(--primary)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
     <path d="${areaD}" fill="url(#cg)"/>
-    ${pts.map((p,i)=>`<circle cx="${p.x.toFixed(1)}" cy="${p.y.toFixed(1)}" r="3.5" fill="#3182f6"/><text x="${p.x.toFixed(1)}" y="${(p.y-10).toFixed(1)}" text-anchor="middle" font-size="10" font-family="DM Mono" fill="#4e5968" font-weight="600">${scores[i]}</text>`).join('')}`;
+    ${pts.map((p,i)=>`<circle cx="${p.x.toFixed(1)}" cy="${p.y.toFixed(1)}" r="3.5" style="fill:var(--primary)"/><text x="${p.x.toFixed(1)}" y="${(p.y-10).toFixed(1)}" text-anchor="middle" font-size="10" font-family="DM Mono" style="fill:var(--t2)" font-weight="500">${scores[i]}</text>`).join('')}`;
   document.getElementById('chartLabels').innerHTML=docs.map(d=>{
     const date=d.createdAt?.toDate?d.createdAt.toDate():new Date();
     return `<span>${date.getMonth()+1}/${date.getDate()}</span>`;
   }).join('');
 }
 
-function renderHistory(docs){
+function scoreColor(score){
+  return typeof score==='number'?(score>=80?'var(--green)':score>=60?'var(--primary)':score>=40?'var(--yellow)':'var(--red)'):'var(--t1)';
+}
+function renderHistory(docs,groups){
   const list=document.getElementById('historyList');
   list.innerHTML='';
+  const seen=new Set();
+  // docs are sorted newest-first; render each chain once, at its newest doc's position
   docs.forEach(d=>{
-    const date=d.createdAt?.toDate?d.createdAt.toDate():new Date();
+    const key=d.rootId||d.id;
+    if(seen.has(key))return;
+    seen.add(key);
+    const chain=groups.get(key)||[d];       // sorted oldest→newest
+    const latest=chain[chain.length-1];
+    const date=latest.createdAt?.toDate?latest.createdAt.toDate():new Date();
     const dateStr=date.toLocaleDateString('en-US',{year:'numeric',month:'short',day:'numeric'});
-    const score=d.report?.score||'-',grade=d.report?.grade||'-',summary=d.report?.summary||'';
-    const sc=typeof score==='number'?(score>=80?'var(--green)':score>=60?'var(--primary)':score>=40?'var(--yellow)':'var(--red)'):'var(--t1)';
+    const score=latest.report?.score||'-',grade=latest.report?.grade||'-',summary=latest.report?.summary||'';
+    const sc=scoreColor(score);
+    const isChain=chain.length>1;
+    const netDelta=isChain?(latest.report?.score||0)-(chain[0].report?.score||0):0;
     const el=document.createElement('div');
     el.className='history-item';
-    el.dataset.id=d.id;
-    el.innerHTML=`<div class="hist-left"><div class="hist-date">${esc(dateStr)}</div><div class="hist-job">${esc(d.jobTitle||'—')}</div><div class="hist-summary">${esc(summary)}</div></div><div class="hist-right"><div class="hist-stat"><div class="hist-stat-num" style="color:${sc}">${typeof score==='number'?score:'-'}</div><div class="hist-stat-lbl">Score</div></div><div class="hist-stat"><div class="hist-stat-num" style="color:var(--primary)">${esc(grade)}</div><div class="hist-stat-lbl">Grade</div></div><div class="hist-arrow">→</div></div>`;
-    el.addEventListener('click',()=>{location.href='write.html?id='+encodeURIComponent(d.id);});
+    el.dataset.id=latest.id;
+    el.innerHTML=`<div class="hist-left"><div class="hist-date">${esc(dateStr)}</div><div class="hist-job">${esc(latest.jobTitle||'—')}</div><div class="hist-summary">${esc(summary)}</div>${isChain?`<div class="hist-badges"><span class="v-badge">v${latest.version||chain.length}</span><span class="delta-chip ${netDelta>=0?'up':'down'}" style="font-size:10px;padding:2px 8px">${netDelta>=0?'+':''}${netDelta} since v1</span><button class="hist-expand">${chain.length} versions ▾</button></div>`:''}</div><div class="hist-right"><div class="hist-stat"><div class="hist-stat-num" style="color:${sc}">${typeof score==='number'?score:'-'}</div><div class="hist-stat-lbl">Score</div></div><div class="hist-stat"><div class="hist-stat-num" style="color:var(--primary)">${esc(grade)}</div><div class="hist-stat-lbl">Grade</div></div><div class="hist-arrow">→</div></div>`;
+    el.addEventListener('click',()=>{location.href='write.html?id='+encodeURIComponent(latest.id);});
     const delBtn=document.createElement('button');
     delBtn.className='hist-del';delBtn.innerHTML='✕';delBtn.title='Delete analysis';
     delBtn.addEventListener('click',async e=>{
       e.stopPropagation();
-      if(!confirm('Delete this analysis? This cannot be undone.'))return;
+      if(!confirm(isChain?'Delete the latest version of this analysis? Older versions stay.':'Delete this analysis? This cannot be undone.'))return;
       try{
-        await deleteDoc(doc(db,'analyses',d.id));
-        el.style.transition='opacity .25s,transform .25s';
-        el.style.opacity='0';el.style.transform='translateX(8px)';
-        setTimeout(()=>el.remove(),250);
+        await deleteDoc(doc(db,'analyses',latest.id));
+        location.reload();
       }catch{alert('Delete failed. Please try again.');}
     });
     el.querySelector('.hist-right').appendChild(delBtn);
     list.appendChild(el);
+
+    if(isChain){
+      const sub=document.createElement('div');
+      sub.className='hist-chain hidden';
+      chain.forEach(v=>{
+        const vd=v.createdAt?.toDate?v.createdAt.toDate():new Date();
+        const vs=v.report?.score??'-';
+        const row=document.createElement('div');
+        row.className='hist-sub';
+        row.innerHTML=`<div class="hist-sub-l"><span class="hist-sub-v">v${v.version||1}</span><span class="hist-sub-date">${vd.getMonth()+1}/${vd.getDate()}</span></div><span class="hist-sub-score" style="color:${scoreColor(vs)}">${vs}</span>`;
+        row.addEventListener('click',()=>{location.href='write.html?id='+encodeURIComponent(v.id);});
+        sub.appendChild(row);
+      });
+      list.appendChild(sub);
+      const exp=el.querySelector('.hist-expand');
+      exp.addEventListener('click',e=>{
+        e.stopPropagation();
+        const open=!sub.classList.contains('hidden');
+        sub.classList.toggle('hidden');
+        exp.textContent=`${chain.length} versions ${open?'▾':'▴'}`;
+      });
+    }
   });
 }
 

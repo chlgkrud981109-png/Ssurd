@@ -53,8 +53,20 @@ export async function onRequestPost({ request, env }) {
     // 사용량 확인 실패 시 통과 (fail-open)
   }
 
-  if (plan !== 'admin' && used >= limit) {
-    return new Response(JSON.stringify({ ok: false, error: "You've used all your free analyses. Paid plan coming soon — check back shortly!" }), { status: 429, headers });
+  // free: 3 full runs, then 2 "locked preview" runs (score only), then hard stop
+  const FREE_LIMIT = 3, LOCKED_EXTRA = 2, STARTER_LIMIT = 10;
+  let locked = false;
+  if (plan !== 'admin') {
+    if (plan === 'starter') {
+      if (used >= STARTER_LIMIT) {
+        return new Response(JSON.stringify({ ok: false, error: "You've used all 10 analyses this month. Your limit resets on the 1st." }), { status: 429, headers });
+      }
+    } else {
+      if (used >= FREE_LIMIT + LOCKED_EXTRA) {
+        return new Response(JSON.stringify({ ok: false, error: "You've used all your free analyses this month. Upgrade to Starter for 10/month, or wait for the reset on the 1st." }), { status: 429, headers });
+      }
+      if (used >= FREE_LIMIT) locked = true;
+    }
   }
 
   let body;
@@ -64,7 +76,7 @@ export async function onRequestPost({ request, env }) {
     return new Response(JSON.stringify({ ok: false, error: 'Invalid request format.' }), { status: 400, headers });
   }
 
-  const { jobTitle, coverLetter, companies = [] } = body;
+  const { jobTitle, coverLetter, companies = [], jobDescription = '' } = body;
 
   if (!jobTitle || jobTitle.trim().length < 2) {
     return new Response(JSON.stringify({ ok: false, error: 'Please enter the target role.' }), { status: 400, headers });
@@ -79,7 +91,9 @@ export async function onRequestPost({ request, env }) {
     companyNewsContext = await fetchCompanyNews(companies.slice(0, 3));
   }
 
-  const prompt = buildPrompt(jobTitle.trim(), coverLetter.trim().slice(0, 3000), companyNewsContext);
+  const jdText = typeof jobDescription === 'string' ? jobDescription.trim().slice(0, 5000) : '';
+
+  const prompt = buildPrompt(jobTitle.trim(), coverLetter.trim().slice(0, 3000), companyNewsContext, jdText);
 
   let claudeRes;
   try {
@@ -92,7 +106,7 @@ export async function onRequestPost({ request, env }) {
       },
       body: JSON.stringify({
         model: 'claude-sonnet-4-6',
-        max_tokens: 2500,
+        max_tokens: 4000,
         messages: [{ role: 'user', content: prompt }],
       }),
     });
@@ -107,6 +121,10 @@ export async function onRequestPost({ request, env }) {
   }
 
   const claudeData = await claudeRes.json();
+  if (claudeData.stop_reason === 'max_tokens') {
+    console.error('Claude response truncated (max_tokens)');
+    return new Response(JSON.stringify({ ok: false, error: 'Report was cut off. Please try again.' }), { status: 500, headers });
+  }
   const rawText = claudeData.content?.[0]?.text || '';
 
   let report;
@@ -151,6 +169,19 @@ export async function onRequestPost({ request, env }) {
     }
   } catch (e) {
     console.error('Usage update failed:', e);
+  }
+
+  // Locked preview: details never leave the server — client blur is decoration, not enforcement
+  if (locked) {
+    return new Response(JSON.stringify({
+      ok: true, locked: true,
+      report: {
+        score: report.score ?? 0,
+        grade: report.grade || '-',
+        atsScore: report.ats?.score ?? null,
+        atsVerdict: report.ats?.verdict ?? null,
+      },
+    }), { headers });
   }
 
   return new Response(JSON.stringify({ ok: true, report }), { headers });
@@ -240,7 +271,7 @@ async function fetchCompanyNews(companies) {
 
 // ── 프롬프트 ───────────────────────────────────────────────────────────────
 
-function buildPrompt(jobTitle, coverLetter, companyNews = []) {
+function buildPrompt(jobTitle, coverLetter, companyNews = [], jdText = '') {
   return `You are a seasoned HR director with 20 years of talent acquisition experience at top-tier companies. You have reviewed over 10,000 cover letters and resumes. Analyze with a strict, honest lens — avoid vague generalities. Every piece of feedback must be directly actionable.
 
 [Target Role]
@@ -248,6 +279,24 @@ ${jobTitle}
 
 [Cover Letter / Resume]
 ${coverLetter}
+${jdText ? `
+[Job Description — the actual posting this letter targets]
+${jdText}
+
+Because a job description is provided:
+- Extract the 5-8 most important requirements from it (skills, experience, qualifications). Never more than 8.
+- Judge each requirement against the letter: "strong" (explicit evidence in the letter), "partial" (implied or weak evidence), "missing" (not addressed).
+- The Relevance score and keywords.matched/missing MUST be computed against THIS job description, not generic role expectations.
+` : ''}
+ATS Compatibility evaluation (always perform):
+Assess how this letter would survive automated Applicant Tracking System screening and a 6-second recruiter skim. Evaluate exactly these 6 checks:
+- keywords: coverage of ${jdText ? "the job description's key terms" : `standard "${jobTitle}" keywords`} (exact terms matter to ATS parsers)
+- quantification: presence of numbers, percentages, measurable outcomes
+- structure: clear paragraphs, scannable, no walls of text
+- length: appropriate length (roughly 250-400 words is ideal for a cover letter)
+- cliches: density of buzzwords and filler ("passionate", "team player", "fast-paced environment", "synergy")
+- contact: identifiable name, contact info, or explicit role reference
+Each check gets status "pass", "warn", or "fail" plus one specific note citing the text.
 
 Evaluation criteria:
 1. Relevance (0-100): How directly does the applicant's background connect to this specific role's requirements?
@@ -314,7 +363,30 @@ Return ONLY the JSON object below. Do not include any other text or explanation:
     "matched": ["<keyword or skill found in the text>", "<keyword>", "<keyword>", "<keyword>"],
     "missing": ["<important keyword for this role that is absent>", "<keyword>", "<keyword>", "<keyword>"]
   },
-  "oneLineTip": "<the single highest-leverage change this applicant should make — be direct and specific, max 150 characters>"${companyNews.length > 0 ? `,
+  "oneLineTip": "<the single highest-leverage change this applicant should make — be direct and specific, max 150 characters>",
+  "ats": {
+    "score": <ATS compatibility score 0-100 integer>,
+    "verdict": <"pass" | "risky" | "fail">,
+    "checks": [
+      { "id": "keywords", "label": "Keyword coverage", "status": <"pass"|"warn"|"fail">, "note": "<specific note citing the text, max 110 characters>" },
+      { "id": "quantification", "label": "Quantified impact", "status": <"pass"|"warn"|"fail">, "note": "<max 110 characters>" },
+      { "id": "structure", "label": "Structure & scannability", "status": <"pass"|"warn"|"fail">, "note": "<max 110 characters>" },
+      { "id": "length", "label": "Length", "status": <"pass"|"warn"|"fail">, "note": "<max 110 characters>" },
+      { "id": "cliches", "label": "Clichés & buzzwords", "status": <"pass"|"warn"|"fail">, "note": "<max 110 characters>" },
+      { "id": "contact", "label": "Contact & role reference", "status": <"pass"|"warn"|"fail">, "note": "<max 110 characters>" }
+    ]
+  }${jdText ? `,
+  "jdMatch": {
+    "matchScore": <0-100 integer — how well the letter covers the job description's requirements>,
+    "requirements": [
+      {
+        "requirement": "<requirement from the JD, max 60 characters>",
+        "status": <"strong" | "partial" | "missing">,
+        "evidence": "<exact quote from the letter that addresses it, or empty string>",
+        "suggestion": "<how to address it, max 110 characters; empty string if strong>"
+      }
+    ]
+  }` : ''}${companyNews.length > 0 ? `,
   "companyInsights": [
     {
       "company": "<company name>",

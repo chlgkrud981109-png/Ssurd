@@ -21,68 +21,130 @@
 <meta name="twitter:title" content="Ssurd — Land Your Dream Job">
 <meta name="twitter:description" content="Score your cover letter in 30 seconds. Instant feedback from a senior HR professional's perspective.">
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%233182f6'/%3E%3Ctext x='16' y='22' text-anchor='middle' fill='white' font-size='20' font-weight='700' font-family='system-ui'%3ES%3C/text%3E%3C/svg%3E">
+<script>(function(){var t=null;try{t=localStorage.getItem('ssurd_theme')}catch(e){}
+document.documentElement.setAttribute('data-theme',t==='light'?'light':'dark')})();
+function ssurdToggleTheme(){var h=document.documentElement,
+n=h.getAttribute('data-theme')==='light'?'dark':'light';h.setAttribute('data-theme',n);
+try{localStorage.setItem('ssurd_theme',n)}catch(e){}}</script>
 <link rel="stylesheet" href="style.css">
 <style>
 /* ─ Hero ─ */
-.hero{min-height:100vh;padding:56px 0 0;display:flex;align-items:center;justify-content:center}
-.hero-inner{max-width:960px;margin:0 auto;padding:80px 32px 60px;text-align:center}
-.hero-badge{display:inline-flex;align-items:center;gap:8px;background:var(--surface);border:var(--bw) solid var(--border);border-radius:var(--r-full);padding:6px 16px 6px 10px;font-family:var(--mono);font-size:11px;font-weight:500;color:var(--t2);margin-bottom:28px;letter-spacing:.02em}
+.hero{padding:56px 0 0;display:flex;align-items:center;justify-content:center}
+.hero-inner{max-width:960px;margin:0 auto;padding:88px 32px 72px;text-align:center}
+.hero-badge{display:inline-flex;align-items:center;gap:8px;background:var(--surface);border:1px solid var(--border);border-radius:var(--r-full);padding:6px 16px 6px 10px;font-size:12px;font-weight:500;color:var(--t2);margin-bottom:28px}
 .badge-dot{width:7px;height:7px;border-radius:50%;background:var(--green);animation:pulse 2s ease-in-out infinite}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
-.hero-h1{font-size:clamp(36px,7vw,64px);font-weight:900;line-height:1.15;letter-spacing:-.04em;color:var(--t1);margin-bottom:20px}
+.hero-h1{font-size:clamp(44px,7.5vw,84px);font-weight:600;line-height:1.05;letter-spacing:-.045em;color:var(--t1);margin-bottom:20px}
 .hero-h1 .hl{color:var(--primary)}
 .hero-sub{font-size:16px;color:var(--t3);line-height:1.7;max-width:420px;margin:0 auto 40px;font-weight:400}
 .hero-cta-row{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
 
+/* ─ Hero animated demo (5s loop) ─ */
+.hero-demo{max-width:640px;margin:56px auto 0;background:var(--surface);border:1px solid var(--border);border-radius:var(--r-xl);overflow:hidden;text-align:left;box-shadow:var(--shadow)}
+.hdm-head{display:flex;align-items:center;gap:6px;padding:12px 16px;border-bottom:1px solid var(--border);background:var(--surface-dim)}
+.hdm-dot{width:9px;height:9px;border-radius:50%;background:var(--surface-2)}
+.hdm-title{font-size:11px;color:var(--t4);margin-left:8px;font-family:var(--mono)}
+.hdm-live{margin-left:auto;font-size:11px;color:var(--t3);font-weight:500;transition:color .3s}
+.hdm-live.done{color:var(--green)}
+.hdm-body{display:grid;grid-template-columns:1fr 1fr;gap:24px;padding:22px 24px}
+.hdm-letter{position:relative;display:flex;flex-direction:column;gap:9px;padding-top:2px;overflow:hidden}
+.hdm-line{height:10px;border-radius:5px;background:var(--surface-2);width:0;transition:none}
+.hero-demo.play .hdm-line{animation:hdmGrow .5s var(--d) var(--ease) forwards}
+@keyframes hdmGrow{from{width:0}to{width:var(--w)}}
+.hdm-line-fix{position:relative}
+.hero-demo.fixed .hdm-line-fix{background:var(--green-bg);box-shadow:inset 0 0 0 1px var(--green)}
+.hdm-scan{position:absolute;left:0;right:0;top:-14px;height:12px;border-radius:6px;background:linear-gradient(90deg,transparent,var(--primary-light),transparent);opacity:0}
+.hero-demo.play .hdm-scan{animation:hdmScan 1.4s .5s var(--ease) forwards}
+@keyframes hdmScan{0%{top:-14px;opacity:1}100%{top:104%;opacity:0}}
+.hdm-score{font-size:44px;font-weight:700;letter-spacing:-.04em;line-height:1;color:var(--green);font-family:var(--mono)}
+.hdm-grade{font-size:10px;font-weight:600;padding:3px 10px;border-radius:100px;background:var(--green-bg);color:var(--green);opacity:0;transform:scale(.5)}
+.hero-demo.scored .hdm-grade{animation:hdmPop .4s var(--ease) forwards}
+@keyframes hdmPop{to{opacity:1;transform:scale(1)}}
+.hdm-bars{display:flex;flex-direction:column;gap:8px;margin-top:14px}
+.hdm-bar-row{display:flex;align-items:center;gap:8px}
+.hdm-bar-row span{font-size:10.5px;color:var(--t3);width:66px;flex-shrink:0}
+.hdm-track{flex:1;height:4px;background:var(--surface-2);border-radius:2px;overflow:hidden}
+.hdm-fill{height:100%;border-radius:2px;width:0;transition:width .9s var(--ease)}
+.hdm-chips{display:flex;gap:6px;flex-wrap:wrap;margin-top:14px}
+.hdm-chip{font-size:10px;font-weight:600;padding:3px 9px;border-radius:100px;opacity:0;transform:translateY(6px);transition:opacity .35s var(--ease),transform .35s var(--ease)}
+.hdm-chip.on{opacity:1;transform:none}
+@media(max-width:640px){.hdm-body{grid-template-columns:1fr}.hdm-letter{display:none}.hero-demo{margin-top:40px}}
+
 /* ─ Bento Features ─ */
-.sec{max-width:960px;margin:0 auto;padding:80px 32px}
-.sec-label{font-family:var(--mono);font-size:12px;color:var(--primary);letter-spacing:.08em;font-weight:500;margin-bottom:12px}
-.sec-h2{font-size:clamp(24px,4vw,36px);font-weight:800;letter-spacing:-.03em;margin-bottom:48px;line-height:1.25}
+.sec{max-width:960px;margin:0 auto;padding:48px 32px}
+.sec-label{font-size:13px;color:var(--t3);font-weight:500;margin-bottom:12px}
+.sec-h2{font-size:clamp(28px,4.5vw,44px);font-weight:600;letter-spacing:-.03em;margin-bottom:48px;line-height:1.15}
 .bento{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
 .bento .card:nth-child(1){grid-column:span 2}
 .bento .card:nth-child(4){grid-column:span 2}
-.card-icon{width:40px;height:40px;border-radius:var(--r-sm);display:flex;align-items:center;justify-content:center;font-size:18px;margin-bottom:16px;border:var(--bw) solid var(--border-bold)}
+.card-icon{width:40px;height:40px;border-radius:var(--r-md);display:flex;align-items:center;justify-content:center;font-size:18px;margin-bottom:16px;border:none}
 .card-icon.blue{background:var(--primary-light);color:var(--primary)}
 .card-icon.green{background:var(--green-bg);color:var(--green)}
-.card-icon.dark{background:var(--t1);color:#fff}
+.card-icon.dark{background:var(--surface-2);color:var(--t1)}
 .card-icon.yellow{background:var(--yellow-bg);color:var(--yellow)}
-.card h3{font-size:16px;font-weight:700;margin-bottom:6px}
+.card h3{font-size:16px;font-weight:600;margin-bottom:6px}
 .card p{font-size:13px;color:var(--t3);line-height:1.65}
-.card-accent h3{color:#fff}
-.card-accent p{color:rgba(255,255,255,.55)}
-.card-accent .card-icon{background:rgba(255,255,255,.12);color:#fff;border-color:rgba(255,255,255,.2)}
 
 /* ─ Sample Report ─ */
 .sample{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center}
-.sample-left h2{font-size:clamp(24px,4vw,36px);font-weight:800;letter-spacing:-.03em;line-height:1.25;margin-bottom:12px}
+.sample-left h2{font-size:clamp(28px,4.5vw,44px);font-weight:600;letter-spacing:-.03em;line-height:1.15;margin-bottom:12px}
 .sample-left p{font-size:14px;color:var(--t3);line-height:1.7;margin-bottom:28px}
-.sample-card{border:var(--bw) solid var(--border-bold);border-radius:var(--r-xl);padding:28px;background:#fff;box-shadow:var(--shadow)}
+.sample-card{border:1px solid var(--border);border-radius:var(--r-xl);padding:28px;background:var(--surface)}
 .sc-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px}
-.sc-job{font-size:12px;font-weight:700;color:var(--primary);font-family:var(--mono)}
-.sc-grade{width:40px;height:40px;border-radius:var(--r-sm);background:var(--primary-light);border:var(--bw) solid var(--primary);display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:800;color:var(--primary)}
+.sc-job{font-size:12px;font-weight:600;color:var(--t3)}
+.sc-grade{width:40px;height:40px;border-radius:var(--r-md);background:var(--primary-light);border:none;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:700;color:var(--primary)}
 .sc-score-row{display:flex;align-items:center;gap:20px;margin-bottom:20px}
-.sc-score-big{font-size:52px;font-weight:900;letter-spacing:-.04em;color:var(--green);line-height:1}
+.sc-score-big{font-size:52px;font-weight:700;letter-spacing:-.04em;color:var(--green);line-height:1;font-family:var(--mono)}
 .sc-bars{flex:1;display:flex;flex-direction:column;gap:8px}
 .sb-row{display:flex;align-items:center;gap:8px}
 .sb-lbl{font-size:11px;color:var(--t3);width:64px;font-weight:500}
-.sb-track{flex:1;height:4px;background:var(--bg);border-radius:2px;overflow:hidden}
+.sb-track{flex:1;height:4px;background:var(--surface-2);border-radius:2px;overflow:hidden}
 .sb-fill{height:100%;border-radius:2px;background:var(--primary)}
 .sb-v{font-family:var(--mono);font-size:11px;font-weight:500;color:var(--t2);width:22px;text-align:right}
-.sc-tip{background:var(--bg);border:var(--bw) solid var(--border);border-radius:var(--r-md);padding:12px 14px;font-size:12px;color:var(--t2);line-height:1.6;font-weight:500}
+.sc-tip{background:var(--surface-dim);border-radius:var(--r-md);padding:12px 14px;font-size:12px;color:var(--t2);line-height:1.6;font-weight:500}
 .sc-tip strong{color:var(--primary)}
 
+/* ─ Stats band ─ */
+.stats-band{border-top:1px solid var(--border);border-bottom:1px solid var(--border);background:var(--surface)}
+.stats-band-inner{max-width:960px;margin:0 auto;display:grid;grid-template-columns:repeat(4,1fr);padding:0 32px}
+.stat-cell{padding:28px 16px;text-align:center;border-right:1px solid var(--border)}
+.stat-cell:last-child{border-right:none}
+.stat-big{font-family:var(--mono);font-size:26px;font-weight:500;letter-spacing:-.02em;color:var(--t1)}
+.stat-big .accent{color:var(--primary)}
+.stat-small{font-size:11px;color:var(--t3);margin-top:4px;font-weight:500}
+
+/* ─ How it works ─ */
+.hiw-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.hiw-step{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-xl);padding:24px;position:relative}
+.hiw-n{font-size:12px;font-weight:500;color:var(--t4);margin-bottom:14px}
+.hiw-step h3{font-size:15px;font-weight:600;margin-bottom:6px}
+.hiw-step p{font-size:12.5px;color:var(--t3);line-height:1.65}
+.hiw-visual{margin-top:16px;background:var(--surface-dim);border-radius:var(--r-md);padding:12px;font-family:var(--mono);font-size:10.5px;color:var(--t3);line-height:1.7}
+
+/* ─ Mini FAQ ─ */
+.mfaq{max-width:680px;margin:0 auto;padding:48px 32px 72px}
+.mfaq details{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-md);margin-bottom:8px;overflow:hidden}
+.mfaq summary{padding:16px 18px;font-size:14px;font-weight:600;cursor:pointer;list-style:none;display:flex;justify-content:space-between;align-items:center}
+.mfaq summary::after{content:'+';color:var(--t4);font-size:16px}
+.mfaq details[open] summary::after{content:'−'}
+.mfaq .mfaq-a{padding:0 18px 16px;font-size:13px;color:var(--t3);line-height:1.7}
+
 /* ─ Bottom CTA ─ */
-.cta-bot{background:var(--t1);border-top:var(--bw) solid var(--border-bold);padding:80px 32px;text-align:center}
-.cta-bot h2{font-size:clamp(24px,5vw,40px);font-weight:900;color:#fff;letter-spacing:-.03em;margin-bottom:12px;line-height:1.2}
-.cta-bot p{font-size:15px;color:rgba(255,255,255,.4);margin-bottom:36px;line-height:1.6}
-.btn-white{display:inline-flex;align-items:center;gap:8px;background:#fff;color:var(--t1);font-family:var(--font);font-size:14px;font-weight:700;padding:14px 32px;border-radius:var(--r-full);border:var(--bw) solid #fff;cursor:pointer;transition:all .15s var(--ease);box-shadow:var(--shadow-sm)}
-.btn-white:hover{background:var(--bg);transform:translate(-1px,-1px);box-shadow:var(--shadow)}
+.cta-bot{background:var(--bg);border-top:1px solid var(--border);padding:112px 32px;text-align:center}
+.cta-bot h2{font-size:clamp(28px,5vw,48px);font-weight:600;color:var(--t1);letter-spacing:-.035em;margin-bottom:12px;line-height:1.1}
+.cta-bot p{font-size:15px;color:var(--t3);margin-bottom:36px;line-height:1.6}
+.btn-white{display:inline-flex;align-items:center;gap:8px;background:var(--inv-bg);color:var(--inv-fg);font-family:var(--font);font-size:14px;font-weight:600;padding:14px 32px;border-radius:var(--r-full);border:none;cursor:pointer;transition:opacity .15s var(--ease)}
+.btn-white:hover{opacity:.88}
 
 @media(max-width:768px){
   .hero-inner{padding:60px 20px 40px}
   .sec{padding:56px 20px}
   .sample{grid-template-columns:1fr;gap:32px}
   .cta-bot{padding:56px 20px}
+  .stats-band-inner{grid-template-columns:repeat(2,1fr);padding:0 20px}
+  .stat-cell:nth-child(2){border-right:none}
+  .stat-cell:nth-child(-n+2){border-bottom:var(--bw) solid var(--border)}
+  .hiw-grid{grid-template-columns:1fr}
 }
 </style>
 </head>
@@ -123,6 +185,7 @@
     <a href="pricing.html" class="nav-lnk">Pricing</a>
   </div>
   <div class="nav-r">
+    <button class="theme-btn" onclick="ssurdToggleTheme()" aria-label="Switch theme"></button>
     <div id="navUser" class="hidden" style="display:flex;align-items:center;gap:10px">
       <span id="navUserName" class="nav-uname"></span>
       <button class="btn-ghost" onclick="handleLogout()">Log Out</button>
@@ -136,10 +199,10 @@
     <div class="hero-inner">
       <div class="rv"><div class="hero-badge"><span class="badge-dot"></span>Smart Cover Letter Analysis</div></div>
       <div class="rv d1"><h1 class="hero-h1" id="heroTitle">Land Your<br><span class="hl">Dream Job</span></h1></div>
-      <div class="rv d2"><p class="hero-sub">Get your cover letter scored by an AI trained on senior HR expertise.<br>Score + tailored feedback in 30 seconds.</p></div>
+      <div class="rv d2"><p class="hero-sub">Score your cover letter against the real job posting — ATS check,<br>HR-grade feedback, and sentence rewrites in 30 seconds.</p></div>
       <div class="rv d3">
         <div class="hero-cta-row">
-          <button class="btn-primary" style="padding:14px 36px;font-size:15px" onclick="handleCta()">Analyze for Free →</button>
+          <button class="btn-primary" style="padding:14px 36px;font-size:15px" onclick="handleCta()">Score my letter — no signup →</button>
         </div>
         <div style="display:flex;gap:20px;justify-content:center;flex-wrap:wrap;margin-top:14px">
           <span style="font-size:12px;color:var(--t4);display:flex;align-items:center;gap:5px"><span style="color:var(--green);font-weight:700">✓</span> No credit card</span>
@@ -147,27 +210,75 @@
           <span style="font-size:12px;color:var(--t4);display:flex;align-items:center;gap:5px"><span style="color:var(--green);font-weight:700">✓</span> Results in 30 seconds</span>
         </div>
       </div>
+
+      <!-- Animated product demo (5s loop, pure CSS/JS — no video file) -->
+      <div class="rv d4">
+        <div class="hero-demo" id="heroDemo" aria-hidden="true">
+          <div class="hdm-head">
+            <span class="hdm-dot"></span><span class="hdm-dot"></span><span class="hdm-dot"></span>
+            <span class="hdm-title">ssurd — analysis</span>
+            <span class="hdm-live" id="hdmStatus">Analyzing…</span>
+          </div>
+          <div class="hdm-body">
+            <div class="hdm-letter">
+              <div class="hdm-line" style="--w:92%;--d:.05s"></div>
+              <div class="hdm-line" style="--w:78%;--d:.15s"></div>
+              <div class="hdm-line hdm-line-fix" id="hdmFixLine" style="--w:84%;--d:.25s"></div>
+              <div class="hdm-line" style="--w:88%;--d:.35s"></div>
+              <div class="hdm-line" style="--w:64%;--d:.45s"></div>
+              <div class="hdm-line" style="--w:80%;--d:.55s"></div>
+              <div class="hdm-scan" id="hdmScan"></div>
+            </div>
+            <div class="hdm-report">
+              <div style="display:flex;align-items:baseline;gap:8px">
+                <span class="hdm-score" id="hdmScore">0</span>
+                <span style="font-size:13px;color:var(--t4);font-weight:600">/100</span>
+                <span class="hdm-grade" id="hdmGrade">Grade A</span>
+              </div>
+              <div class="hdm-bars">
+                <div class="hdm-bar-row"><span>Relevance</span><div class="hdm-track"><div class="hdm-fill" data-w="91" style="background:var(--green)"></div></div></div>
+                <div class="hdm-bar-row"><span>Specificity</span><div class="hdm-track"><div class="hdm-fill" data-w="76" style="background:var(--primary)"></div></div></div>
+                <div class="hdm-bar-row"><span>Impact</span><div class="hdm-track"><div class="hdm-fill" data-w="83" style="background:var(--green)"></div></div></div>
+              </div>
+              <div class="hdm-chips">
+                <span class="hdm-chip" id="hdmChip1" style="background:var(--green-bg);color:var(--green)">ATS 88 · Pass</span>
+                <span class="hdm-chip" id="hdmChip2" style="background:var(--primary-light);color:var(--primary)">JD match 81%</span>
+                <span class="hdm-chip" id="hdmChip3" style="background:var(--green-bg);color:var(--green)">▲ +12 vs v1</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </section>
 
+  <div class="stats-band rv">
+    <div class="stats-band-inner">
+      <div class="stat-cell"><div class="stat-big"><span class="accent">30</span>s</div><div class="stat-small">to a full report</div></div>
+      <div class="stat-cell"><div class="stat-big"><span class="accent">5</span></div><div class="stat-small">scoring dimensions</div></div>
+      <div class="stat-cell"><div class="stat-big"><span class="accent">6</span></div><div class="stat-small">ATS checks per letter</div></div>
+      <div class="stat-cell"><div class="stat-big"><span class="accent">$0</span></div><div class="stat-small">3 free analyses / month</div></div>
+    </div>
+  </div>
+
   <section class="sec">
-    <div class="sec-label rv">FEATURES</div>
+    <div class="sec-label rv">Features</div>
     <h2 class="sec-h2 rv d1">Great cover letters<br>follow a pattern.</h2>
     <div class="bento">
       <div class="card rv d1">
-        <div class="card-icon blue">⚡</div>
-        <h3>30-Second Analysis</h3>
-        <p>No waiting. Paste your cover letter and get senior HR-level feedback instantly — anytime, as many times as you need.</p>
+        <div class="card-icon blue">▦</div>
+        <h3>ATS Compatibility Check</h3>
+        <p>Will your letter survive the robot? 6-point ATS screening: keywords, quantified impact, structure, length, clichés, and contact info.</p>
       </div>
       <div class="card rv d2">
         <div class="card-icon green">◎</div>
-        <h3>100-Point Precision Score</h3>
-        <p>Objective scoring across 5 criteria: relevance, specificity, clarity, authenticity, and impact.</p>
+        <h3>Match Against the Real Job Post</h3>
+        <p>Paste the actual job description — get requirement-by-requirement evidence of what you cover and what's missing.</p>
       </div>
       <div class="card rv d3">
-        <div class="card-icon dark">⌘</div>
-        <h3>Keyword Gap Analysis</h3>
-        <p>See matched keywords and the ones you're missing — at a glance.</p>
+        <div class="card-icon dark">↗</div>
+        <h3>Track Your Improvement</h3>
+        <p>Revise, re-analyze, and watch your score climb — every version compared side by side.</p>
       </div>
       <div class="card-accent card rv d4">
         <div class="card-icon">✦</div>
@@ -178,9 +289,34 @@
   </section>
 
   <section class="sec">
+    <div class="sec-label rv">How it works</div>
+    <h2 class="sec-h2 rv d1">Three steps.<br>No sign-up maze.</h2>
+    <div class="hiw-grid">
+      <div class="hiw-step rv d1">
+        <div class="hiw-n">Step 1</div>
+        <h3>Paste your letter — and the job post</h3>
+        <p>Pick your target role, drop in the actual job description, and paste your cover letter.</p>
+        <div class="hiw-visual">01 — TARGET ✓<br>02 — JOB POSTING ✓ 1,240 chars<br>03 — YOUR LETTER │ typing…</div>
+      </div>
+      <div class="hiw-step rv d2">
+        <div class="hiw-n">Step 2</div>
+        <h3>Get scored in 30 seconds</h3>
+        <p>100-point score, 6-check ATS screening, requirement-by-requirement JD match, and sentence rewrites.</p>
+        <div class="hiw-visual">Score <span style="color:var(--primary);font-weight:500">78</span>/100 · Grade B<br>ATS <span style="color:var(--green);font-weight:500">pass</span> · JD match <span style="color:var(--primary);font-weight:500">81%</span></div>
+      </div>
+      <div class="hiw-step rv d3">
+        <div class="hiw-n">Step 3</div>
+        <h3>Revise, re-analyze, climb</h3>
+        <p>Apply the fixes, run it again, and watch every dimension move. Each version is compared to the last.</p>
+        <div class="hiw-visual">v1 → 64 · v2 → 73 · v3 → <span style="color:var(--green);font-weight:600">85 ▲ +21</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec">
     <div class="sample">
       <div class="sample-left rv">
-        <div class="sec-label">SAMPLE</div>
+        <div class="sec-label">Sample report</div>
         <h2>Here's what a<br>real report looks like</h2>
         <p>Score, strengths, Before/After rewrites, and keyword analysis — all on one page.</p>
         <button class="btn-dark" onclick="handleCta()">Analyze My Cover Letter →</button>
@@ -198,17 +334,40 @@
             <div class="sb-row"><span class="sb-lbl">Authenticity</span><div class="sb-track"><div class="sb-fill" style="width:85%"></div></div><span class="sb-v">85</span></div>
           </div>
         </div>
+        <div style="display:flex;gap:6px;margin-bottom:12px">
+          <span style="font-size:11px;font-weight:600;padding:3px 10px;border-radius:100px;background:var(--green-bg);color:var(--green)">ATS 88 · Pass</span>
+          <span style="font-size:11px;font-weight:600;padding:3px 10px;border-radius:100px;background:var(--primary-light);color:var(--primary)">JD match 81%</span>
+        </div>
         <div class="sc-tip">✦ <strong>Key Insight:</strong> Adding metric-based outcomes will make this cover letter significantly more persuasive.</div>
       </div>
     </div>
   </section>
+  <div class="mfaq">
+    <div class="sec-label rv" style="text-align:center">FAQ</div>
+    <details class="rv d1">
+      <summary>What exactly is an ATS check?</summary>
+      <div class="mfaq-a">Most companies run applications through Applicant Tracking Software before a human reads them. We screen your letter the same way — keyword coverage, quantified results, structure, length, clichés, and contact info — and tell you exactly what would get filtered out.</div>
+    </details>
+    <details class="rv d2">
+      <summary>Is my cover letter shared or used for training?</summary>
+      <div class="mfaq-a">No. Your text is used only to generate your analysis and is stored in your private history, which you can delete anytime. Share links contain scores only — never your letter text.</div>
+    </details>
+    <details class="rv d3">
+      <summary>Do I need the job description?</summary>
+      <div class="mfaq-a">It's optional but strongly recommended. With the actual posting, we match your letter requirement-by-requirement and your keyword analysis becomes far more accurate than generic role expectations.</div>
+    </details>
+    <details class="rv d4">
+      <summary>What's free and what's paid?</summary>
+      <div class="mfaq-a">Free: 3 analyses/month with the full report — ATS check, JD matching, rewrites, and revision tracking. Starter ($9/mo): 10 analyses/month plus Company Intelligence, which folds your target companies' latest news into the feedback.</div>
+    </details>
+  </div>
 </main>
 
 <section class="cta-bot">
   <div class="rv">
     <h2>Start now.<br>It's free.</h2>
     <p>Your first analysis is on us. No credit card. Under 30 seconds.</p>
-    <button class="btn-white" onclick="handleCta()">Analyze for Free →</button>
+    <button class="btn-white" onclick="handleCta()">Score it free — no signup →</button>
   </div>
 </section>
 
@@ -273,7 +432,11 @@ onAuthStateChanged(auth, user => {
 const obs=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('on');});},{threshold:.1});
 document.querySelectorAll('.rv').forEach(el=>obs.observe(el));
 
-window.handleCta=()=>{gtag('event','cta_click',{button_location:'hero'});auth.currentUser?location.href='write.html':openModal();};
+window.handleCta=()=>{gtag('event','cta_click',{button_location:'hero'});location.href='write.html';};
+// Teaser CTA deep-link: /?signup=1 opens the signup modal directly
+if(new URLSearchParams(location.search).get('signup')==='1'){
+  setTimeout(()=>{openModal();switchTab('signup');},50);
+}
 window.openModal=()=>document.getElementById('authModal').classList.remove('hidden');
 window.closeModal=()=>{document.getElementById('authModal').classList.add('hidden');hideErr();};
 
@@ -334,6 +497,65 @@ window.handleForgotPassword=async()=>{
   }catch(e){showErr(errMap[e.code]||'Could not send reset email. Please try again.');}
 };
 window.handleLogout=async()=>{await signOut(auth);location.reload();};
+
+// ── Hero demo: 5s motion-graphic loop (no video file) ──
+(function(){
+  const demo=document.getElementById('heroDemo');
+  if(!demo)return;
+  const scoreEl=document.getElementById('hdmScore');
+  const statusEl=document.getElementById('hdmStatus');
+  const fills=demo.querySelectorAll('.hdm-fill');
+  const chips=['hdmChip1','hdmChip2','hdmChip3'].map(id=>document.getElementById(id));
+  const reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  function endState(){
+    demo.classList.add('play','scored','fixed');
+    scoreEl.textContent='84';
+    statusEl.textContent='Complete ✓';statusEl.classList.add('done');
+    fills.forEach(f=>f.style.width=f.dataset.w+'%');
+    chips.forEach(c=>c.classList.add('on'));
+  }
+  if(reduced){endState();return;}
+
+  let timers=[],raf=null,running=false;
+  function countScore(){
+    const t0=performance.now(),dur=900;
+    const step=t=>{
+      const p=Math.min(1,(t-t0)/dur);
+      scoreEl.textContent=Math.round(84*(1-Math.pow(1-p,3)));
+      if(p<1)raf=requestAnimationFrame(step);
+    };
+    raf=requestAnimationFrame(step);
+  }
+  function playOnce(){
+    // reset
+    demo.classList.remove('play','scored','fixed');
+    scoreEl.textContent='0';
+    statusEl.textContent='Analyzing…';statusEl.classList.remove('done');
+    fills.forEach(f=>f.style.width='0');
+    chips.forEach(c=>c.classList.remove('on'));
+    void demo.offsetWidth; // reflow so line/scan animations restart
+    timers=[
+      setTimeout(()=>demo.classList.add('play'),60),
+      setTimeout(countScore,1400),
+      setTimeout(()=>fills.forEach(f=>f.style.width=f.dataset.w+'%'),1700),
+      setTimeout(()=>demo.classList.add('scored'),2100),
+      setTimeout(()=>chips[0].classList.add('on'),2600),
+      setTimeout(()=>chips[1].classList.add('on'),2850),
+      setTimeout(()=>chips[2].classList.add('on'),3100),
+      setTimeout(()=>{demo.classList.add('fixed');statusEl.textContent='Complete ✓';statusEl.classList.add('done');},3500),
+      setTimeout(playOnce,5600),
+    ];
+  }
+  function stop(){timers.forEach(clearTimeout);timers=[];if(raf)cancelAnimationFrame(raf);}
+  // run only while visible
+  new IntersectionObserver(es=>{
+    es.forEach(e=>{
+      if(e.isIntersecting&&!running){running=true;playOnce();}
+      else if(!e.isIntersecting&&running){running=false;stop();}
+    });
+  },{threshold:.25}).observe(demo);
+})();
 </script>
 </body>
 </html>

@@ -19,60 +19,94 @@
 <meta property="og:description" content="Get your cover letter scored by AI trained on senior HR expertise. Score + tailored feedback in 30 seconds.">
 <meta name="twitter:card" content="summary">
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%233182f6'/%3E%3Ctext x='16' y='22' text-anchor='middle' fill='white' font-size='20' font-weight='700' font-family='system-ui'%3ES%3C/text%3E%3C/svg%3E">
+<script>(function(){var t=null;try{t=localStorage.getItem('ssurd_theme')}catch(e){}
+document.documentElement.setAttribute('data-theme',t==='light'?'light':'dark')})();
+function ssurdToggleTheme(){var h=document.documentElement,
+n=h.getAttribute('data-theme')==='light'?'dark':'light';h.setAttribute('data-theme',n);
+try{localStorage.setItem('ssurd_theme',n)}catch(e){}}</script>
 <link rel="stylesheet" href="style.css">
 <style>
 /* Dropdown shared */
 .dd-wrap{position:relative;margin-bottom:6px}
-.dd-panel{position:absolute;left:0;right:0;top:calc(100% + 4px);background:#fff;border:var(--bw) solid var(--border-bold);border-radius:var(--r-md);box-shadow:0 8px 32px rgba(0,0,0,.1);z-index:200;overflow:hidden}
-.dd-search{width:100%;padding:10px 14px;border:none;border-bottom:var(--bw) solid var(--border);font-family:var(--font);font-size:13px;color:var(--t1);outline:none;background:var(--bg);box-sizing:border-box}
+.dd-panel{position:absolute;left:0;right:0;top:calc(100% + 4px);background:var(--surface-2);border:1px solid var(--border-strong);border-radius:var(--r-md);box-shadow:var(--shadow);z-index:200;overflow:hidden}
+.dd-search{width:100%;padding:10px 14px;border:none;border-bottom:1px solid var(--border);font-family:var(--font);font-size:13px;color:var(--t1);outline:none;background:var(--surface-dim);box-sizing:border-box}
 .dd-body{max-height:220px;overflow-y:auto}
-.dd-cat{font-size:10px;font-weight:700;color:var(--t4);letter-spacing:.08em;text-transform:uppercase;padding:10px 14px 4px;font-family:var(--mono);background:var(--bg)}
-.dd-item{padding:9px 14px;font-size:13px;color:var(--t2);cursor:pointer;transition:background .1s;border-left:2px solid transparent}
-.dd-item:hover{background:var(--primary-light);color:var(--primary);border-left-color:var(--primary)}
+.dd-cat{font-size:11px;font-weight:500;color:var(--t4);padding:10px 14px 4px;background:var(--surface-dim)}
+.dd-item{padding:9px 14px;font-size:13px;color:var(--t2);cursor:pointer;transition:background .1s}
+.dd-item:hover{background:var(--surface-dim);color:var(--t1)}
 .dd-empty{padding:14px;font-size:13px;color:var(--t4);text-align:center}
 /* Role input trigger */
-.role-dd-trigger{display:flex;align-items:center;justify-content:space-between;margin-top:6px;padding:7px 12px;border-radius:var(--r-sm);border:var(--bw) solid var(--border);background:var(--bg);cursor:pointer;font-size:12px;color:var(--t3);user-select:none;transition:border-color .15s}
-.role-dd-trigger:hover{border-color:var(--primary);color:var(--primary)}
-.role-dd-trigger.open{border-color:var(--primary);color:var(--primary)}
+.role-dd-trigger{display:flex;align-items:center;justify-content:space-between;margin-top:6px;padding:7px 12px;border-radius:var(--r-sm);border:1px solid var(--border);background:var(--surface-dim);cursor:pointer;font-size:12px;color:var(--t3);user-select:none;transition:border-color .15s}
+.role-dd-trigger:hover{border-color:var(--border-strong);color:var(--t1)}
+.role-dd-trigger.open{border-color:var(--border-strong);color:var(--t1)}
 .role-dd-arrow{font-size:10px;transition:transform .2s}
 .role-dd-trigger.open .role-dd-arrow{transform:rotate(180deg)}
 /* Company field */
 .co-field{position:relative;margin-bottom:20px}
 .co-field-hd{display:flex;align-items:center;gap:8px;margin-bottom:8px}
-.co-plan-badge{font-family:var(--mono);font-size:9px;font-weight:700;letter-spacing:.06em;padding:2px 7px;border-radius:20px;background:var(--primary-light);color:var(--primary);border:1px solid var(--primary)}
+.co-plan-badge{font-size:10px;font-weight:600;padding:2px 8px;border-radius:20px;background:var(--primary-light);color:var(--primary)}
 .co-row{display:flex;align-items:center;flex-wrap:wrap;gap:6px;min-height:32px}
 .co-tags{display:flex;flex-wrap:wrap;gap:6px}
-.co-tag{display:inline-flex;align-items:center;gap:5px;padding:4px 10px 4px 10px;border-radius:20px;background:var(--primary-light);border:1.5px solid var(--primary);font-size:12px;font-weight:600;color:var(--primary);line-height:1}
+.co-tag{display:inline-flex;align-items:center;gap:5px;padding:5px 11px;border-radius:20px;background:var(--primary-light);font-size:12px;font-weight:600;color:var(--primary);line-height:1}
 .co-tag-rm{background:none;border:none;color:var(--primary);cursor:pointer;font-size:11px;padding:0 0 0 4px;line-height:1;opacity:.6}
 .co-tag-rm:hover{opacity:1}
-.co-add-btn{font-size:12px;font-weight:600;color:var(--primary);background:var(--primary-light);border:var(--bw) solid var(--primary);border-radius:20px;padding:5px 13px;cursor:pointer;font-family:var(--font);white-space:nowrap;transition:all .15s;line-height:1}
-.co-add-btn:hover{background:var(--primary);color:#fff}
-.co-gate-note{font-size:11px;color:var(--t4);font-family:var(--mono)}
+.co-add-btn{font-size:12px;font-weight:600;color:var(--primary);background:var(--primary-light);border:none;border-radius:20px;padding:6px 14px;cursor:pointer;font-family:var(--font);white-space:nowrap;transition:opacity .15s;line-height:1}
+.co-add-btn:hover{opacity:.8}
+.co-gate-note{font-size:11px;color:var(--t4)}
 .co-gate-note a{color:var(--primary);text-decoration:none;font-weight:600}
 /* Company news panel (pre-analysis) */
-.news-panel{margin-bottom:20px;border:var(--bw) solid var(--border-bold);border-radius:var(--r-md);overflow:hidden}
-.news-tabs{display:flex;border-bottom:var(--bw) solid var(--border);background:var(--bg)}
-.news-tab{padding:10px 18px;font-size:12px;font-weight:600;color:var(--t3);cursor:pointer;border-right:var(--bw) solid var(--border);transition:all .15s;font-family:var(--font)}
+.news-panel{margin-bottom:20px;border:1px solid var(--border);border-radius:var(--r-md);overflow:hidden;background:var(--surface)}
+.news-tabs{display:flex;border-bottom:1px solid var(--border);background:var(--surface-dim)}
+.news-tab{padding:10px 18px;font-size:12px;font-weight:500;color:var(--t3);cursor:pointer;border-right:1px solid var(--border);transition:all .15s;font-family:var(--font)}
 .news-tab:last-child{border-right:none}
-.news-tab.act{color:var(--primary);background:#fff;box-shadow:inset 0 -2px 0 var(--primary)}
-.news-card{display:flex;align-items:flex-start;gap:10px;padding:12px 16px;border-bottom:var(--bw) solid var(--border);text-decoration:none;transition:background .12s;background:#fff}
+.news-tab.act{color:var(--t1);background:var(--surface);box-shadow:inset 0 -2px 0 var(--t1)}
+.news-card{display:flex;align-items:flex-start;gap:10px;padding:12px 16px;border-bottom:1px solid var(--border);text-decoration:none;transition:background .12s;background:var(--surface)}
 .news-card:last-child{border-bottom:none}
-.news-card:hover{background:var(--primary-light)}
+.news-card:hover{background:var(--surface-dim)}
 .news-card-body{flex:1;min-width:0}
-.news-card-source{font-size:11px;color:var(--t4);font-family:var(--mono);margin-bottom:3px;letter-spacing:.02em}
+.news-card-source{font-size:11px;color:var(--t4);margin-bottom:3px}
 .news-card-title{font-size:13px;font-weight:600;color:var(--t1);line-height:1.45}
 .news-card-arrow{font-size:12px;color:var(--t4);flex-shrink:0;padding-top:2px}
-.news-loading{padding:20px;text-align:center;font-size:13px;color:var(--t4);background:#fff}
+.news-loading{padding:20px;text-align:center;font-size:13px;color:var(--t4);background:var(--surface)}
+/* Input layout: form + side preview */
+.form-wide{max-width:1040px}
+.form-grid{display:grid;grid-template-columns:1fr 300px;gap:20px;align-items:start}
+.side-preview{position:sticky;top:76px;display:flex;flex-direction:column;gap:12px}
+.sp-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);padding:16px 18px}
+.sp-lbl{font-size:12px;color:var(--t3);font-weight:500;margin-bottom:10px}
+.sp-score-row{display:flex;align-items:baseline;gap:8px;margin-bottom:10px}
+.sp-score{font-size:40px;font-weight:700;letter-spacing:-.04em;line-height:1;color:var(--t1);font-family:var(--mono)}
+.sp-grade{font-size:10px;font-weight:600;padding:3px 10px;border-radius:var(--r-full);background:var(--primary-light);color:var(--primary)}
+.sp-bar-row{display:flex;align-items:center;gap:8px;margin-bottom:7px}
+.sp-bar-lbl{font-size:11px;color:var(--t3);width:70px;flex-shrink:0}
+.sp-bar-track{flex:1;height:4px;background:var(--surface-2);border-radius:2px;overflow:hidden}
+.sp-bar-fill{height:100%;border-radius:2px}
+.sp-check{display:flex;align-items:center;gap:8px;padding:4px 0;font-size:11.5px;color:var(--t2)}
+.sp-check-ic{width:15px;height:15px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:8px;font-weight:700;flex-shrink:0}
+.sp-ba{border-radius:var(--r-sm);padding:7px 10px;font-size:10.5px;line-height:1.5;margin-bottom:5px;color:var(--t1)}
+.sp-note{font-size:11px;color:var(--t4);line-height:1.6}
+@media(max-width:960px){.form-grid{grid-template-columns:1fr}.side-preview{display:none}}
+/* JD (Job Description) block */
+.jd-toggle{display:flex;align-items:center;gap:8px;padding:10px 14px;border:1px dashed var(--border-strong);border-radius:var(--r-md);background:var(--surface-dim);cursor:pointer;font-size:13px;font-weight:500;color:var(--t2);margin-bottom:20px;transition:all .15s;user-select:none}
+.jd-toggle:hover{border-color:var(--t3);color:var(--t1)}
+.jd-toggle.filled{border-style:solid;border-color:var(--green);background:var(--green-bg);color:var(--green)}
+.jd-rec-badge{font-size:10px;font-weight:600;padding:2px 8px;border-radius:20px;background:var(--green-bg);color:var(--green)}
+.jd-area-wrap{margin-bottom:20px}
+.jd-area{width:100%;min-height:140px;background:var(--surface-dim);border:1px solid var(--border);border-radius:var(--r-md);padding:14px;font-family:var(--font);font-size:13px;line-height:1.7;color:var(--t1);outline:none;resize:vertical;transition:border-color .15s}
+.jd-area:focus{border-color:var(--t3)}
+.jd-meta{display:flex;justify-content:space-between;align-items:center;margin-top:4px}
+.jd-clear{background:none;border:none;color:var(--t3);font-size:12px;cursor:pointer;font-family:var(--font);font-weight:500}
+.jd-clear:hover{color:var(--red)}
 /* Company insights in result */
-.ci-sec{border-top:var(--bw) solid var(--border);padding:32px}
-.ci-hd{font-size:13px;font-weight:700;color:var(--t1);margin-bottom:20px;display:flex;align-items:center;gap:8px}
+.ci-sec{max-width:960px;margin:16px auto 0;background:var(--surface);border:1px solid var(--border);border-radius:var(--r-xl);padding:32px}
+.ci-hd{font-size:13px;font-weight:600;color:var(--t1);margin-bottom:20px;display:flex;align-items:center;gap:8px}
 .ci-hd-dot{width:8px;height:8px;border-radius:50%;background:var(--primary)}
 .ci-co{margin-bottom:24px}
-.ci-co-name{font-size:12px;font-weight:700;color:var(--t2);font-family:var(--mono);letter-spacing:.06em;text-transform:uppercase;margin-bottom:10px;display:flex;align-items:center;gap:6px}
+.ci-co-name{font-size:12px;font-weight:600;color:var(--t2);margin-bottom:10px;display:flex;align-items:center;gap:6px}
 .ci-co-name img{width:14px;height:14px;border-radius:2px;object-fit:contain}
 .ci-news{display:flex;flex-direction:column;gap:8px}
-.ci-card{display:flex;align-items:flex-start;gap:12px;padding:12px 14px;border-radius:var(--r-md);border:var(--bw) solid var(--border);background:#fff;text-decoration:none;transition:border-color .15s,transform .15s}
-.ci-card:hover{border-color:var(--primary);transform:translate(-1px,-1px)}
+.ci-card{display:flex;align-items:flex-start;gap:12px;padding:12px 14px;border-radius:var(--r-md);border:1px solid var(--border);background:var(--surface);text-decoration:none;transition:border-color .15s}
+.ci-card:hover{border-color:var(--border-strong)}
 .ci-src{display:flex;align-items:center;gap:5px;flex-shrink:0;padding-top:2px}
 .ci-src img{width:16px;height:16px;border-radius:3px;object-fit:contain}
 .ci-card-body{flex:1;min-width:0}
@@ -81,8 +115,9 @@
 .ci-card-arrow{font-size:12px;color:var(--t4);flex-shrink:0;padding-top:2px}
 @media(max-width:768px){
   .r-hero-inner{flex-direction:column;align-items:flex-start}
-  .score-blk{grid-template-columns:1fr}.score-l{border-right:none;border-bottom:var(--bw) solid var(--border)}
-  .r-body{grid-template-columns:1fr}.r-col{border-right:none;border-bottom:var(--bw) solid var(--border)}
+  .score-blk{grid-template-columns:1fr}.score-l{border-right:none;border-bottom:1px solid var(--border)}
+  .ats-blk{grid-template-columns:1fr}.ats-l{border-right:none;border-bottom:1px solid var(--border)}
+  .r-body{grid-template-columns:1fr}.r-col{border-right:none;border-bottom:1px solid var(--border)}
   .one-tip{flex-direction:column;gap:16px}
   .r-footer{flex-wrap:wrap}
   .form-sec{padding:40px 20px 60px}.form-card{padding:24px 20px}
@@ -90,22 +125,15 @@
   .ci-sec{padding:24px 20px}
 }
 @media print{
-  nav,.r-acts,.r-footer,#viewInput,.loading-overlay,.modal-overlay,#authGate,#usageRow{display:none!important}
+  nav,.r-acts,.r-footer,#viewInput,.loading-overlay,.modal-overlay,#usageRow,#applyBar,.apply-fix-btn,.theme-btn{display:none!important}
   #viewResult{padding-top:0!important}
   .score-num,.score-badge,.sbar-fill,.kw,.feat-icon{-webkit-print-color-adjust:exact;print-color-adjust:exact}
-  .score-blk,.r-body,.one-tip{page-break-inside:avoid;break-inside:avoid}
+  .score-blk,.r-body,.one-tip,.ats-blk,.jd-sec{page-break-inside:avoid;break-inside:avoid}
+  .ats-num,.ats-verdict,.ats-ic,.req-chip,.delta-chip{-webkit-print-color-adjust:exact;print-color-adjust:exact}
 }
 </style>
 </head>
 <body>
-
-<div id="authGate" class="modal-overlay hidden">
-  <div class="modal-box" style="text-align:center">
-    <h2 style="font-size:20px;font-weight:800;margin-bottom:8px">Sign in to continue</h2>
-    <p style="font-size:13px;color:var(--t3);margin-bottom:24px">You need an account to<br>start your analysis.</p>
-    <button class="btn-dark" style="width:100%;padding:14px;border-radius:var(--r-md)" onclick="location.href='index.html'">Go to Sign In →</button>
-  </div>
-</div>
 
 <div id="loadingOverlay" class="loading-overlay hidden">
   <div class="lo-spinner"></div>
@@ -122,6 +150,20 @@
   </div>
 </div>
 
+<div id="shareModal" class="modal-overlay hidden">
+  <div class="modal-box" style="max-width:360px;text-align:center">
+    <button class="modal-close" onclick="closeShare()">✕</button>
+    <h2 style="font-size:18px;font-weight:800;margin-bottom:6px">Share your score</h2>
+    <p style="font-size:12px;color:var(--t3);margin-bottom:18px;line-height:1.6">Only your scores and target role are shared.<br>Your letter text never leaves your account.</p>
+    <div style="display:flex;gap:8px;margin-bottom:10px">
+      <input id="shareUrlInput" readonly class="f-input" style="margin:0;font-size:12px;font-family:var(--mono)" onclick="this.select()"/>
+      <button id="copyShareBtn" class="btn-solid" style="flex-shrink:0" onclick="copyShareUrl()">Copy</button>
+    </div>
+    <a id="shareXBtn" class="btn-dark" style="width:100%;justify-content:center;padding:12px;border-radius:var(--r-md);text-decoration:none;margin-bottom:8px" target="_blank" rel="noopener">𝕏 Post to X</a>
+    <button class="btn-ghost" style="width:100%;justify-content:center;padding:12px;border-radius:var(--r-md)" onclick="downloadCard()">⬇ Download card image</button>
+  </div>
+</div>
+
 <nav>
   <a href="index.html" class="nav-logo">Ss<span class="dot">.</span>urd</a>
   <div class="nav-mid">
@@ -131,6 +173,7 @@
     <a href="pricing.html" class="nav-lnk">Pricing</a>
   </div>
   <div class="nav-r">
+    <button class="theme-btn" onclick="ssurdToggleTheme()" aria-label="Switch theme"></button>
     <div id="navUser" class="hidden" style="display:flex;align-items:center;gap:10px">
       <span id="navUserName" class="nav-uname"></span>
       <button class="btn-ghost" onclick="handleLogout()">Log Out</button>
@@ -141,15 +184,20 @@
 
 <!-- Input view -->
 <div id="viewInput" style="padding-top:56px">
-  <section class="form-sec">
+  <section class="form-sec form-wide">
     <div class="form-top rv">
-      <div style="font-family:var(--mono);font-size:12px;color:var(--primary);letter-spacing:.08em;font-weight:500;margin-bottom:8px">ANALYSIS</div>
+      <div style="font-size:13px;color:var(--t3);font-weight:500;margin-bottom:8px">Analysis</div>
       <h2 class="form-h2">Paste your cover letter</h2>
       <p class="form-sub">100+ characters required to start analysis</p>
     </div>
+    <div class="form-grid">
     <div class="form-card rv d1">
+      <div id="revBanner" class="hidden" style="display:flex;align-items:center;justify-content:space-between;gap:10px;background:var(--primary-light);border-radius:var(--r-md);padding:10px 14px;margin-bottom:16px">
+        <span style="font-size:13px;color:var(--primary);font-weight:600">↻ Revising <span id="revV">v1</span> — your next analysis will show score changes vs this version.</span>
+        <button onclick="cancelRevision()" style="background:none;border:none;color:var(--primary);cursor:pointer;font-size:13px;font-weight:700;flex-shrink:0">✕</button>
+      </div>
       <div id="errMsg" class="err-msg hidden"></div>
-      <label class="f-label">Target Role</label>
+      <div class="step-lbl"><span class="step-n">1.</span> Target role</div>
       <div class="dd-wrap" id="roleWrap">
         <input id="jobTitle" class="f-job" type="text" placeholder="e.g. Product Manager, Software Engineer" autocomplete="off"/>
         <div class="role-dd-trigger" id="roleTrigger" onclick="toggleRoleDD()">
@@ -177,22 +225,70 @@
         </div>
       </div>
 
+      <div id="newsCollapse" class="collapse-hd hidden" onclick="toggleNews()" style="margin-bottom:12px">
+        <span class="collapse-arrow">▶</span><span id="newsCollapseTxt">Recent news</span>
+      </div>
       <div id="newsPanel" class="news-panel hidden">
         <div class="news-tabs" id="newsTabs"></div>
         <div id="newsList"></div>
       </div>
 
-      <label class="f-label">Cover Letter / Resume</label>
+      <div class="step-lbl"><span class="step-n">2.</span> Job posting <span class="step-opt">· optional</span></div>
+      <div class="jd-toggle" id="jdToggle" onclick="toggleJD()">
+        <span id="jdToggleTxt">+ Paste job description</span>
+        <span class="jd-rec-badge">RECOMMENDED</span>
+      </div>
+      <div class="jd-area-wrap hidden" id="jdWrap">
+        <label class="f-label">Job Description</label>
+        <textarea id="jdText" class="jd-area" maxlength="5000" placeholder="Paste the actual job posting here. We'll match your letter against its real requirements — and your ATS keyword check gets far more accurate."></textarea>
+        <div class="jd-meta">
+          <button class="jd-clear" onclick="clearJD()">✕ Remove</button>
+          <span class="char-c"><strong id="jdCharCount">0</strong> / 5,000</span>
+        </div>
+      </div>
+
+      <div class="step-lbl"><span class="step-n">3.</span> Your letter</div>
       <textarea id="coverLetter" class="f-letter" maxlength="3000" placeholder="Paste your cover letter or resume here.&#10;200+ characters will yield more accurate results."></textarea>
       <div class="f-meta">
         <span style="font-size:12px;color:var(--t4)">Minimum 100 characters</span>
         <span class="char-c"><strong id="charCount">0</strong> / 3,000</span>
       </div>
-      <button id="analyzeBtn" class="btn-analyze" onclick="startAnalysis()">✦ Start Analysis Now</button>
+      <button id="analyzeBtn" class="btn-analyze" onclick="startAnalysis()">✦ Analyze — includes ATS check</button>
       <div id="usageRow" class="usage-row hidden">
         <span class="usage-t">Remaining this month: <strong id="usageCount">-</strong></span>
         <a href="dashboard.html" class="usage-lnk">History →</a>
       </div>
+    </div>
+
+    <aside class="side-preview rv d2">
+      <div class="sp-card">
+        <div class="sp-lbl">What you'll get</div>
+        <div class="sp-score-row">
+          <span class="sp-score">78</span>
+          <span style="font-size:12px;color:var(--t4);font-weight:600">/100</span>
+          <span class="sp-grade">Grade B</span>
+        </div>
+        <div class="sp-bar-row"><span class="sp-bar-lbl">Relevance</span><div class="sp-bar-track"><div class="sp-bar-fill" style="width:84%;background:var(--green)"></div></div></div>
+        <div class="sp-bar-row"><span class="sp-bar-lbl">Specificity</span><div class="sp-bar-track"><div class="sp-bar-fill" style="width:62%;background:var(--primary)"></div></div></div>
+        <div class="sp-bar-row"><span class="sp-bar-lbl">Impact</span><div class="sp-bar-track"><div class="sp-bar-fill" style="width:48%;background:var(--yellow)"></div></div></div>
+        <div style="font-size:10px;color:var(--t4);font-family:var(--mono);margin-top:4px">+ Clarity · Authenticity</div>
+      </div>
+      <div class="sp-card">
+        <div class="sp-lbl">ATS screening · 6 checks</div>
+        <div class="sp-check"><span class="sp-check-ic" style="background:var(--green-bg);color:var(--green)">✓</span>Keyword coverage</div>
+        <div class="sp-check"><span class="sp-check-ic" style="background:var(--green-bg);color:var(--green)">✓</span>Quantified impact</div>
+        <div class="sp-check"><span class="sp-check-ic" style="background:var(--yellow-bg);color:var(--yellow)">!</span>Structure & scannability</div>
+        <div class="sp-check"><span class="sp-check-ic" style="background:var(--green-bg);color:var(--green)">✓</span>Length</div>
+        <div class="sp-check"><span class="sp-check-ic" style="background:var(--red-bg);color:var(--red)">✕</span>Clichés & buzzwords</div>
+        <div class="sp-check"><span class="sp-check-ic" style="background:var(--green-bg);color:var(--green)">✓</span>Contact & role reference</div>
+      </div>
+      <div class="sp-card">
+        <div class="sp-lbl">Sentence-level rewrites</div>
+        <div class="sp-ba" style="background:var(--red-bg)">"I am a hard-working team player."</div>
+        <div class="sp-ba" style="background:var(--green-bg);font-weight:600">"Led a team of 6 to ship a $2M launch 3 weeks early."</div>
+      </div>
+      <div class="sp-note">Auto-saved to your private history.<br>Revise → re-analyze → watch the delta.</div>
+    </aside>
     </div>
   </section>
 </div>
@@ -202,36 +298,43 @@
   <div class="r-hero">
     <div class="r-hero-inner">
       <div>
-        <div class="r-eyebrow">ANALYSIS REPORT</div>
-        <div id="rTitle" class="r-title">—</div>
+        <div class="r-eyebrow">Analysis report</div>
+        <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
+          <div id="rTitle" class="r-title">—</div>
+          <span id="rVer" class="v-badge hidden"></span>
+        </div>
         <div id="rTime" class="r-time"></div>
       </div>
       <div class="r-acts">
-        <button class="btn-rw btn-rw-out" onclick="resetToInput()">← Analyze Again</button>
+        <button id="improveBtn" class="btn-rw btn-rw-white" onclick="improveReanalyze()">↻ Improve & Re-analyze</button>
         <button id="shareBtn" class="btn-rw btn-rw-out" onclick="shareScore(event)">↗ Share</button>
-        <button id="saveBtn" class="btn-rw btn-rw-white" onclick="saveReport()">Save Report</button>
+        <button id="saveBtn" class="btn-rw btn-rw-out" onclick="saveReport()">Save Report</button>
       </div>
     </div>
   </div>
   <div class="score-blk">
     <div class="score-l">
       <div id="scoreNum" class="score-num">—</div>
-      <div id="scoreBadge" class="score-badge">GRADE —</div>
+      <div id="scoreDelta" class="hidden" style="margin-top:4px"></div>
+      <div id="scoreBadge" class="score-badge">Grade —</div>
       <p id="scoreSum" class="score-sum"></p>
+      <div id="verdictChips" style="display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin-top:10px"></div>
     </div>
     <div class="score-r">
       <div class="sbars-t">Detailed Scores</div>
       <div class="sbar-rows" id="scoreBars"></div>
     </div>
   </div>
-  <div class="r-body">
+  <div class="pf-sec">
+    <div class="r-col-hd r"><span class="hd-dot"></span>Priority Fixes — Before / After</div>
+    <div id="impList"></div>
+  </div>
+  <div id="atsSec" class="hidden"></div>
+  <div id="jdSecR" class="hidden"></div>
+  <div class="r-body r-body2">
     <div class="r-col">
       <div class="r-col-hd g"><span class="hd-dot"></span>What You Did Well</div>
       <div id="strList"></div>
-    </div>
-    <div class="r-col">
-      <div class="r-col-hd r"><span class="hd-dot"></span>Areas to Improve</div>
-      <div id="impList"></div>
     </div>
     <div class="r-col">
       <div class="r-col-hd b"><span class="hd-dot"></span>Keyword Analysis</div>
@@ -240,7 +343,7 @@
     </div>
   </div>
   <div class="one-tip">
-    <div style="width:40px;height:40px;border-radius:var(--r-sm);background:var(--primary-light);border:var(--bw) solid var(--primary);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;color:var(--primary)">✦</div>
+    <div style="width:40px;height:40px;border-radius:var(--r-md);background:var(--primary-light);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;color:var(--primary)">✦</div>
     <div>
       <div class="ot-lbl">HR Professional's Comment</div>
       <div id="otText" class="ot-text"></div>
@@ -249,16 +352,21 @@
   <div id="ciSec" class="ci-sec hidden"></div>
 
   <div class="r-footer">
-    <button class="btn-re" onclick="resetToInput()">← Analyze Again</button>
+    <button class="btn-re" onclick="resetToInput()">← New Analysis</button>
     <button class="btn-re" onclick="window.print()">⬇ Download PDF</button>
     <button id="saveBtnB" class="btn-save" onclick="saveReport()">Save to History</button>
   </div>
 </div>
 
+<div id="applyBar" class="apply-bar hidden">
+  <span id="applyBarTxt"></span>
+  <button class="btn-rw btn-rw-white" onclick="appliedReanalyze()">Re-analyze to see your new score →</button>
+</div>
+
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
 import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
-import { getFirestore, collection, addDoc, doc, getDoc, serverTimestamp }
+import { getFirestore, collection, doc, getDoc, setDoc, serverTimestamp }
   from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
 const app = initializeApp({
@@ -271,6 +379,8 @@ const app = initializeApp({
 });
 const auth=getAuth(app),db=getFirestore(app);
 let cUser=null,cReport=null,cJob=null,cLetter=null,cUserPlan='free',selectedCos=[];
+let cAnalysisId=null,cRootId=null,cVersion=1,cPrevious=null,revisionOf=null;
+let cImps=[],appliedCount=0;
 
 const ROLES={
   'Engineering':['Software Engineer','Senior Software Engineer','Staff Engineer','Principal Engineer','Frontend Developer','Backend Developer','Full Stack Engineer','iOS Developer','Android Developer','DevOps Engineer','Platform Engineer','Site Reliability Engineer','Security Engineer','Machine Learning Engineer','AI Engineer','Cloud Architect','Solutions Architect','Embedded Systems Engineer','Game Developer','Mobile Developer'],
@@ -356,17 +466,26 @@ function renderSelectedCos(){
   if(addBtn)addBtn.style.display=selectedCos.length>=3?'none':'';
 }
 
-// ── 뉴스 패널 ──
-let newsCache={},activeNewsTab='';
+// ── 뉴스 패널 (접힌 토글) ──
+let newsCache={},activeNewsTab='',newsOpen=false;
 
 async function updateNewsPanel(){
   const panel=document.getElementById('newsPanel');
-  if(!selectedCos.length){panel.classList.add('hidden');return;}
-  panel.classList.remove('hidden');
+  const col=document.getElementById('newsCollapse');
+  if(!selectedCos.length){panel.classList.add('hidden');col.classList.add('hidden');newsOpen=false;col.classList.remove('collapse-open');return;}
+  col.classList.remove('hidden');
+  document.getElementById('newsCollapseTxt').textContent=`Recent news — ${selectedCos.map(c=>c.n).join(', ')}`;
   if(!selectedCos.find(c=>c.n===activeNewsTab)) activeNewsTab=selectedCos[0].n;
+  if(!newsOpen){panel.classList.add('hidden');return;}
+  panel.classList.remove('hidden');
   renderNewsTabs();
   await fetchAndShowNews(activeNewsTab);
 }
+window.toggleNews=async()=>{
+  newsOpen=!newsOpen;
+  document.getElementById('newsCollapse').classList.toggle('collapse-open',newsOpen);
+  await updateNewsPanel();
+};
 function renderNewsTabs(){
   document.getElementById('newsTabs').innerHTML=selectedCos.map(c=>
     `<div class="news-tab${c.n===activeNewsTab?' act':''}" onclick="switchNewsTab('${c.n.replace(/'/g,"\\'")}')"> ${c.n}</div>`
@@ -404,7 +523,17 @@ function closeRoleDD(){roleDDOpen=false;document.getElementById('roleDD').style.
 function openCoDD(){if(coDDOpen)return;coDDOpen=true;buildCoList();document.getElementById('coDD').style.display='block';}
 function closeCoDD(){coDDOpen=false;document.getElementById('coDD').style.display='none';document.getElementById('coSearch').value='';}
 window.toggleRoleDD=()=>roleDDOpen?closeRoleDD():openRoleDD();
-window.toggleCoDD=()=>{if(cUserPlan==='free'){document.getElementById('coGateNote').classList.remove('hidden');document.getElementById('coAddBtn').style.display='none';return;}coDDOpen?closeCoDD():openCoDD();};
+window.toggleCoDD=()=>{
+  if(teaserMode){
+    const n=document.getElementById('coGateNote');
+    n.innerHTML='— <a href="index.html?signup=1" onclick="gtag(\'event\',\'teaser_signup_click\',{placement:\'company\'})">Sign up free</a> to target companies';
+    n.classList.remove('hidden');
+    document.getElementById('coAddBtn').style.display='none';
+    return;
+  }
+  if(cUserPlan==='free'){document.getElementById('coGateNote').classList.remove('hidden');document.getElementById('coAddBtn').style.display='none';return;}
+  coDDOpen?closeCoDD():openCoDD();
+};
 document.addEventListener('click',e=>{
   if(roleDDOpen&&!document.getElementById('roleWrap').contains(e.target))closeRoleDD();
   if(coDDOpen&&!document.getElementById('coWrap').contains(e.target))closeCoDD();
@@ -418,8 +547,18 @@ const esc=s=>String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'
 
 // Init
 
+let teaserMode=false;
+function enterTeaserMode(){
+  teaserMode=true;
+  document.getElementById('analyzeBtn').textContent='✦ Get my free score — no signup';
+  hide('usageRow');
+  const spNote=document.querySelector('.sp-note');
+  if(spNote)spNote.insertAdjacentHTML('beforeend','<br><span style="color:var(--primary)">Preview mode — 1 free scan/day, no account.</span>');
+}
+
 onAuthStateChanged(auth, async u=>{
-  if(!u){show('authGate');return;}
+  if(!u){enterTeaserMode();return;}
+  teaserMode=false;
   cUser=u;hide('navLoginBtn');
   const nu=document.getElementById('navUser');nu.classList.remove('hidden');nu.style.display='flex';
   document.getElementById('navUserName').textContent=u.displayName||u.email;
@@ -429,7 +568,28 @@ onAuthStateChanged(auth, async u=>{
   const currentMonth=new Date().toISOString().slice(0,7);
   const used=d.monthlyUsageMonth===currentMonth?(d.monthlyUsage||0):0;
   show('usageRow');
-  document.getElementById('usageCount').textContent=d.plan==='admin'?'∞':Math.max(0,(d.plan==='starter'?10:3)-used);
+  const remaining=d.plan==='admin'?'∞':Math.max(0,(d.plan==='starter'?10:3)-used);
+  document.getElementById('usageCount').textContent=remaining;
+  if(cUserPlan==='free'&&used>=3){
+    document.getElementById('usageCount').insertAdjacentHTML('afterend',' <span style="font-family:var(--mono);font-size:11px;color:var(--t4)">· preview mode</span>');
+  }
+
+  // Teaser → signup handoff: restore the letter they pasted before signing up
+  try{
+    const t=JSON.parse(sessionStorage.getItem('ssurd_teaser')||'null');
+    if(t&&t.ts&&Date.now()-t.ts<3600000){
+      sessionStorage.removeItem('ssurd_teaser');
+      if(t.jobTitle)document.getElementById('jobTitle').value=t.jobTitle;
+      if(t.coverLetter){
+        document.getElementById('coverLetter').value=t.coverLetter;
+        document.getElementById('charCount').textContent=t.coverLetter.length;
+      }
+      const rb=document.getElementById('revBanner');
+      rb.querySelector('span').innerHTML='✦ Welcome — your letter is loaded. Run your full analysis now.';
+      show('revBanner');
+      document.getElementById('analyzeBtn').scrollIntoView({behavior:'smooth',block:'center'});
+    }
+  }catch{}
 
   const params=new URLSearchParams(window.location.search);
   const histId=params.get('id');
@@ -439,8 +599,14 @@ onAuthStateChanged(auth, async u=>{
       if(histSnap.exists()&&histSnap.data().uid===u.uid){
         const histData=histSnap.data();
         cReport=histData.report;cJob=histData.jobTitle;cLetter=histData.coverLetter;
+        cAnalysisId=histId;cRootId=histData.rootId||histId;cVersion=histData.version||1;cPrevious=histData.previous||null;
+        if(histData.jdText){
+          document.getElementById('jdText').value=histData.jdText;
+          document.getElementById('jdCharCount').textContent=histData.jdText.length;
+          updateJDToggle();
+        }
         renderResult(cReport,cJob);
-        ['saveBtn','saveBtnB'].forEach(id=>{const btn=document.getElementById(id);if(btn)btn.style.display='none';});
+        markSaved(true);
       }
     }catch(e){console.error("History load failed:",e);}
   }
@@ -448,6 +614,34 @@ onAuthStateChanged(auth, async u=>{
 
 document.getElementById('coverLetter').addEventListener('input',e=>{
   document.getElementById('charCount').textContent=e.target.value.length;
+});
+
+// ── JD block ──
+window.toggleJD=()=>{
+  if(teaserMode){
+    const t=document.getElementById('jdToggleTxt');
+    t.innerHTML='Sign up free to match against the real job posting → <a href="index.html?signup=1" style="color:var(--primary)" onclick="gtag(\'event\',\'teaser_signup_click\',{placement:\'jd\'})">Sign up</a>';
+    return;
+  }
+  const w=document.getElementById('jdWrap');
+  if(w.classList.contains('hidden')){w.classList.remove('hidden');document.getElementById('jdText').focus();}
+  else if(!document.getElementById('jdText').value.trim()){w.classList.add('hidden');}
+};
+window.clearJD=()=>{
+  document.getElementById('jdText').value='';
+  document.getElementById('jdCharCount').textContent='0';
+  document.getElementById('jdWrap').classList.add('hidden');
+  updateJDToggle();
+};
+function updateJDToggle(){
+  const v=document.getElementById('jdText').value.trim();
+  const t=document.getElementById('jdToggle');
+  if(v){t.classList.add('filled');document.getElementById('jdToggleTxt').textContent=`✓ JD attached · ${v.length.toLocaleString()} chars`;}
+  else{t.classList.remove('filled');document.getElementById('jdToggleTxt').textContent='+ Paste job description (optional)';}
+}
+document.getElementById('jdText').addEventListener('input',e=>{
+  document.getElementById('jdCharCount').textContent=e.target.value.length;
+  updateJDToggle();
 });
 document.getElementById('coverLetter').addEventListener('keydown',e=>{
   if(e.key==='Enter'&&(e.ctrlKey||e.metaKey)){e.preventDefault();startAnalysis();}
@@ -468,9 +662,9 @@ window.startAnalysis=async()=>{
   const job=document.getElementById('jobTitle').value.trim();
   const letter=document.getElementById('coverLetter').value.trim();
   hideErr();
-  if(!cUser){show('authGate');return;}
   if(!job){showErr('Please enter the target role.');return;}
   if(letter.length<100){showErr('Please enter at least 100 characters.');return;}
+  if(!cUser)return startTeaserAnalysis(job,letter);
 
   const uRef=doc(db,'users',cUser.uid);
   const snap=await getDoc(uRef);
@@ -478,15 +672,19 @@ window.startAnalysis=async()=>{
   const currentMonth=new Date().toISOString().slice(0,7);
   const used=d.monthlyUsageMonth===currentMonth?(d.monthlyUsage||0):0;
   const limit=d.plan==='starter'?10:3;
-  if(d.plan!=='admin'&&used>=limit){
-    showErr("You've used all 3 free analyses this month. Reset on the 1st.");
+  const hardLimit=d.plan==='starter'?10:5; // free gets 2 locked-preview runs past 3
+  if(d.plan!=='admin'&&used>=hardLimit){
+    showErr(`You've used all your analyses this month. Resets on the 1st.`);
     const btn=document.getElementById('analyzeBtn');
-    btn.textContent='Join Waitlist →';
-    btn.onclick=()=>location.href='pricing.html';
+    btn.textContent=d.plan==='starter'?'Limit reached — resets on the 1st':'Upgrade to Starter — $9/mo →';
+    if(d.plan!=='starter')btn.onclick=()=>location.href='pricing.html';
     return;
   }
 
+  const jdVal=document.getElementById('jdText').value.trim();
   gtag('event','analysis_start',{job_title:job});
+  if(jdVal)gtag('event','jd_attached',{jd_length:jdVal.length});
+  document.getElementById('ls2').lastChild.textContent=jdVal?'Matching against job description':'Matching role keywords';
   show('loadingOverlay');
   document.getElementById('analyzeBtn').disabled=true;
   setLS(1);
@@ -496,12 +694,48 @@ window.startAnalysis=async()=>{
     const res=await fetch('/api/analyze',{
       method:'POST',
       headers:{'Content-Type':'application/json','Authorization':`Bearer ${idToken}`},
-      body:JSON.stringify({jobTitle:job,coverLetter:letter,companies:selectedCos.map(c=>({name:c.n,domain:c.d}))}),
+      body:JSON.stringify({jobTitle:job,coverLetter:letter,jobDescription:jdVal,companies:selectedCos.map(c=>({name:c.n,domain:c.d}))}),
     });
     ts.forEach(clearTimeout);
     const json=await res.json();
     if(!json.ok)throw new Error(json.error||'Analysis failed.');
+
+    // Locked preview: real score, details withheld server-side. Never saved to history.
+    if(json.locked){
+      revisionOf=null;hide('revBanner');
+      cReport=null;cAnalysisId=null;cPrevious=null;cVersion=1;
+      cJob=job;cLetter=letter;
+      hide('loadingOverlay');
+      document.getElementById('analyzeBtn').disabled=false;
+      renderLockedResult(json.report,job);
+      gtag('event','locked_report_view',{score:json.report.score});
+      return;
+    }
+
     cReport=json.report;cJob=job;cLetter=letter;
+
+    // Revision lineage + auto-save
+    const ref=doc(collection(db,'analyses'));
+    cVersion=revisionOf?(revisionOf.version||1)+1:1;
+    cRootId=revisionOf?(revisionOf.rootId||ref.id):ref.id;
+    cPrevious=revisionOf?{
+      analysisId:revisionOf.id||null,
+      score:revisionOf.report?.score??null,
+      scores:revisionOf.report?.scores||null,
+      atsScore:revisionOf.report?.ats?.score??null,
+    }:null;
+    cAnalysisId=null;
+    try{
+      await setDoc(ref,{
+        uid:cUser.uid,jobTitle:job,coverLetter:letter,jdText:jdVal||null,report:json.report,
+        parentId:revisionOf?.id||null,rootId:cRootId,version:cVersion,previous:cPrevious,shareId:null,
+        createdAt:serverTimestamp(),
+      });
+      cAnalysisId=ref.id;
+    }catch(err){console.error('Auto-save failed:',err);}
+    markSaved(!!cAnalysisId);
+    const scoreDelta=cPrevious&&cPrevious.score!=null?(json.report.score||0)-cPrevious.score:null;
+    revisionOf=null;hide('revBanner');
 
     const updatedSnap=await getDoc(uRef);
     const updatedD=updatedSnap.exists()?updatedSnap.data():{};
@@ -510,8 +744,8 @@ window.startAnalysis=async()=>{
 
     hide('loadingOverlay');
     document.getElementById('analyzeBtn').disabled=false;
-    renderResult(json.report,job);
-    gtag('event','analysis_complete',{score:json.report.score,grade:json.report.grade,job_title:job});
+    renderResult(json.report,job,{animate:true});
+    gtag('event','analysis_complete',{score:json.report.score,grade:json.report.grade,job_title:job,...(scoreDelta!=null?{score_delta:scoreDelta}:{})});
   }catch(e){
     ts.forEach(clearTimeout);hide('loadingOverlay');
     document.getElementById('analyzeBtn').disabled=false;
@@ -519,19 +753,79 @@ window.startAnalysis=async()=>{
   }
 };
 
-function renderResult(r,job){
+function animateScore(el,target,dur=1000){
+  if(matchMedia('(prefers-reduced-motion: reduce)').matches){el.textContent=target;return;}
+  const t0=performance.now();
+  const step=t=>{
+    const p=Math.min(1,(t-t0)/dur);
+    el.textContent=Math.round(target*(1-Math.pow(1-p,3)));
+    if(p<1)requestAnimationFrame(step);
+  };
+  requestAnimationFrame(step);
+}
+
+const CHECKOUT_URL='https://ssurd.lemonsqueezy.com/checkout/buy/564ac14e-d752-41eb-a45c-f7f187b37dc4';
+
+// ── Teaser (no-login) analysis ──
+window.teaserSignupGo=(placement)=>{
+  gtag('event','teaser_signup_click',{placement});
+  location.href='index.html?signup=1';
+};
+async function startTeaserAnalysis(job,letter){
+  gtag('event','teaser_start');
+  show('loadingOverlay');
+  document.getElementById('analyzeBtn').disabled=true;
+  setLS(1);
+  const ts=[setTimeout(()=>setLS(2),2000),setTimeout(()=>setLS(3),4000),setTimeout(()=>setLS(4),6000)];
+  try{
+    const res=await fetch('/api/analyze-teaser',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({jobTitle:job,coverLetter:letter}),
+    });
+    ts.forEach(clearTimeout);
+    const json=await res.json();
+    hide('loadingOverlay');
+    document.getElementById('analyzeBtn').disabled=false;
+    if(!json.ok){
+      if(json.code==='teaser_limit')gtag('event','teaser_limit_hit');
+      showErr(json.error||'Analysis failed.');
+      const btn=document.getElementById('analyzeBtn');
+      btn.textContent='Sign up free — 3 full analyses/month →';
+      btn.onclick=()=>teaserSignupGo('limit');
+      return;
+    }
+    cJob=job;cLetter=letter;
+    try{sessionStorage.setItem('ssurd_teaser',JSON.stringify({jobTitle:job,coverLetter:letter,ts:Date.now()}));}catch{}
+    gtag('event','teaser_complete',{score:json.report.score});
+    renderTeaserResult(json.report,job);
+  }catch(e){
+    ts.forEach(clearTimeout);hide('loadingOverlay');
+    document.getElementById('analyzeBtn').disabled=false;
+    showErr(e.message||'An error occurred during analysis.');
+  }
+}
+function renderTeaserResult(r,job){
   hide('viewInput');show('viewResult');
+  hide('applyBar');appliedCount=0;
   window.scrollTo({top:0,behavior:'smooth'});
+  ['improveBtn','shareBtn','saveBtn','saveBtnB'].forEach(id=>document.getElementById(id)?.classList.add('hidden'));
+  document.getElementById('rVer').classList.add('hidden');
   document.getElementById('rTitle').textContent=job;
-  document.getElementById('rTime').textContent='Analyzed on '+new Date().toLocaleDateString('en-US',{year:'numeric',month:'long',day:'numeric',hour:'2-digit',minute:'2-digit'});
+  document.getElementById('rTime').textContent='Free preview · '+new Date().toLocaleDateString('en-US',{year:'numeric',month:'long',day:'numeric'});
   const sc=Math.min(100,Math.max(0,r.score||0));
   const sEl=document.getElementById('scoreNum');
-  sEl.textContent=sc;
-  sEl.style.color=sc>=80?'#00c471':sc>=60?'#3182f6':sc>=40?'#f59e0b':'#f04452';
+  animateScore(sEl,sc);
+  sEl.style.color=sc>=80?'var(--green)':sc>=60?'var(--primary)':sc>=40?'var(--yellow)':'var(--red)';
+  document.getElementById('scoreDelta').classList.add('hidden');
   const bEl=document.getElementById('scoreBadge');
-  bEl.textContent=`GRADE  ${r.grade||'—'}`;
+  bEl.textContent=`Grade ${r.grade||'—'}`;
   bEl.className='score-badge g'+(r.grade||'B').toLowerCase();
+  void bEl.offsetWidth;bEl.classList.add('badge-pop');
   document.getElementById('scoreSum').textContent=r.summary||'';
+  document.getElementById('verdictChips').innerHTML=
+    (r.ats&&typeof r.ats.score==='number')?`<span class="ats-verdict ${['pass','risky','fail'].includes(r.ats.verdict)?r.ats.verdict:'risky'}" style="font-size:9px;padding:3px 10px">ATS ${r.ats.score}</span>`:'';
+  // Real sub-score bars — this is the aha
   const lbl={relevance:'Relevance',specificity:'Specificity',clarity:'Clarity',authenticity:'Authenticity',impact:'Impact'};
   const barsEl=document.getElementById('scoreBars');
   barsEl.innerHTML='';
@@ -541,6 +835,131 @@ function renderResult(r,job){
     barsEl.innerHTML+=`<div class="sbar-row"><span class="sbar-lbl">${esc(lbl[k]||k)}</span><div class="sbar-track"><div class="sbar-fill ${c}" data-w="${p}"></div></div><span class="sbar-v">${p}</span></div>`;
   });
   setTimeout(()=>{document.querySelectorAll('.sbar-fill').forEach(el=>{el.style.width=el.dataset.w+'%';});},100);
+  // ONE real Before/After + locked stub + signup card
+  const imp=r.improvement||{};
+  const impHtml=(imp.before&&imp.after)?`<div class="imp-item"><div class="imp-meta"><div class="imp-issue">${esc(imp.issue||'')}</div>${imp.why?`<div class="imp-why">${esc(imp.why)}</div>`:''}</div><div class="imp-bas">
+      <div class="ba ba-b"><div class="ba-lbl">Before</div><div class="ba-txt">"${esc(imp.before)}"</div></div>
+      <div class="ba ba-a"><div class="ba-lbl">After</div><div class="ba-txt">"${esc(imp.after)}"</div></div>
+    </div></div>`:'';
+  document.getElementById('impList').innerHTML=impHtml
+    +`<div class="lock-badge" style="margin-top:14px">🔒 2 more priority fixes in the full report</div>`
+    +`<div class="upgrade-card">
+      <div style="font-size:16px;font-weight:800;margin-bottom:8px">This was 1 of your 3 free monthly reports — unlocked with an account.</div>
+      <ul style="list-style:none;font-size:13px;color:var(--t2);line-height:2;margin-bottom:14px">
+        <li>✓ 3 full analyses every month — free forever</li>
+        <li>✓ All rewrites + 6-point ATS detail + JD matching</li>
+        <li>✓ Saved history & score tracking across revisions</li>
+      </ul>
+      <button class="btn-primary" onclick="teaserSignupGo('report')">Sign up free — unlock the full report →</button>
+      <div style="font-family:var(--mono);font-size:11px;color:var(--t4);margin-top:10px">No credit card. Your letter carries over after signup.</div>
+    </div>`;
+  document.getElementById('atsSec').classList.remove('hidden');
+  document.getElementById('atsSec').innerHTML=`<div class="jd-sec">${lockSkeleton('6-point ATS checklist — see exactly what the robot flags')}</div>`;
+  document.getElementById('jdSecR').classList.add('hidden');document.getElementById('jdSecR').innerHTML='';
+  document.getElementById('strList').innerHTML=lockSkeleton('Strengths with evidence from your text');
+  document.getElementById('kwM').innerHTML=`<div class="lock-badge">🔒 Keyword analysis</div>`;
+  document.getElementById('kwMs').innerHTML='';
+  document.getElementById('otText').textContent='Sign up free to read your HR verdict.';
+  const ciSec=document.getElementById('ciSec');ciSec.classList.add('hidden');ciSec.innerHTML='';
+}
+
+function lockSkeleton(label){
+  return `<div class="lock-sec">
+    <div class="lock-badge">🔒 ${esc(label)}</div>
+    <div class="lock-skel"><div class="lock-skel-bar" style="width:88%"></div><div class="lock-skel-bar" style="width:64%"></div><div class="lock-skel-bar" style="width:76%"></div></div>
+  </div>`;
+}
+
+function renderLockedResult(r,job){
+  hide('viewInput');show('viewResult');
+  hide('applyBar');appliedCount=0;
+  window.scrollTo({top:0,behavior:'smooth'});
+  ['improveBtn','shareBtn','saveBtn','saveBtnB'].forEach(id=>document.getElementById(id)?.classList.add('hidden'));
+  document.getElementById('rVer').classList.add('hidden');
+  document.getElementById('rTitle').textContent=job;
+  document.getElementById('rTime').textContent='Analyzed on '+new Date().toLocaleDateString('en-US',{year:'numeric',month:'long',day:'numeric',hour:'2-digit',minute:'2-digit'});
+  const sc=Math.min(100,Math.max(0,r.score||0));
+  const sEl=document.getElementById('scoreNum');
+  animateScore(sEl,sc);
+  sEl.style.color=sc>=80?'var(--green)':sc>=60?'var(--primary)':sc>=40?'var(--yellow)':'var(--red)';
+  document.getElementById('scoreDelta').classList.add('hidden');
+  const bEl=document.getElementById('scoreBadge');
+  bEl.textContent=`Grade ${r.grade||'—'}`;
+  bEl.className='score-badge g'+(r.grade||'B').toLowerCase();
+  document.getElementById('scoreSum').textContent="Full breakdown locked — you're over your 3 free reports this month.";
+  document.getElementById('verdictChips').innerHTML=
+    (typeof r.atsScore==='number')?`<span class="ats-verdict ${['pass','risky','fail'].includes(r.atsVerdict)?r.atsVerdict:'risky'}" style="font-size:9px;padding:3px 10px">ATS ${r.atsScore}</span>`:'';
+  document.getElementById('scoreBars').innerHTML=
+    `<div class="lock-skel" style="margin-top:6px"><div class="lock-skel-bar" style="width:92%"></div><div class="lock-skel-bar" style="width:70%"></div><div class="lock-skel-bar" style="width:82%"></div><div class="lock-skel-bar" style="width:58%"></div><div class="lock-skel-bar" style="width:75%"></div></div>
+    <div class="lock-badge" style="margin-top:10px">🔒 5 detailed scores</div>`;
+  const upgradeHref=`${CHECKOUT_URL}?checkout[custom][uid]=${encodeURIComponent(cUser.uid)}&checkout[email]=${encodeURIComponent(cUser.email||'')}`;
+  document.getElementById('impList').innerHTML=lockSkeleton('3 priority fixes with Before / After rewrites')
+    +`<div class="upgrade-card">
+      <div style="font-size:16px;font-weight:800;margin-bottom:8px">Your score is ${sc} — see exactly why.</div>
+      <ul style="list-style:none;font-size:13px;color:var(--t2);line-height:2;margin-bottom:14px">
+        <li>✓ 10 analyses / month</li>
+        <li>✓ Full rewrites, 6-point ATS detail & JD match on every run</li>
+        <li>✓ Company Intelligence on up to 3 target companies</li>
+      </ul>
+      <a class="btn-primary" style="text-decoration:none" href="${upgradeHref}" onclick="gtag('event','locked_upgrade_click')">Upgrade to Starter — $9/mo →</a>
+      <div style="font-family:var(--mono);font-size:11px;color:var(--t4);margin-top:10px">Free limit resets on the 1st. This preview isn't saved to your history.</div>
+    </div>`;
+  document.getElementById('atsSec').classList.remove('hidden');
+  document.getElementById('atsSec').innerHTML=`<div class="jd-sec">${lockSkeleton('6-point ATS checklist')}</div>`;
+  document.getElementById('jdSecR').classList.add('hidden');document.getElementById('jdSecR').innerHTML='';
+  document.getElementById('strList').innerHTML=lockSkeleton('Strengths with evidence');
+  document.getElementById('kwM').innerHTML='';document.getElementById('kwMs').innerHTML='';
+  document.getElementById('kwM').innerHTML=`<div class="lock-badge">🔒 Keyword analysis</div>`;
+  document.getElementById('otText').textContent='Unlock the full report to read your HR verdict.';
+  const ciSec=document.getElementById('ciSec');ciSec.classList.add('hidden');ciSec.innerHTML='';
+}
+
+function renderResult(r,job,opts={}){
+  hide('viewInput');show('viewResult');
+  hide('applyBar');appliedCount=0;
+  ['improveBtn','shareBtn','saveBtn','saveBtnB'].forEach(id=>document.getElementById(id)?.classList.remove('hidden'));
+  window.scrollTo({top:0,behavior:'smooth'});
+  document.getElementById('rTitle').textContent=job;
+  document.getElementById('rTime').textContent='Analyzed on '+new Date().toLocaleDateString('en-US',{year:'numeric',month:'long',day:'numeric',hour:'2-digit',minute:'2-digit'});
+  const verEl=document.getElementById('rVer');
+  if(cVersion>1){verEl.textContent='v'+cVersion;verEl.classList.remove('hidden');}
+  else verEl.classList.add('hidden');
+  const sc=Math.min(100,Math.max(0,r.score||0));
+  const sEl=document.getElementById('scoreNum');
+  if(opts.animate)animateScore(sEl,sc);else sEl.textContent=sc;
+  sEl.style.color=sc>=80?'var(--green)':sc>=60?'var(--primary)':sc>=40?'var(--yellow)':'var(--red)';
+  const dEl=document.getElementById('scoreDelta');
+  if(cPrevious&&cPrevious.score!=null){
+    const d=sc-cPrevious.score;
+    dEl.classList.remove('hidden');
+    dEl.innerHTML=`<span class="delta-chip ${d>=0?'up':'down'}${(d>0&&opts.animate)?' pulse':''}">${d>=0?'▲':'▼'} ${d>=0?'+':''}${d} vs v${cVersion-1}</span>`;
+  }else{dEl.classList.add('hidden');dEl.innerHTML='';}
+  const bEl=document.getElementById('scoreBadge');
+  bEl.textContent=`Grade ${r.grade||'—'}`;
+  bEl.className='score-badge g'+(r.grade||'B').toLowerCase();
+  if(opts.animate){void bEl.offsetWidth;bEl.classList.add('badge-pop');}
+  document.getElementById('scoreSum').textContent=r.summary||'';
+  const vc=document.getElementById('verdictChips');
+  let chips='';
+  if(r.ats&&typeof r.ats.score==='number'){
+    const av=['pass','risky','fail'].includes(r.ats.verdict)?r.ats.verdict:'risky';
+    chips+=`<span class="ats-verdict ${av}" style="font-size:9px;padding:3px 10px;cursor:pointer" onclick="document.getElementById('atsSec').scrollIntoView({behavior:'smooth'})">ATS ${r.ats.score}</span>`;
+  }
+  if(r.jdMatch&&typeof r.jdMatch.matchScore==='number'){
+    chips+=`<span class="v-badge" style="cursor:pointer" onclick="document.getElementById('jdSecR').scrollIntoView({behavior:'smooth'})">JD MATCH ${Math.min(100,Math.max(0,r.jdMatch.matchScore))}%</span>`;
+  }
+  vc.innerHTML=chips;
+  const lbl={relevance:'Relevance',specificity:'Specificity',clarity:'Clarity',authenticity:'Authenticity',impact:'Impact'};
+  const barsEl=document.getElementById('scoreBars');
+  barsEl.innerHTML='';
+  Object.entries(r.scores||{}).forEach(([k,v])=>{
+    const p=Math.min(100,Math.max(0,v));
+    const c=p>=75?'h':p>=55?'m':p>=35?'l':'vl';
+    const pv=cPrevious?.scores?.[k];
+    const dd=(typeof pv==='number'&&p-pv!==0)?`<span class="delta-mini ${p-pv>0?'up':'down'}">${p-pv>0?'+':''}${p-pv}</span>`:'';
+    barsEl.innerHTML+=`<div class="sbar-row"><span class="sbar-lbl">${esc(lbl[k]||k)}</span><div class="sbar-track"><div class="sbar-fill ${c}" data-w="${p}"></div></div><span class="sbar-v">${p}</span>${dd}</div>`;
+  });
+  setTimeout(()=>{document.querySelectorAll('.sbar-fill').forEach(el=>{el.style.width=el.dataset.w+'%';});},100);
   const sEl2=document.getElementById('strList');sEl2.innerHTML='';
   (r.strengths||[]).forEach(s=>{
     const t=esc(typeof s==='string'?s:(s.title||''));
@@ -548,18 +967,75 @@ function renderResult(r,job){
     sEl2.innerHTML+=`<div class="str-item"><div class="str-t">${t}</div>${d2?`<div class="str-d">${d2}</div>`:''}</div>`;
   });
   const iEl=document.getElementById('impList');iEl.innerHTML='';
-  (r.improvements||[]).forEach(imp=>{
-    const issue=esc(typeof imp==='string'?imp:(imp.issue||''));
+  cImps=(r.improvements||[]).map(imp=>typeof imp==='string'?{issue:imp}:imp);
+  cImps.forEach((imp,i)=>{
+    const issue=esc(imp.issue||'');
     const why=esc(imp.why||'');
     const before=esc(imp.before||'');
     const after=esc(imp.suggestion||imp.after||'');
-    iEl.innerHTML+=`<div class="imp-item"><div class="imp-issue">${issue}</div>${why?`<div class="imp-why">${why}</div>`:''}`
+    const canApply=!!(imp.before&&(imp.suggestion||imp.after));
+    iEl.innerHTML+=`<div class="imp-item"><div class="imp-meta"><div class="imp-issue">${issue}</div>${why?`<div class="imp-why">${why}</div>`:''}</div><div class="imp-bas">`
       +`${before?`<div class="ba ba-b"><div class="ba-lbl">Before</div><div class="ba-txt">"${before}"</div></div>`:''}`
-      +`${after?`<div class="ba ba-a"><div class="ba-lbl">After</div><div class="ba-txt">"${after}"</div></div>`:''}</div>`;
+      +`${after?`<div class="ba ba-a"><div class="ba-lbl">After</div><div class="ba-txt">"${after}"</div></div>`:''}`
+      +`${canApply?`<button class="apply-fix-btn" id="afBtn${i}" onclick="applyFix(${i})">⚡ Apply fix</button>`:''}</div></div>`;
   });
   document.getElementById('kwM').innerHTML=(r.keywords?.matched||[]).map(k=>`<span class="kw p">${esc(k)}</span>`).join('');
   document.getElementById('kwMs').innerHTML=(r.keywords?.missing||[]).map(k=>`<span class="kw ms">+ ${esc(k)}</span>`).join('');
   document.getElementById('otText').textContent=r.oneLineTip||'';
+
+  // ATS Compatibility (null-guarded for legacy reports)
+  const atsSec=document.getElementById('atsSec');
+  if(r.ats&&r.ats.checks){
+    atsSec.classList.remove('hidden');
+    const av=['pass','risky','fail'].includes(r.ats.verdict)?r.ats.verdict:'risky';
+    const aScore=Math.min(100,Math.max(0,r.ats.score||0));
+    const aColor=aScore>=75?'var(--green)':aScore>=50?'var(--yellow)':'var(--red)';
+    const icon={pass:'✓',warn:'!',fail:'✕'};
+    atsSec.innerHTML=`<div class="ats-blk">
+      <div class="ats-l">
+        <div class="ats-lbl">ATS Compatibility</div>
+        <div class="ats-num" style="color:${aColor}">${aScore}${(typeof cPrevious?.atsScore==='number'&&aScore-cPrevious.atsScore!==0)?`<span class="delta-mini ${aScore-cPrevious.atsScore>0?'up':'down'}" style="font-size:13px;vertical-align:middle">${aScore-cPrevious.atsScore>0?'+':''}${aScore-cPrevious.atsScore}</span>`:''}</div>
+        <div class="ats-verdict ${av}">${av==='pass'?'ATS Pass':av==='risky'?'ATS Risky':'ATS Fail'}</div>
+      </div>
+      <div class="ats-r">
+        ${(r.ats.checks||[]).map(c=>{
+          const st=['pass','warn','fail'].includes(c.status)?c.status:'warn';
+          return `<div class="ats-check">
+            <div class="ats-ic ${st}">${icon[st]}</div>
+            <div class="ats-check-body">
+              <div class="ats-check-lbl">${esc(c.label||c.id||'')}</div>
+              ${c.note?`<div class="ats-check-note">${esc(c.note)}</div>`:''}
+            </div>
+          </div>`;
+        }).join('')}
+      </div>
+    </div>`;
+  }else{atsSec.classList.add('hidden');atsSec.innerHTML='';}
+
+  // JD Requirement Match (only when JD was provided)
+  const jdSecR=document.getElementById('jdSecR');
+  if(r.jdMatch&&Array.isArray(r.jdMatch.requirements)&&r.jdMatch.requirements.length){
+    jdSecR.classList.remove('hidden');
+    const mp=Math.min(100,Math.max(0,r.jdMatch.matchScore||0));
+    const mColor=mp>=75?'var(--green)':mp>=50?'var(--yellow)':'var(--red)';
+    jdSecR.innerHTML=`<div class="jd-sec">
+      <div class="jd-sec-hd">
+        <div class="jd-sec-t"><span class="hd-dot" style="background:var(--primary)"></span>JD Requirement Match</div>
+        <div class="jd-match-pct" style="color:${mColor}">${mp}%</div>
+      </div>
+      ${r.jdMatch.requirements.map(q=>{
+        const st=['strong','partial','missing'].includes(q.status)?q.status:'partial';
+        return `<div class="req-row">
+          <span class="req-chip chip-${st}">${st}</span>
+          <div class="req-body">
+            <div class="req-t">${esc(q.requirement||'')}</div>
+            ${q.evidence?`<div class="req-ev">${esc(q.evidence)}</div>`:''}
+            ${q.suggestion?`<div class="req-sug">→ ${esc(q.suggestion)}</div>`:''}
+          </div>
+        </div>`;
+      }).join('')}
+    </div>`;
+  }else{jdSecR.classList.add('hidden');jdSecR.innerHTML='';}
 
   // Company Intelligence
   const ciSec=document.getElementById('ciSec');
@@ -587,32 +1063,200 @@ function renderResult(r,job){
   }
 }
 
+function markSaved(ok){
+  const bs=['saveBtn','saveBtnB'].map(id=>document.getElementById(id)).filter(Boolean);
+  if(ok)bs.forEach(b=>{b.disabled=true;b.textContent='✓ Saved to history';});
+  else bs.forEach(b=>{b.disabled=false;b.textContent='Save Report';});
+}
 async function doSave(){
-  if(!cUser||!cReport)return;
-  const bs=['saveBtn','saveBtnB'].map(id=>document.getElementById(id));
+  if(!cUser||!cReport||cAnalysisId)return;
+  const bs=['saveBtn','saveBtnB'].map(id=>document.getElementById(id)).filter(Boolean);
   bs.forEach(b=>{b.disabled=true;b.textContent='Saving…';});
   try{
-    await addDoc(collection(db,'analyses'),{uid:cUser.uid,jobTitle:cJob,coverLetter:cLetter,report:cReport,createdAt:serverTimestamp()});
-    bs.forEach(b=>{b.textContent='✓ Saved';});
+    const ref=doc(collection(db,'analyses'));
+    if(!cRootId)cRootId=ref.id;
+    await setDoc(ref,{
+      uid:cUser.uid,jobTitle:cJob,coverLetter:cLetter,jdText:document.getElementById('jdText').value.trim()||null,report:cReport,
+      parentId:cPrevious?.analysisId||null,rootId:cRootId,version:cVersion||1,previous:cPrevious||null,shareId:null,
+      createdAt:serverTimestamp(),
+    });
+    cAnalysisId=ref.id;
+    markSaved(true);
     gtag('event','save_report',{job_title:cJob});
-  }catch{bs.forEach(b=>{b.disabled=false;b.textContent='Save Report';});showErr('Save failed. Please try again.');}
+  }catch{markSaved(false);showErr('Save failed. Please try again.');}
 }
 window.saveReport=doSave;
-window.shareScore=async(e)=>{
-  if(!cReport)return;
-  const text=`I scored ${cReport.score}/100 (Grade ${cReport.grade}) on my cover letter for "${cJob}" — analyzed by Ssurd AI.\n\nScore yours free: ${window.location.origin}`;
-  const btn=e.currentTarget;
-  try{
-    await navigator.clipboard.writeText(text);
-    const orig=btn.textContent;btn.textContent='✓ Copied!';
-    setTimeout(()=>{btn.textContent=orig;},2000);
-  }catch{prompt('Copy this to share:',text);}
-  gtag('event','share_score',{score:cReport.score,grade:cReport.grade,job_title:cJob});
+
+window.applyFix=(i)=>{
+  const btn=document.getElementById('afBtn'+i);
+  const imp=cImps[i]||{};
+  let before=imp.before||'';
+  const after=imp.suggestion||imp.after||'';
+  if(!before||!after||!cLetter)return;
+  let src=cLetter;
+  let idx=src.indexOf(before);
+  if(idx<0){
+    // whitespace-tolerant fallback (Claude may collapse line breaks)
+    const rx=new RegExp(before.replace(/[.*+?^${}()|[\]\\]/g,'\\$&').replace(/\s+/g,'\\s+'));
+    const m=src.match(rx);
+    if(m){idx=m.index;before=m[0];}
+  }
+  if(idx<0){
+    btn.disabled=true;btn.classList.add('miss');
+    btn.textContent='Not found';btn.title='Edit manually — exact sentence not found';
+    gtag('event','apply_fix',{found:false});
+    return;
+  }
+  cLetter=src.slice(0,idx)+after+src.slice(idx+before.length);
+  const ta=document.getElementById('coverLetter');
+  ta.value=cLetter;document.getElementById('charCount').textContent=cLetter.length;
+  btn.disabled=true;btn.textContent='✓ Applied';
+  appliedCount++;updateApplyBar();
+  gtag('event','apply_fix',{found:true,applied_count:appliedCount});
 };
-window.resetToInput=()=>{
+function updateApplyBar(){
+  const over=cLetter.length>3000;
+  document.getElementById('applyBarTxt').innerHTML=
+    `<strong>${appliedCount}</strong> fix${appliedCount>1?'es':''} applied${over?' · <span style="color:var(--yellow)">over 3,000 chars — trim before re-analyzing</span>':''}`;
+  show('applyBar');
+}
+window.appliedReanalyze=()=>{
+  gtag('event','applied_reanalyze',{applied_count:appliedCount});
+  improveReanalyze();
+};
+
+window.improveReanalyze=()=>{
+  hide('applyBar');appliedCount=0;
+  revisionOf={id:cAnalysisId,rootId:cRootId||cAnalysisId,version:cVersion||1,report:cReport};
+  gtag('event','reanalyze_start',{version:(cVersion||1)+1});
   hide('viewResult');show('viewInput');
   document.getElementById('analyzeBtn').disabled=false;
   hideErr();
+  if(cJob)document.getElementById('jobTitle').value=cJob;
+  if(cLetter){document.getElementById('coverLetter').value=cLetter;document.getElementById('charCount').textContent=cLetter.length;}
+  document.getElementById('revV').textContent='v'+(cVersion||1);
+  show('revBanner');
+  window.scrollTo({top:0,behavior:'smooth'});
+};
+window.cancelRevision=()=>{revisionOf=null;hide('revBanner');};
+let cShareUrl=null;
+window.shareScore=async(e)=>{
+  if(!cReport)return;
+  const btn=e.currentTarget;
+  const orig=btn.textContent;
+  btn.textContent='Creating link…';btn.disabled=true;
+  try{
+    if(!cAnalysisId)await doSave();
+    if(!cAnalysisId)throw new Error('Could not save analysis.');
+    const idToken=await cUser.getIdToken();
+    const res=await fetch('/api/share',{
+      method:'POST',
+      headers:{'Content-Type':'application/json','Authorization':`Bearer ${idToken}`},
+      body:JSON.stringify({analysisId:cAnalysisId}),
+    });
+    const json=await res.json();
+    if(!json.ok)throw new Error(json.error||'Share failed.');
+    cShareUrl=`${location.origin}/share/${json.shareId}`;
+    document.getElementById('shareUrlInput').value=cShareUrl;
+    const tweet=`My cover letter for "${cJob}" scored ${cReport.score}/100 (Grade ${cReport.grade})${cReport.ats?.score!=null?` · ATS ${cReport.ats.score}/100`:''} on @ssurd — free ATS + HR-grade analysis.`;
+    document.getElementById('shareXBtn').href=`https://twitter.com/intent/tweet?text=${encodeURIComponent(tweet)}&url=${encodeURIComponent(cShareUrl)}`;
+    show('shareModal');
+    gtag('event','share_link_created',{score:cReport.score,grade:cReport.grade,job_title:cJob});
+  }catch(err){
+    // fallback: plain clipboard share
+    const text=`I scored ${cReport.score}/100 (Grade ${cReport.grade}) on my cover letter for "${cJob}" — analyzed by Ssurd.\n\nScore yours free: ${window.location.origin}`;
+    try{await navigator.clipboard.writeText(text);btn.textContent='✓ Copied!';setTimeout(()=>{btn.textContent=orig;},2000);}
+    catch{prompt('Copy this to share:',text);}
+  }
+  btn.textContent=orig;btn.disabled=false;
+  gtag('event','share_score',{score:cReport.score,grade:cReport.grade,job_title:cJob});
+};
+window.closeShare=()=>hide('shareModal');
+window.copyShareUrl=async()=>{
+  if(!cShareUrl)return;
+  try{
+    await navigator.clipboard.writeText(cShareUrl);
+    const b=document.getElementById('copyShareBtn');
+    b.textContent='✓';setTimeout(()=>{b.textContent='Copy';},1500);
+  }catch{document.getElementById('shareUrlInput').select();document.execCommand('copy');}
+};
+window.downloadCard=()=>{
+  if(!cReport)return;
+  const W=1200,H=630;
+  const cv=document.createElement('canvas');cv.width=W;cv.height=H;
+  const x=cv.getContext('2d');
+  // Fixed dark brand palette — an exported artifact never reads CSS vars
+  const sc=Math.min(100,Math.max(0,cReport.score||0));
+  const scoreColor=sc>=80?'#2fd98a':sc>=60?'#6ba1ff':sc>=40?'#fbbf24':'#ff5c67';
+  // bg
+  x.fillStyle='#0b0b0c';x.fillRect(0,0,W,H);
+  // card
+  x.fillStyle='#151517';x.strokeStyle='#3a3a3f';x.lineWidth=2;
+  roundRect(x,80,72,1032,478,20);x.fill();roundRect(x,80,72,1032,478,20);x.stroke();
+  // logo
+  x.fillStyle='#f4f4f5';x.font='600 30px Inter,sans-serif';x.fillText('Ss',128,148);
+  x.fillStyle='#6ba1ff';x.fillText('.',x.measureText('Ss').width+128,148);
+  x.fillStyle='#f4f4f5';x.fillText('urd',x.measureText('Ss.').width+128,148);
+  // label + job
+  x.fillStyle='#71717a';x.font='500 20px Inter,sans-serif';
+  x.fillText('Cover letter score'+((cVersion||1)>1?` · v${cVersion}`:''),128,204);
+  x.fillStyle='#f4f4f5';x.font='600 40px Inter,sans-serif';
+  const jobStr=(cJob||'').length>34?(cJob||'').slice(0,33)+'…':(cJob||'');
+  x.fillText(jobStr,128,258);
+  // score
+  x.fillStyle=scoreColor;x.font='700 170px Inter,sans-serif';
+  x.fillText(String(sc),128,448);
+  const scW=x.measureText(String(sc)).width;
+  x.fillStyle='#52525b';x.font='600 40px Inter,sans-serif';x.fillText('/100',138+scW,448);
+  // grade pill
+  x.fillStyle='rgba(107,161,255,.15)';
+  const gp=`Grade ${cReport.grade||'-'}`;
+  x.font='600 26px Inter,sans-serif';
+  const gpW=x.measureText(gp).width;
+  roundRect(x,128,486,gpW+48,52,26);x.fill();
+  x.fillStyle='#6ba1ff';x.fillText(gp,152,521);
+  // ATS chip
+  if(cReport.ats?.score!=null){
+    const av=cReport.ats.verdict;
+    const ac=av==='pass'?'#2fd98a':av==='fail'?'#ff5c67':'#fbbf24';
+    const abg=av==='pass'?'rgba(47,217,138,.15)':av==='fail'?'rgba(255,92,103,.15)':'rgba(251,191,36,.15)';
+    const at=`ATS ${cReport.ats.score}/100`;
+    const atW=x.measureText(at).width;
+    x.fillStyle=abg;roundRect(x,128+gpW+64,486,atW+48,52,26);x.fill();
+    x.fillStyle=ac;x.fillText(at,152+gpW+64,521);
+  }
+  // right column: dim bars
+  const dims=[['Relevance',cReport.scores?.relevance],['Specificity',cReport.scores?.specificity],['Clarity',cReport.scores?.clarity],['Authenticity',cReport.scores?.authenticity],['Impact',cReport.scores?.impact]];
+  let by=200;
+  dims.forEach(([lb,v])=>{
+    const p=Math.min(100,Math.max(0,v||0));
+    const bc=p>=75?'#2fd98a':p>=55?'#6ba1ff':p>=35?'#fbbf24':'#ff5c67';
+    x.fillStyle='#a1a1aa';x.font='500 22px Inter,sans-serif';x.fillText(lb,700,by+8);
+    x.fillStyle='#232327';roundRect(x,700,by+22,320,10,5);x.fill();
+    x.fillStyle=bc;roundRect(x,700,by+22,Math.max(10,320*p/100),10,5);x.fill();
+    x.fillStyle='#f4f4f5';x.font='500 22px "DM Mono",monospace';x.fillText(String(p),1040,by+30);
+    by+=68;
+  });
+  // footer
+  x.fillStyle='#71717a';x.font='500 22px Inter,sans-serif';
+  x.fillText('Free ATS check + HR-grade feedback · '+location.host,88,606);
+  const a=document.createElement('a');
+  a.download=`ssurd-score-${sc}.png`;
+  a.href=cv.toDataURL('image/png');
+  a.click();
+  gtag('event','share_card_download',{score:sc});
+};
+function roundRect(x,px,py,w,h,r){
+  x.beginPath();
+  x.moveTo(px+r,py);x.arcTo(px+w,py,px+w,py+h,r);x.arcTo(px+w,py+h,px,py+h,r);
+  x.arcTo(px,py+h,px,py,r);x.arcTo(px,py,px+w,py,r);x.closePath();
+}
+window.resetToInput=()=>{
+  hide('applyBar');appliedCount=0;
+  hide('viewResult');show('viewInput');
+  document.getElementById('analyzeBtn').disabled=false;
+  hideErr();
+  revisionOf=null;hide('revBanner');
   if(cJob)document.getElementById('jobTitle').value=cJob;
   if(cLetter){document.getElementById('coverLetter').value=cLetter;document.getElementById('charCount').textContent=cLetter.length;}
   window.scrollTo({top:0,behavior:'smooth'});

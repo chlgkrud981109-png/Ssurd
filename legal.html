@@ -19,6 +19,11 @@
 <meta property="og:description" content="Privacy Policy and Terms of Service for Ssurd cover letter analysis.">
 <meta name="twitter:card" content="summary">
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%233182f6'/%3E%3Ctext x='16' y='22' text-anchor='middle' fill='white' font-size='20' font-weight='700' font-family='system-ui'%3ES%3C/text%3E%3C/svg%3E">
+<script>(function(){var t=null;try{t=localStorage.getItem('ssurd_theme')}catch(e){}
+document.documentElement.setAttribute('data-theme',t==='light'?'light':'dark')})();
+function ssurdToggleTheme(){var h=document.documentElement,
+n=h.getAttribute('data-theme')==='light'?'dark':'light';h.setAttribute('data-theme',n);
+try{localStorage.setItem('ssurd_theme',n)}catch(e){}}</script>
 <link rel="stylesheet" href="style.css">
 <style>
   main { max-width: 768px; margin: 0 auto; padding: 100px 32px 80px; }
@@ -44,6 +49,9 @@
     <a href="write.html" class="nav-lnk">Analyze</a>
     <a href="dashboard.html" class="nav-lnk">History</a>
     <a href="pricing.html" class="nav-lnk">Pricing</a>
+  </div>
+  <div class="nav-r">
+    <button class="theme-btn" onclick="ssurdToggleTheme()" aria-label="Switch theme"></button>
   </div>
 </nav>
 

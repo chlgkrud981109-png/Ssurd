@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(node --check functions/api/analyze.js)",
+      "Bash(node --check functions/api/share.js)",
+      "Bash(node --check \"functions/share/[id].js\")",
+      "Bash(node --check functions/api/company-news.js)",
+      "Bash(node --check functions/api/lemon-webhook.js)"
+    ]
+  }
+}
