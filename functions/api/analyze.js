@@ -106,7 +106,7 @@ export async function onRequestPost({ request, env }) {
       },
       body: JSON.stringify({
         model: 'claude-sonnet-4-6',
-        max_tokens: 4000,
+        max_tokens: 5000,
         messages: [{ role: 'user', content: prompt }],
       }),
     });
@@ -288,6 +288,15 @@ Because a job description is provided:
 - Judge each requirement against the letter: "strong" (explicit evidence in the letter), "partial" (implied or weak evidence), "missing" (not addressed).
 - The Relevance score and keywords.matched/missing MUST be computed against THIS job description, not generic role expectations.
 ` : ''}
+Recruiter skim simulation (always perform):
+You are simulating your OWN real first-pass behavior: a 7-second skim before deciding to deep-read or move on.
+- Split the letter into sentences (split wherever '.', '!' or '?' is followed by whitespace). Count them in order, 0-based.
+- For each sentence, rate how it performs during the skim: "hold" (grabs and holds a skimming recruiter), "skim" (gets glossed over — neither helps nor hurts), "lose" (actively loses the reader: generic, cliché, or confusing).
+- Identify dropOff: the 0-based index of the sentence where a skimming recruiter would most likely stop reading and move to the next application. Use -1 if the letter would hold attention to the end.
+
+Interview probe prediction (always perform):
+Predict what this letter will trigger in a real interview. Identify the 3-5 weakest or most probe-inviting claims and, for each, the exact question a senior interviewer would ask, and a one-line preparation tip.
+
 ATS Compatibility evaluation (always perform):
 Assess how this letter would survive automated Applicant Tracking System screening and a 6-second recruiter skim. Evaluate exactly these 6 checks:
 - keywords: coverage of ${jdText ? "the job description's key terms" : `standard "${jobTitle}" keywords`} (exact terms matter to ATS parsers)
@@ -375,7 +384,19 @@ Return ONLY the JSON object below. Do not include any other text or explanation:
       { "id": "cliches", "label": "Clichés & buzzwords", "status": <"pass"|"warn"|"fail">, "note": "<max 110 characters>" },
       { "id": "contact", "label": "Contact & role reference", "status": <"pass"|"warn"|"fail">, "note": "<max 110 characters>" }
     ]
-  }${jdText ? `,
+  },
+  "skim": {
+    "heat": [<one entry per sentence, in order: "hold" | "skim" | "lose">],
+    "dropOff": <0-based sentence index where a skimming recruiter stops, or -1>,
+    "verdict": "<one sentence: what the 7-second skim leaves the recruiter thinking, max 120 characters>"
+  },
+  "interviewProbes": [
+    {
+      "trigger": "<exact weak claim quoted from the letter, max 90 characters>",
+      "question": "<the question a senior interviewer would ask about it, max 120 characters>",
+      "tip": "<one-line preparation tip, max 110 characters>"
+    }
+  ]${jdText ? `,
   "jdMatch": {
     "matchScore": <0-100 integer — how well the letter covers the job description's requirements>,
     "requirements": [

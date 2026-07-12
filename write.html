@@ -128,7 +128,8 @@ try{localStorage.setItem('ssurd_theme',n)}catch(e){}}</script>
   nav,.r-acts,.r-footer,#viewInput,.loading-overlay,.modal-overlay,#usageRow,#applyBar,.apply-fix-btn,.theme-btn{display:none!important}
   #viewResult{padding-top:0!important}
   .score-num,.score-badge,.sbar-fill,.kw,.feat-icon{-webkit-print-color-adjust:exact;print-color-adjust:exact}
-  .score-blk,.r-body,.one-tip,.ats-blk,.jd-sec{page-break-inside:avoid;break-inside:avoid}
+  .score-blk,.r-body,.one-tip,.ats-blk,.jd-sec,.skim-sec,.iv-sec{page-break-inside:avoid;break-inside:avoid}
+  .skim-s,.iv-n{-webkit-print-color-adjust:exact;print-color-adjust:exact}
   .ats-num,.ats-verdict,.ats-ic,.req-chip,.delta-chip{-webkit-print-color-adjust:exact;print-color-adjust:exact}
 }
 </style>
@@ -141,7 +142,7 @@ try{localStorage.setItem('ssurd_theme',n)}catch(e){}}</script>
     <div class="lo-title">Analyzing your letter</div>
     <div class="lo-sub">Reading through a senior HR professional's lens…</div>
     <div class="lo-steps">
-      <div class="lo-step" id="ls1"><div class="lo-dot"></div>Parsing narrative structure</div>
+      <div class="lo-step" id="ls1"><div class="lo-dot"></div>Running the 7-second recruiter skim</div>
       <div class="lo-step" id="ls2"><div class="lo-dot"></div>Matching role keywords</div>
       <div class="lo-step" id="ls3"><div class="lo-dot"></div>Extracting impact metrics</div>
       <div class="lo-step" id="ls4"><div class="lo-dot"></div>Generating your report</div>
@@ -261,6 +262,14 @@ try{localStorage.setItem('ssurd_theme',n)}catch(e){}}</script>
     </div>
 
     <aside class="side-preview rv d2">
+      <div class="sp-card" id="liveCoach">
+        <div class="sp-lbl">Live coach <span style="color:var(--green)">●</span></div>
+        <div class="lc-metric"><span class="lc-lbl">Length</span><span class="lc-val idle" id="lcLen">start typing…</span></div>
+        <div class="lc-metric"><span class="lc-lbl">Quantified results</span><span class="lc-val idle" id="lcQuant">—</span></div>
+        <div class="lc-metric"><span class="lc-lbl">Clichés</span><span class="lc-val idle" id="lcCliche">—</span></div>
+        <div class="lc-metric" id="lcKwRow" style="display:none"><span class="lc-lbl">JD keywords</span><span class="lc-val idle" id="lcKw">—</span></div>
+        <div id="lcFlags"></div>
+      </div>
       <div class="sp-card">
         <div class="sp-lbl">What you'll get</div>
         <div class="sp-score-row">
@@ -325,12 +334,14 @@ try{localStorage.setItem('ssurd_theme',n)}catch(e){}}</script>
       <div class="sbar-rows" id="scoreBars"></div>
     </div>
   </div>
+  <div id="skimSec" class="hidden"></div>
   <div class="pf-sec">
     <div class="r-col-hd r"><span class="hd-dot"></span>Priority Fixes — Before / After</div>
     <div id="impList"></div>
   </div>
   <div id="atsSec" class="hidden"></div>
   <div id="jdSecR" class="hidden"></div>
+  <div id="ivSec" class="hidden"></div>
   <div class="r-body r-body2">
     <div class="r-col">
       <div class="r-col-hd g"><span class="hd-dot"></span>What You Did Well</div>
@@ -345,7 +356,7 @@ try{localStorage.setItem('ssurd_theme',n)}catch(e){}}</script>
   <div class="one-tip">
     <div style="width:40px;height:40px;border-radius:var(--r-md);background:var(--primary-light);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;color:var(--primary)">✦</div>
     <div>
-      <div class="ot-lbl">HR Professional's Comment</div>
+      <div class="ot-lbl">Senior recruiter's verdict</div>
       <div id="otText" class="ot-text"></div>
     </div>
   </div>
@@ -587,6 +598,7 @@ onAuthStateChanged(auth, async u=>{
       const rb=document.getElementById('revBanner');
       rb.querySelector('span').innerHTML='✦ Welcome — your letter is loaded. Run your full analysis now.';
       show('revBanner');
+      lcSchedule();
       document.getElementById('analyzeBtn').scrollIntoView({behavior:'smooth',block:'center'});
     }
   }catch{}
@@ -614,7 +626,58 @@ onAuthStateChanged(auth, async u=>{
 
 document.getElementById('coverLetter').addEventListener('input',e=>{
   document.getElementById('charCount').textContent=e.target.value.length;
+  lcSchedule();
 });
+
+// ── Live draft coach (client-side heuristics — zero API cost) ──
+const LC_CLICHES=['team player','hard-working','hardworking','passionate about','fast-paced environment','synergy','go-getter','think outside the box','detail-oriented','detail oriented','self-starter','results-driven','results driven','dynamic environment','excellent communication skills','proven track record','go above and beyond','to the best of my ability','people person','win-win','110%','perfect fit','dream job','esteemed company','honed my skills'];
+const LC_STOP=new Set(['the','and','for','with','that','this','you','your','are','will','have','has','our','their','they','from','about','what','which','who','been','being','were','was','can','into','more','than','also','all','not','but','its','it’s','job','work','role','team','company','experience','skills','ability','strong','including','required','preferred','years','must','plus','etc','such','like','well','each','other','using','use','may','should','would','need','needs','looking','join','help','across','within','per','via','any','both','least','ideal','candidate','position','responsibilities','requirements','qualifications']);
+let lcTimer=null;
+function lcSchedule(){clearTimeout(lcTimer);lcTimer=setTimeout(liveCoach,300);}
+function lcJdKeywords(jd){
+  const freq={};
+  jd.toLowerCase().replace(/[^a-z0-9+#./\s-]/g,' ').split(/\s+/).forEach(w=>{
+    if(w.length<4||LC_STOP.has(w))return;
+    freq[w]=(freq[w]||0)+1;
+  });
+  return Object.entries(freq).sort((a,b)=>b[1]-a[1]).slice(0,12).map(([w])=>w);
+}
+function liveCoach(){
+  const txt=document.getElementById('coverLetter').value;
+  const lenEl=document.getElementById('lcLen'),qEl=document.getElementById('lcQuant'),cEl=document.getElementById('lcCliche'),kwRow=document.getElementById('lcKwRow'),kwEl=document.getElementById('lcKw'),flags=document.getElementById('lcFlags');
+  if(txt.trim().length<40){
+    lenEl.textContent='start typing…';lenEl.className='lc-val idle';
+    qEl.textContent='—';qEl.className='lc-val idle';
+    cEl.textContent='—';cEl.className='lc-val idle';
+    kwRow.style.display='none';flags.innerHTML='';
+    return;
+  }
+  // Length (recruiter sweet spot ~250-400 words)
+  const words=txt.trim().split(/\s+/).length;
+  lenEl.textContent=`${words} words`;
+  lenEl.className='lc-val '+(words>=250&&words<=400?'good':words>=150&&words<=500?'warn':'bad');
+  // Quantified results (numbers, %, $, multipliers)
+  const quant=(txt.match(/\d+(\.\d+)?\s*%|\$\s?\d[\d,.]*|\b\d[\d,.]*\s*(x|k|m|users|customers|people|weeks|months|days|hours|projects|teams|countries|markets)\b|\b\d{2,}\b/gi)||[]).length;
+  qEl.textContent=quant===0?'none yet':`${quant} found`;
+  qEl.className='lc-val '+(quant>=3?'good':quant>=1?'warn':'bad');
+  // Clichés
+  const low=txt.toLowerCase();
+  const hits=LC_CLICHES.filter(c=>low.includes(c));
+  cEl.textContent=hits.length===0?'clean ✓':`${hits.length} found`;
+  cEl.className='lc-val '+(hits.length===0?'good':hits.length<=2?'warn':'bad');
+  flags.innerHTML=hits.slice(0,2).map(h=>`<div class="lc-flag">"${esc(h)}" — a recruiter has read this 1,000 times. Replace with a specific result.</div>`).join('');
+  // JD keyword coverage
+  const jd=document.getElementById('jdText').value.trim();
+  if(jd.length>80){
+    kwRow.style.display='flex';
+    const kws=lcJdKeywords(jd);
+    const covered=kws.filter(k=>low.includes(k)).length;
+    const pct=kws.length?Math.round(covered/kws.length*100):0;
+    kwEl.textContent=`${covered}/${kws.length} · ${pct}%`;
+    kwEl.className='lc-val '+(pct>=60?'good':pct>=30?'warn':'bad');
+  }else kwRow.style.display='none';
+}
+document.getElementById('jdText').addEventListener('input',lcSchedule);
 
 // ── JD block ──
 window.toggleJD=()=>{
@@ -847,8 +910,8 @@ function renderTeaserResult(r,job){
       <div style="font-size:16px;font-weight:800;margin-bottom:8px">This was 1 of your 3 free monthly reports — unlocked with an account.</div>
       <ul style="list-style:none;font-size:13px;color:var(--t2);line-height:2;margin-bottom:14px">
         <li>✓ 3 full analyses every month — free forever</li>
+        <li>✓ Recruiter skim heatmap + predicted interview questions</li>
         <li>✓ All rewrites + 6-point ATS detail + JD matching</li>
-        <li>✓ Saved history & score tracking across revisions</li>
       </ul>
       <button class="btn-primary" onclick="teaserSignupGo('report')">Sign up free — unlock the full report →</button>
       <div style="font-family:var(--mono);font-size:11px;color:var(--t4);margin-top:10px">No credit card. Your letter carries over after signup.</div>
@@ -856,6 +919,10 @@ function renderTeaserResult(r,job){
   document.getElementById('atsSec').classList.remove('hidden');
   document.getElementById('atsSec').innerHTML=`<div class="jd-sec">${lockSkeleton('6-point ATS checklist — see exactly what the robot flags')}</div>`;
   document.getElementById('jdSecR').classList.add('hidden');document.getElementById('jdSecR').innerHTML='';
+  document.getElementById('skimSec').classList.remove('hidden');
+  document.getElementById('skimSec').innerHTML=`<div class="skim-sec">${lockSkeleton('Recruiter skim heatmap — where their eyes stop reading')}</div>`;
+  document.getElementById('ivSec').classList.remove('hidden');
+  document.getElementById('ivSec').innerHTML=`<div class="iv-sec">${lockSkeleton('Predicted interview questions from this letter')}</div>`;
   document.getElementById('strList').innerHTML=lockSkeleton('Strengths with evidence from your text');
   document.getElementById('kwM').innerHTML=`<div class="lock-badge">🔒 Keyword analysis</div>`;
   document.getElementById('kwMs').innerHTML='';
@@ -907,6 +974,10 @@ function renderLockedResult(r,job){
   document.getElementById('atsSec').classList.remove('hidden');
   document.getElementById('atsSec').innerHTML=`<div class="jd-sec">${lockSkeleton('6-point ATS checklist')}</div>`;
   document.getElementById('jdSecR').classList.add('hidden');document.getElementById('jdSecR').innerHTML='';
+  document.getElementById('skimSec').classList.remove('hidden');
+  document.getElementById('skimSec').innerHTML=`<div class="skim-sec">${lockSkeleton('Recruiter skim heatmap — where their eyes stop')}</div>`;
+  document.getElementById('ivSec').classList.remove('hidden');
+  document.getElementById('ivSec').innerHTML=`<div class="iv-sec">${lockSkeleton('Predicted interview questions')}</div>`;
   document.getElementById('strList').innerHTML=lockSkeleton('Strengths with evidence');
   document.getElementById('kwM').innerHTML='';document.getElementById('kwMs').innerHTML='';
   document.getElementById('kwM').innerHTML=`<div class="lock-badge">🔒 Keyword analysis</div>`;
@@ -982,6 +1053,53 @@ function renderResult(r,job,opts={}){
   document.getElementById('kwM').innerHTML=(r.keywords?.matched||[]).map(k=>`<span class="kw p">${esc(k)}</span>`).join('');
   document.getElementById('kwMs').innerHTML=(r.keywords?.missing||[]).map(k=>`<span class="kw ms">+ ${esc(k)}</span>`).join('');
   document.getElementById('otText').textContent=r.oneLineTip||'';
+
+  // Recruiter skim heatmap (null-guarded for legacy reports)
+  const skimSec=document.getElementById('skimSec');
+  if(r.skim&&Array.isArray(r.skim.heat)&&cLetter){
+    const sentences=cLetter.split(/(?<=[.!?])\s+/);
+    const n=Math.min(sentences.length,r.skim.heat.length);
+    if(n>1){
+      skimSec.classList.remove('hidden');
+      const drop=typeof r.skim.dropOff==='number'?r.skim.dropOff:-1;
+      let body='';
+      for(let i=0;i<n;i++){
+        const h=['hold','skim','lose'].includes(r.skim.heat[i])?r.skim.heat[i]:'skim';
+        body+=`<span class="skim-s ${h}">${esc(sentences[i])}</span> `;
+        if(i===drop&&i<n-1)body+=`<span class="skim-drop">a skimming recruiter stops reading here</span>`;
+      }
+      skimSec.innerHTML=`<div class="skim-sec">
+        <div class="skim-hd">
+          <div class="skim-t"><span class="hd-dot" style="background:var(--primary)"></span>The 7-second skim — how a recruiter actually read this</div>
+          <div class="skim-legend">
+            <span class="skim-leg"><i style="background:var(--green-bg);border:1px solid var(--green)"></i>holds attention</span>
+            <span class="skim-leg"><i style="background:var(--surface-2)"></i>skimmed over</span>
+            <span class="skim-leg"><i style="background:var(--red-bg);border:1px solid var(--red)"></i>loses the reader</span>
+          </div>
+        </div>
+        ${r.skim.verdict?`<div class="skim-verdict">"${esc(r.skim.verdict)}"</div>`:''}
+        <div class="skim-body">${body}</div>
+      </div>`;
+    }else{skimSec.classList.add('hidden');skimSec.innerHTML='';}
+  }else{skimSec.classList.add('hidden');skimSec.innerHTML='';}
+
+  // Interview probes (null-guarded)
+  const ivSec=document.getElementById('ivSec');
+  if(Array.isArray(r.interviewProbes)&&r.interviewProbes.length){
+    ivSec.classList.remove('hidden');
+    ivSec.innerHTML=`<div class="iv-sec">
+      <div class="r-col-hd b" style="margin-bottom:8px"><span class="hd-dot"></span>Questions this letter will trigger in the interview</div>
+      <div style="font-size:12px;color:var(--t3);margin-bottom:10px">A senior interviewer probes the weakest claims first. Prepare these before you hit send.</div>
+      ${r.interviewProbes.map((p,i)=>`<div class="iv-item">
+        <div class="iv-n">${i+1}</div>
+        <div class="iv-body">
+          <div class="iv-q">${esc(p.question||'')}</div>
+          ${p.trigger?`<div class="iv-trigger">${esc(p.trigger)}</div>`:''}
+          ${p.tip?`<div class="iv-tip">→ ${esc(p.tip)}</div>`:''}
+        </div>
+      </div>`).join('')}
+    </div>`;
+  }else{ivSec.classList.add('hidden');ivSec.innerHTML='';}
 
   // ATS Compatibility (null-guarded for legacy reports)
   const atsSec=document.getElementById('atsSec');
@@ -1136,6 +1254,7 @@ window.improveReanalyze=()=>{
   if(cLetter){document.getElementById('coverLetter').value=cLetter;document.getElementById('charCount').textContent=cLetter.length;}
   document.getElementById('revV').textContent='v'+(cVersion||1);
   show('revBanner');
+  lcSchedule();
   window.scrollTo({top:0,behavior:'smooth'});
 };
 window.cancelRevision=()=>{revisionOf=null;hide('revBanner');};
